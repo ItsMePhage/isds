@@ -9,7 +9,7 @@ if ($is_protected == true) {
         if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 1800)) {
             session_unset();
             session_destroy();
-            header('Location: assets/components/includes/logout.php');
+            header('Location: ../includes/logout.php');
             exit();
         }
 
@@ -25,14 +25,14 @@ if ($is_protected == true) {
             $acc = $result->fetch_object();
             $_SESSION['role'] = $acc->role;
             if ($acc->role != 'employee') {
-                ?>
+?>
                 <script>
                     history.back();
                 </script>
-                <?php
+<?php
             }
         } else {
-            header('Location: assets/components/includes/logout.php');
+            header('Location: ../includes/logout.php');
             exit();
         }
     } else {
@@ -42,5 +42,12 @@ if ($is_protected == true) {
 }
 
 if ($is_protected == false) {
-    
 }
+
+$count_day_helpdesks = $conn->query("SELECT COUNT(*) as count_day FROM helpdesks WHERE DATE(date_requested) = CURDATE() AND requested_by = $acc->id")->fetch_object()->count_day;
+$count_month_helpdesks = $conn->query("SELECT COUNT(*) as count_month FROM helpdesks WHERE YEAR(date_requested) = YEAR(CURDATE()) AND MONTH(date_requested) = MONTH(CURDATE()) AND requested_by = $acc->id")->fetch_object()->count_month;
+$count_year_helpdesks = $conn->query("SELECT COUNT(*) as count_year FROM helpdesks WHERE YEAR(date_requested) = YEAR(CURDATE()) AND requested_by = $acc->id")->fetch_object()->count_year;
+
+$count_day_meetings = $conn->query("SELECT COUNT(*) as count_day FROM meetings WHERE DATE(date_requested) = CURDATE() AND requested_by = $acc->id")->fetch_object()->count_day;
+$count_month_meetings = $conn->query("SELECT COUNT(*) as count_month FROM meetings WHERE YEAR(date_requested) = YEAR(CURDATE()) AND MONTH(date_requested) = MONTH(CURDATE()) AND requested_by = $acc->id")->fetch_object()->count_month;
+$count_year_meetings = $conn->query("SELECT COUNT(*) as count_year FROM meetings WHERE YEAR(date_requested) = YEAR(CURDATE()) AND requested_by = $acc->id")->fetch_object()->count_year;

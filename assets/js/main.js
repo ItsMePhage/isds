@@ -228,4 +228,81 @@ $(function () {
       }
     });
   });
+
+  /**
+    * Initiate select
+    */
+  $(".select-init").each(function (index, element) {
+    let select_data = $(element).attr("id");
+
+    $.ajax({
+      url: "/isds/includes/fetch.php",
+      type: "GET",
+      data: {
+        select_data: select_data,
+      },
+      dataType: "json",
+      success: function (response) {
+        var len = response.length;
+        for (var i = 0; i < len; i++) {
+          var id = response[i]["id"];
+          var name = response[i]["name"];
+          $("#" + select_data).append(
+            "<option value='" + id + "'>" + name + "</option>"
+          );
+        }
+      },
+    });
+  });
+
+  $('#request_type_id').on('change', function () {
+    $.ajax({
+      url: "/isds/includes/fetch.php",
+      type: "GET",
+      data: {
+        select_data: 'category_id',
+        request_type_id: $(this).val()
+      },
+      dataType: "json",
+      success: function (response) {
+        var len = response.length;
+        $('#category_id').empty();
+        $('#sub_category_id').empty();
+        $('#sub_category_id').append(
+          "<option value='' selected disabled>choose...</option>"
+        );
+        for (var i = 0; i < len; i++) {
+          var id = response[i]["id"];
+          var name = response[i]["name"];
+          $('#category_id').append(
+            "<option value='" + id + "'>" + name + "</option>"
+          );
+        }
+      },
+    });
+  });
+
+  $('#category_id').on('change', function () {
+    $.ajax({
+      url: "/isds/includes/fetch.php",
+      type: "GET",
+      data: {
+        select_data: 'sub_category_id',
+        category_id: $(this).val()
+      },
+      dataType: "json",
+      success: function (response) {
+        var len = response.length;
+        $('#sub_category_id').empty();
+        for (var i = 0; i < len; i++) {
+          var id = response[i]["id"];
+          var name = response[i]["name"];
+          $('#sub_category_id').append(
+            "<option value='" + id + "'>" + name + "</option>"
+          );
+        }
+      },
+    });
+  });
 });
+

@@ -21,22 +21,9 @@ require_once "../partials/aside.php";
 
   <section class="section dashboard">
     <div class="row">
-      <?php
-      $acc_id = $acc->id;
 
-      $count_day_helpdesks = $conn->query("SELECT COUNT(*) as count_day FROM helpdesks WHERE DATE(date_requested) = CURDATE() AND requested_by = $acc_id")->fetch_object()->count_day;
-      $count_month_helpdesks = $conn->query("SELECT COUNT(*) as count_month FROM helpdesks WHERE YEAR(date_requested) = YEAR(CURDATE()) AND MONTH(date_requested) = MONTH(CURDATE()) AND requested_by = $acc_id")->fetch_object()->count_month;
-      $count_year_helpdesks = $conn->query("SELECT COUNT(*) as count_year FROM helpdesks WHERE YEAR(date_requested) = YEAR(CURDATE()) AND requested_by = $acc_id")->fetch_object()->count_year;
-
-      $count_day_meetings = $conn->query("SELECT COUNT(*) as count_day FROM meetings WHERE DATE(date_requested) = CURDATE() AND requested_by = $acc_id")->fetch_object()->count_day;
-      $count_month_meetings = $conn->query("SELECT COUNT(*) as count_month FROM meetings WHERE YEAR(date_requested) = YEAR(CURDATE()) AND MONTH(date_requested) = MONTH(CURDATE()) AND requested_by = $acc_id")->fetch_object()->count_month;
-      $count_year_meetings = $conn->query("SELECT COUNT(*) as count_year FROM meetings WHERE YEAR(date_requested) = YEAR(CURDATE()) AND requested_by = $acc_id")->fetch_object()->count_year;
-      
-      ?>
-
-      <!-- Sales Card -->
       <div class="col-lg-6">
-        <div class="card info-card sales-card">
+        <div class="card info-card count-card">
           <div class="filter">
             <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -60,11 +47,10 @@ require_once "../partials/aside.php";
             </div>
           </div>
         </div>
-      </div><!-- End Sales Card -->
+      </div>
 
-      <!-- Revenue Card -->
       <div class="col-lg-6">
-        <div class="card info-card revenue-card">
+        <div class="card info-card count-card">
           <div class="filter">
             <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -88,10 +74,10 @@ require_once "../partials/aside.php";
             </div>
           </div>
         </div>
-      </div><!-- End Revenue Card -->
+      </div>
 
       <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
           const counts = {
             helpdesks: {
               today: <?= $count_day_helpdesks ?>,
@@ -105,32 +91,32 @@ require_once "../partials/aside.php";
             }
           };
 
-          document.getElementById('today-helpdesks').addEventListener('click', function () {
+          document.getElementById('today-helpdesks').addEventListener('click', function() {
             document.getElementById('helpdesks_count').innerText = counts.helpdesks.today;
             document.getElementById('helpdesks_count_scope').innerHTML = "| Today";
           });
 
-          document.getElementById('month-helpdesks').addEventListener('click', function () {
+          document.getElementById('month-helpdesks').addEventListener('click', function() {
             document.getElementById('helpdesks_count').innerText = counts.helpdesks.month;
             document.getElementById('helpdesks_count_scope').innerHTML = "| This month";
           });
 
-          document.getElementById('year-helpdesks').addEventListener('click', function () {
+          document.getElementById('year-helpdesks').addEventListener('click', function() {
             document.getElementById('helpdesks_count').innerText = counts.helpdesks.year;
             document.getElementById('helpdesks_count_scope').innerHTML = "| This year";
           });
 
-          document.getElementById('today-meetings').addEventListener('click', function () {
+          document.getElementById('today-meetings').addEventListener('click', function() {
             document.getElementById('meetings_count').innerText = counts.meetings.today;
             document.getElementById('meetings_count_scope').innerHTML = "| Today";
           });
 
-          document.getElementById('month-meetings').addEventListener('click', function () {
+          document.getElementById('month-meetings').addEventListener('click', function() {
             document.getElementById('meetings_count').innerText = counts.meetings.month;
             document.getElementById('meetings_count_scope').innerHTML = "| This month";
           });
 
-          document.getElementById('year-meetings').addEventListener('click', function () {
+          document.getElementById('year-meetings').addEventListener('click', function() {
             document.getElementById('meetings_count').innerText = counts.meetings.year;
             document.getElementById('meetings_count_scope').innerHTML = "| This year";
           });
@@ -141,8 +127,44 @@ require_once "../partials/aside.php";
 
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Example Card</h5>
-            <p>This is an examle page with no contrnt. You can use it as a starter for your custom pages.</p>
+            <h5 class="card-title">ICT Helpdesk</h5>
+            <form class="row g-3 form-validation">
+              <div>
+                <label for="date_requested" class="form-label">Date of Request</label>
+                <input type="date" class="form-control" id="date_requested" name="date_requested" value="<?= date('Y-m-d') ?>" required />
+              </div>
+              <div>
+                <label for="request_type_id" class="form-label">Type of Request</label>
+                <select type="text" class="form-select select-init" id="request_type_id" name="request_type_id" required>
+                  <option value="" selected disabled>choose...</option>
+                </select>
+              </div>
+              <div>
+                <label for="category_id" class="form-label">Category of Request</label>
+                <select type="text" class="form-select" id="category_id" name="category_id" required>
+                  <option value="" selected disabled>choose...</option>
+                </select>
+              </div>
+              <div>
+                <label for="sub_category_id" class="form-label">Sub-Category of Request</label>
+                <select type="text" class="form-select" id="sub_category_id" name="sub_category_id" required>
+                  <option value="" selected disabled>choose...</option>
+                </select>
+              </div>
+              <div>
+                <label for="complaint" class="form-label">Defect, Complaint, or Request</label>
+                <textarea class="form-control" id="complaint" name="complaint"></textarea>
+              </div>
+              <div>
+                <label for="date_preferred" class="form-label">Preferred date and time</label>
+                <input type="datetime-local" class="form-control" id="date_preferred" name="date_preferred" required />
+              </div>
+              <div hidden>
+                <input class="captcha-token" name="captcha-token" />
+                <input name="login" />
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
           </div>
         </div>
 
