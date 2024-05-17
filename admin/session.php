@@ -17,7 +17,7 @@ if ($is_protected == true) {
 
         $query = "SELECT * FROM users u";
         $query .= " LEFT JOIN roles r ON u.role_id = r.id";
-        $query .= " WHERE u.id = ? AND u.active = 1";
+        $query .= " WHERE u.id = ? AND u.is_active = 1";
 
         $result = $conn->execute_query($query, [$_SESSION['id']]);
 

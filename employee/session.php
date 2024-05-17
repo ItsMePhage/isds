@@ -16,8 +16,8 @@ if ($is_protected == true) {
         $_SESSION['last_activity'] = time();
 
         $query = "SELECT u.*, r.role FROM users u";
-        $query .= " LEFT JOIN roles r ON u.role_id = r.id";
-        $query .= " WHERE u.id = ? AND u.active = 1";
+        $query .= " LEFT JOIN roles r ON u.roles_id = r.id";
+        $query .= " WHERE u.id = ? AND u.is_active = 1";
 
         $result = $conn->execute_query($query, [$_SESSION['id']]);
 

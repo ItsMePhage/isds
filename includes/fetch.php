@@ -9,12 +9,12 @@ $response = array();
 
 if (isset($_GET['select_data'])) {
     switch ($_GET['select_data']) {
-        case 'request_type_id':
-            $query = "SELECT * FROM request_types";
+        case 'provinces_id':
+            $query = "SELECT * FROM provinces";
             $result = $conn->execute_query($query);
 
             while ($row = $result->fetch_object()) {
-                $row->name = $row->request_type;
+                $row->name = $row->province;
                 $response[] = $row;
             }
             break;
@@ -27,26 +27,26 @@ if (isset($_GET['select_data'])) {
                 $response[] = $row;
             }
             break;
-        case 'offices_id':
-            $query = "SELECT * FROM offices";
+        case 'client_types_id':
+            $query = "SELECT * FROM client_types";
             $result = $conn->execute_query($query);
 
             while ($row = $result->fetch_object()) {
-                $row->name = $row->office;
+                $row->name = $row->client_type;
                 $response[] = $row;
             }
             break;
-        case 'roles_id':
-            $query = "SELECT * FROM roles";
+        case 'request_types_id':
+            $query = "SELECT * FROM request_types";
             $result = $conn->execute_query($query);
 
             while ($row = $result->fetch_object()) {
-                $row->name = $row->role;
+                $row->name = $row->request_type;
                 $response[] = $row;
             }
             break;
-        case 'category_id':
-            $query = "SELECT * FROM categories WHERE request_type_id = " . $_GET['request_type_id'];
+        case 'categories_id':
+            $query = "SELECT * FROM categories WHERE request_types_id = " . $_GET['request_types_id'];
             $result = $conn->execute_query($query);
 
             while ($row = $result->fetch_object()) {
@@ -54,8 +54,8 @@ if (isset($_GET['select_data'])) {
                 $response[] = $row;
             }
             break;
-        case 'sub_category_id':
-            $query = "SELECT * FROM sub_categories WHERE category_id = " . $_GET['category_id'];
+        case 'sub_categories_id':
+            $query = "SELECT * FROM sub_categories WHERE categories_id = " . $_GET['categories_id'];
             $result = $conn->execute_query($query);
 
             while ($row = $result->fetch_object()) {

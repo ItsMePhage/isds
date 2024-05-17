@@ -4,7 +4,7 @@
 define('servername', 'localhost');
 define('username', 'root');
 define('password', 'Password@123!');
-define('dbname', 'misdb');
+define('dbname', 'mydb');
 define('website', 'DTI6 ISDS');
 
 // Encryption

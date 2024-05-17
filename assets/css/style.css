@@ -801,10 +801,11 @@ h6 {
 /* Info Cards */
 .dashboard .info-card {
   padding-bottom: 10px;
+  transition: transform 0.1s ease-in-out;
 }
 
 .dashboard .info-card:hover {
-  scale: 1.01;
+  transform: scale(1.03);
   cursor: pointer;
 }
 
