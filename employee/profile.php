@@ -28,7 +28,7 @@ require_once "../partials/aside.php";
 
             <img src="../assets/img/logo.png" alt="Profile">
             <h2><?= $acc->first_name ?> <?= $acc->middle_name ?> <?= $acc->last_name ?></h2>
-            <h3><?= $acc->position ?></h3>
+            <h3><?= $acc->designation ?></h3>
           </div>
         </div>
 

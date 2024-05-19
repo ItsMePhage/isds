@@ -9,12 +9,12 @@ $response = array();
 
 if (isset($_GET['select_data'])) {
     switch ($_GET['select_data']) {
-        case 'provinces_id':
-            $query = "SELECT * FROM provinces";
+        case 'offices_id':
+            $query = "SELECT * FROM offices";
             $result = $conn->execute_query($query);
 
             while ($row = $result->fetch_object()) {
-                $row->name = $row->province;
+                $row->name = $row->office;
                 $response[] = $row;
             }
             break;

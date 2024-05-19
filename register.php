@@ -63,10 +63,6 @@ require_once "partials/head.php";
                       </label>
                     </div>
                   </div>
-                  <div class="col-lg-12">
-                    <label for="address" class="form-label">Address</label>
-                    <textarea type="text" class="form-control" id="address" name="address"></textarea>
-                  </div>
                   <div class="col-lg-6">
                     <label for="phone" class="form-label">Phone</label>
                     <input type="tel" class="form-control" id="phone" name="phone" />
@@ -76,12 +72,16 @@ require_once "partials/head.php";
                     <input type="text" class="form-control" id="email" name="email" required />
                   </div>
                   <div class="col-lg-12">
-                    <label for="position" class="form-label">Position</label>
-                    <input type="text" class="form-control" id="position" name="position" />
+                    <label for="address" class="form-label">Address</label>
+                    <textarea type="text" class="form-control" id="address" name="address"></textarea>
+                  </div>
+                  <div class="col-lg-12">
+                    <label for="designation" class="form-label">designation</label>
+                    <input type="text" class="form-control" id="designation" name="designation" />
                   </div>
                   <div class="col-lg-6">
-                    <label for="provinces_id" class="form-label">Province<span class="text-danger"> *</span></label>
-                    <select class="form-select select-init" id="provinces_id" name="provinces_id" required>
+                    <label for="offices_id" class="form-label">Office<span class="text-danger"> *</span></label>
+                    <select class="form-select select-init" id="offices_id" name="offices_id" required>
                       <option value="" selected disabled>choose...</option>
                     </select>
                   </div>
@@ -109,8 +109,7 @@ require_once "partials/head.php";
                   </div>
                   <div class="col-lg-12">
                     <div class="mb-3 form-check">
-                      <input type="checkbox" class="form-check-input" id="showPassword"
-                        onclick="password.type = password.type === 'password' ? 'text' : 'password'">
+                      <input type="checkbox" class="form-check-input" id="showPassword" onclick="password.type = password.type === 'password' ? 'text' : 'password'">
                       <label class="form-check-label" for="showPassword">show password</label>
                     </div>
                   </div>

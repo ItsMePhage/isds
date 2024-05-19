@@ -13,6 +13,7 @@ if (isset($_POST['captcha-token']) && !empty($_POST['captcha-token'])) {
 }
 
 if ($g_response == 1) {
+    /* general process */
     if (isset($_POST['login'])) {
 
         $username = $_POST['username'];
@@ -65,8 +66,8 @@ if ($g_response == 1) {
         $address = $_POST['address'];
         $phone = $_POST['phone'];
         $email = $_POST['email'];
-        $position = $_POST['position'];
-        $provinces_id = $_POST['provinces_id'];
+        $designation = $_POST['designation'];
+        $offices_id = $_POST['offices_id'];
         $divisions_id = $_POST['divisions_id'];
         $client_types_id = $_POST['client_types_id'];
         $username = $_POST['username'];
@@ -76,8 +77,8 @@ if ($g_response == 1) {
         $result = $conn->execute_query($query, [$username, $username]);
 
         if ($result && $result->num_rows < 1) {
-            $query = "INSERT INTO `users` (`id_number`,`first_name`,`middle_name`,`last_name`,`position`,`provinces_id`,`divisions_id`,`client_types_id`,`date_birth`,`sex`,`is_pwd`,`phone`,`email`,`address`,`username`,`password`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-            $result = $conn->execute_query($query, [$id_number, $first_name, $middle_name, $last_name, $position, $provinces_id, $divisions_id, $client_types_id, $date_birth, $sex, $is_pwd, $phone, $email, $address, $username, $password]);
+            $query = "INSERT INTO `users` (`id_number`,`first_name`,`middle_name`,`last_name`,`designation`,`offices_id`,`divisions_id`,`client_types_id`,`date_birth`,`sex`,`is_pwd`,`phone`,`email`,`address`,`username`,`password`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            $result = $conn->execute_query($query, [$id_number, $first_name, $middle_name, $last_name, $designation, $offices_id, $divisions_id, $client_types_id, $date_birth, $sex, $is_pwd, $phone, $email, $address, $username, $password]);
 
             $_SESSION['id'] = $conn->insert_id;
 
@@ -141,7 +142,7 @@ if ($g_response == 1) {
         $first_name = $_POST['first_name'];
         $middle_name = $_POST['middle_name'];
         $last_name = $_POST['last_name'];
-        $position = $_POST['position'];
+        $designation = $_POST['designation'];
         $division_id = $_POST['division_id'];
         $client_type_id = $_POST['client_type_id'];
         $date_birth = $_POST['date_birth'];
@@ -152,8 +153,8 @@ if ($g_response == 1) {
         $pwd = isset($_POST['pwd']) ? 1 : 0;
 
         $query = "SELECT * 
-    FROM users 
-    WHERE id_number = ? AND id != ?";
+        FROM users 
+        WHERE id_number = ? AND id != ?";
 
         $result = $conn->execute_query($query, [$id_number, $_SESSION['id']]);
 
@@ -166,10 +167,10 @@ if ($g_response == 1) {
 
             if (!$result->num_rows) {
                 $query = "UPDATE users
-                SET `id_number` = ?, `first_name` = ?, `middle_name` = ?, `last_name` = ?, `position` = ?, `division_id` = ?, `client_type_id` = ?, `date_birth` = ?, `phone` = ?, `email` = ?, `sex` = ?, `address` = ?, `pwd` = ?
+                SET `id_number` = ?, `first_name` = ?, `middle_name` = ?, `last_name` = ?, `designation` = ?, `division_id` = ?, `client_type_id` = ?, `date_birth` = ?, `phone` = ?, `email` = ?, `sex` = ?, `address` = ?, `pwd` = ?
                 WHERE id = ?";
 
-                $result = $conn->execute_query($query, [$id_number, $first_name, $middle_name, $last_name, $position, $division_id, $client_type_id, $date_birth, $phone, $email, $sex, $address, $pwd, $_SESSION['id']]);
+                $result = $conn->execute_query($query, [$id_number, $first_name, $middle_name, $last_name, $designation, $division_id, $client_type_id, $date_birth, $phone, $email, $sex, $address, $pwd, $_SESSION['id']]);
                 $response['status'] = 'success';
                 $response['message'] = 'User updated successful!';
             } else {
@@ -180,6 +181,28 @@ if ($g_response == 1) {
             $response['status'] = 'warning';
             $response['message'] = $id_number . ' already exist!';
         }
+    }
+
+    /* employees process */
+    if (isset($_POST['add_helpdesks'])) {
+        $requested_by = $_POST['requested_by'];
+        $date_requested = $_POST['date_requested'];
+        $request_types_id = $_POST['request_types_id'];
+        $categories_id = $_POST['categories_id'];
+        $sub_categories_id = $_POST['sub_categories_id'];
+        $complaint = $_POST['complaint'];
+        $datetime_preferred = $_POST['datetime_preferred'];
+
+        $query = "INSERT INTO helpdesks(`requested_by`,`date_requested`,`request_types_id`,`categories_id`,`sub_categories_id`,`complaint`,`datetime_preferred`) VALUE (?,?,?,?,?,?,?)";
+        $result = $conn->execute_query($query, [$requested_by, $date_requested, $request_types_id, $categories_id, $sub_categories_id, $complaint, $datetime_preferred]);
+
+        $response = [
+            'status' => 'success',
+            'message' => 'Request submitted.',
+            'redirect' => '../employee/helpdesks.php'
+        ];
+    }
+    if (isset($_POST['edit_helpdesks'])) {
     }
 } else {
     $response = [

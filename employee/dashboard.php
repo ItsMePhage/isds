@@ -76,7 +76,7 @@ require_once "../partials/aside.php";
       </div>
 
       <script>
-        document.addEventListener("DOMContentLoaded", function () {
+        document.addEventListener("DOMContentLoaded", function() {
           const counts = {
             helpdesks: {
               today: <?= $count_day_helpdesks ?>,
@@ -90,32 +90,32 @@ require_once "../partials/aside.php";
             }
           };
 
-          document.getElementById('today-helpdesks').addEventListener('click', function () {
+          document.getElementById('today-helpdesks').addEventListener('click', function() {
             document.getElementById('helpdesks_count').innerText = counts.helpdesks.today;
             document.getElementById('helpdesks_count_scope').innerHTML = "| Today";
           });
 
-          document.getElementById('month-helpdesks').addEventListener('click', function () {
+          document.getElementById('month-helpdesks').addEventListener('click', function() {
             document.getElementById('helpdesks_count').innerText = counts.helpdesks.month;
             document.getElementById('helpdesks_count_scope').innerHTML = "| This month";
           });
 
-          document.getElementById('year-helpdesks').addEventListener('click', function () {
+          document.getElementById('year-helpdesks').addEventListener('click', function() {
             document.getElementById('helpdesks_count').innerText = counts.helpdesks.year;
             document.getElementById('helpdesks_count_scope').innerHTML = "| This year";
           });
 
-          document.getElementById('today-meetings').addEventListener('click', function () {
+          document.getElementById('today-meetings').addEventListener('click', function() {
             document.getElementById('meetings_count').innerText = counts.meetings.today;
             document.getElementById('meetings_count_scope').innerHTML = "| Today";
           });
 
-          document.getElementById('month-meetings').addEventListener('click', function () {
+          document.getElementById('month-meetings').addEventListener('click', function() {
             document.getElementById('meetings_count').innerText = counts.meetings.month;
             document.getElementById('meetings_count_scope').innerHTML = "| This month";
           });
 
-          document.getElementById('year-meetings').addEventListener('click', function () {
+          document.getElementById('year-meetings').addEventListener('click', function() {
             document.getElementById('meetings_count').innerText = counts.meetings.year;
             document.getElementById('meetings_count_scope').innerHTML = "| This year";
           });
@@ -130,13 +130,11 @@ require_once "../partials/aside.php";
             <form class="row g-3 form-validation">
               <div>
                 <label for="date_requested" class="form-label">Date of Request</label>
-                <input type="date" class="form-control" id="date_requested" name="date_requested"
-                  value="<?= date('Y-m-d') ?>" required />
+                <input type="date" class="form-control" id="date_requested" name="date_requested" value="<?= date('Y-m-d') ?>" required />
               </div>
               <div>
                 <label for="request_types_id" class="form-label">Type of Request</label>
-                <select type="text" class="form-select select-init" id="request_types_id" name="request_types_id"
-                  required>
+                <select type="text" class="form-select select-init" id="request_types_id" name="request_types_id" required>
                   <option value="" selected disabled>choose...</option>
                 </select>
               </div>
@@ -157,10 +155,11 @@ require_once "../partials/aside.php";
                 <textarea class="form-control" id="complaint" name="complaint"></textarea>
               </div>
               <div>
-                <label for="date_preferred" class="form-label">Preferred date and time</label>
-                <input type="datetime-local" class="form-control" id="date_preferred" name="date_preferred" required />
+                <label for="datetime_preferred" class="form-label">Preferred date and time</label>
+                <input type="datetime-local" class="form-control" id="datetime_preferred" name="datetime_preferred" required />
               </div>
               <div hidden>
+                <input name="requested_by" value="<?= $acc->id ?>" />
                 <input class="captcha-token" name="captcha-token" />
                 <input name="add_helpdesks" />
               </div>
@@ -179,8 +178,7 @@ require_once "../partials/aside.php";
             <form class="row g-3 form-validation">
               <div>
                 <label for="date_requested" class="form-label">Date of Request</label>
-                <input type="date" class="form-control" id="date_requested" name="date_requested"
-                  value="<?= date('Y-m-d') ?>" required />
+                <input type="date" class="form-control" id="date_requested" name="date_requested" value="<?= date('Y-m-d') ?>" required />
               </div>
               <div>
                 <label for="complaint" class="form-label">Topic or Title of meeting</label>

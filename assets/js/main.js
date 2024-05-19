@@ -144,10 +144,27 @@ $(function () {
    * Loading overlay
    */
 
-  new DataTable("#mock_data", {
-    ajax: "includes/datatables.php?MOCK_DATA",
+  var tbl_helpdesks = new DataTable("#tbl_helpdesks", {
+    ajax: "/isds/includes/datatables.php?tbl_helpdesks",
     processing: true,
-    serverSide: true
+    serverSide: true,
+    scrollX: true
+  });
+
+  $('#filter_open').on('click', function () {
+    tbl_helpdesks.column(6).search('Open').draw();
+  });
+
+  $('#filter_pending').on('click', function () {
+    tbl_helpdesks.column(6).search('Pending').draw();
+  });
+
+  $('#filter_completed').on('click', function () {
+    tbl_helpdesks.column(6).search('Complete').draw();
+  });
+
+  $('#filter_prerepair').on('click', function () {
+    tbl_helpdesks.column(6).search('Pre-repair').draw();
   });
 
   grecaptcha.ready(function () {
@@ -255,26 +272,29 @@ $(function () {
     });
   });
 
-  $('#request_type_id').on('change', function () {
+  $('#request_types_id').on('change', function () {
     $.ajax({
       url: "/isds/includes/fetch.php",
       type: "GET",
       data: {
-        select_data: 'category_id',
-        request_type_id: $(this).val()
+        select_data: 'categories_id',
+        request_types_id: $(this).val()
       },
       dataType: "json",
       success: function (response) {
         var len = response.length;
-        $('#category_id').empty();
-        $('#sub_category_id').empty();
-        $('#sub_category_id').append(
+        $('#categories_id').empty();
+        $('#sub_categories_id').empty();
+        $('#categories_id').append(
+          "<option value='' selected disabled>choose...</option>"
+        );
+        $('#sub_categories_id').append(
           "<option value='' selected disabled>choose...</option>"
         );
         for (var i = 0; i < len; i++) {
           var id = response[i]["id"];
           var name = response[i]["name"];
-          $('#category_id').append(
+          $('#categories_id').append(
             "<option value='" + id + "'>" + name + "</option>"
           );
         }
@@ -282,22 +302,25 @@ $(function () {
     });
   });
 
-  $('#category_id').on('change', function () {
+  $('#categories_id').on('change', function () {
     $.ajax({
       url: "/isds/includes/fetch.php",
       type: "GET",
       data: {
-        select_data: 'sub_category_id',
-        category_id: $(this).val()
+        select_data: 'sub_categories_id',
+        categories_id: $(this).val()
       },
       dataType: "json",
       success: function (response) {
         var len = response.length;
-        $('#sub_category_id').empty();
+        $('#sub_categories_id').empty();
+        $('#sub_categories_id').append(
+          "<option value='' selected disabled>choose...</option>"
+        );
         for (var i = 0; i < len; i++) {
           var id = response[i]["id"];
           var name = response[i]["name"];
-          $('#sub_category_id').append(
+          $('#sub_categories_id').append(
             "<option value='" + id + "'>" + name + "</option>"
           );
         }

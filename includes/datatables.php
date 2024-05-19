@@ -19,6 +19,45 @@ if (isset($_GET['MOCK_DATAs'])) {
     );
 }
 
+if (isset($_GET['tbl_helpdesks'])) {
+    $table = "(SELECT 
+        h.id, 
+        h.request_number, 
+        h.requested_by, 
+        h.date_requested, 
+        h.request_types_id, 
+        h.categories_id, 
+        h.sub_categories_id, 
+        h.complaint, 
+        h.datetime_preferred, 
+        h.h_statuses_id, 
+        rt.request_type, 
+        c.category, 
+        sc.sub_category, 
+        hs.status
+    FROM 
+        helpdesks h
+    LEFT JOIN 
+        request_types rt ON h.request_types_id = rt.id
+    LEFT JOIN 
+        categories c ON h.categories_id = c.id
+    LEFT JOIN 
+        sub_categories sc ON h.sub_categories_id = sc.id
+    LEFT JOIN 
+        h_statuses hs ON h.h_statuses_id = hs.id
+    ) AS tbl_helpdesks";
+
+    $columns = array(
+        array('db' => 'request_number', 'dt' => 0),
+        array('db' => 'date_requested', 'dt' => 1),
+        array('db' => 'request_type', 'dt' => 2),
+        array('db' => 'category', 'dt' => 3),
+        array('db' => 'sub_category', 'dt' => 4),
+        array('db' => 'complaint', 'dt' => 5),
+        array('db' => 'status', 'dt' => 6)
+    );
+}
+
 
 require 'ssp.class.php';
 
