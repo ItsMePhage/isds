@@ -151,20 +151,43 @@ $(function () {
     scrollX: true
   });
 
-  $('#filter_open').on('click', function () {
+  $('#h_open').on('click', function () {
     tbl_helpdesks.column(6).search('Open').draw();
   });
 
-  $('#filter_pending').on('click', function () {
+  $('#h_pending').on('click', function () {
     tbl_helpdesks.column(6).search('Pending').draw();
   });
 
-  $('#filter_completed').on('click', function () {
-    tbl_helpdesks.column(6).search('Complete').draw();
+  $('#h_completed').on('click', function () {
+    tbl_helpdesks.column(6).search('Completed').draw();
   });
 
-  $('#filter_prerepair').on('click', function () {
+  $('#h_prerepair').on('click', function () {
     tbl_helpdesks.column(6).search('Pre-repair').draw();
+  });
+
+  var tbl_meetings = new DataTable("#tbl_meetings", {
+    ajax: "/isds/includes/datatables.php?tbl_meetings",
+    processing: true,
+    serverSide: true,
+    scrollX: true
+  });
+
+  $('#m_pending').on('click', function () {
+    tbl_meetings.column(6).search('Pending').draw();
+  });
+
+  $('#m_scheduled').on('click', function () {
+    tbl_meetings.column(6).search('Scheduled').draw();
+  });
+
+  $('#m_unavailable').on('click', function () {
+    tbl_meetings.column(6).search('Unavailable').draw();
+  });
+
+  $('#m_cancelled').on('click', function () {
+    tbl_meetings.column(6).search('Cancelled').draw();
   });
 
   grecaptcha.ready(function () {

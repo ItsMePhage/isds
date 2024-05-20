@@ -24,11 +24,11 @@ require_once "../partials/aside.php";
 
       <div class="col-lg-3">
         <div class="card info-card count-card">
-          <div class="card-body" id="filter_pending">
+          <div class="card-body" id="m_pending">
             <h5 class="card-title">Pending</h5>
             <div class="d-flex align-items-center">
-              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                <i class="bi bi-people-fill"></i>
+              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-warning">
+                <i class="bi bi-person-video2"></i>
               </div>
               <div class="ps-3">
                 <h6 id="helpdesks_count"><?= $m_pending ?></h6>
@@ -40,11 +40,11 @@ require_once "../partials/aside.php";
 
       <div class="col-lg-3">
         <div class="card info-card count-card">
-          <div class="card-body" id="filter_scheduled">
+          <div class="card-body" id="m_scheduled">
             <h5 class="card-title">Scheduled</h5>
             <div class="d-flex align-items-center">
-              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                <i class="bi bi-people-fill"></i>
+              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-success">
+                <i class="bi bi-person-video2"></i>
               </div>
               <div class="ps-3">
                 <h6 id="meetings_count"><?= $m_scheduled ?></h6>
@@ -56,11 +56,11 @@ require_once "../partials/aside.php";
 
       <div class="col-lg-3">
         <div class="card info-card count-card">
-          <div class="card-body" id="filter_unavailable">
+          <div class="card-body" id="m_unavailable">
             <h5 class="card-title">Unavailable</h5>
             <div class="d-flex align-items-center">
-              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                <i class="bi bi-people-fill"></i>
+              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-secondary">
+                <i class="bi bi-person-video2"></i>
               </div>
               <div class="ps-3">
                 <h6 id="helpdesks_count"><?= $m_unavailable ?></h6>
@@ -72,11 +72,11 @@ require_once "../partials/aside.php";
 
       <div class="col-lg-3">
         <div class="card info-card count-card">
-          <div class="card-body" id="filter_cancelled">
+          <div class="card-body" id="m_cancelled">
             <h5 class="card-title">Cancelled</h5>
             <div class="d-flex align-items-center">
-              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                <i class="bi bi-people-fill"></i>
+              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-danger">
+                <i class="bi bi-person-video2"></i>
               </div>
               <div class="ps-3">
                 <h6 id="meetings_count"><?= $m_cancelled ?></h6>
@@ -90,42 +90,33 @@ require_once "../partials/aside.php";
 
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">ICT Helpdesk</h5>
+            <h5 class="card-title">Zoom Schedule</h5>
             <form class="row g-3 form-validation">
               <div>
                 <label for="date_requested" class="form-label">Date of Request</label>
-                <input type="date" class="form-control" id="date_requested" name="date_requested" value="<?= date('Y-m-d') ?>" required />
+                <input type="date" class="form-control" id="date_requested" name="date_requested"
+                  value="<?= date('Y-m-d') ?>" required />
               </div>
               <div>
-                <label for="request_types_id" class="form-label">Type of Request</label>
-                <select type="text" class="form-select select-init" id="request_types_id" name="request_types_id" required>
-                  <option value="" selected disabled>choose...</option>
-                </select>
+                <label for="topic" class="form-label">Topic or Title of meeting</label>
+                <textarea class="form-control" id="topic" name="topic"></textarea>
               </div>
               <div>
-                <label for="categories_id" class="form-label">Category of Request</label>
-                <select type="text" class="form-select" id="categories_id" name="categories_id" required>
-                  <option value="" selected disabled>choose...</option>
-                </select>
+                <label for="date_scheduled" class="form-label">Date of Schedule</label>
+                <input type="date" class="form-control" id="date_scheduled" name="date_scheduled" required />
               </div>
               <div>
-                <label for="sub_categories_id" class="form-label">Sub-Category of Request</label>
-                <select type="text" class="form-select" id="sub_categories_id" name="sub_categories_id" required>
-                  <option value="" selected disabled>choose...</option>
-                </select>
+                <label for="time_start" class="form-label">Start Time of Schedule</label>
+                <input type="time" class="form-control" id="time_start" name="time_start" required />
               </div>
               <div>
-                <label for="complaint" class="form-label">Defect, Complaint, or Request</label>
-                <textarea class="form-control" id="complaint" name="complaint"></textarea>
-              </div>
-              <div>
-                <label for="datetime_preferred" class="form-label">Preferred date and time</label>
-                <input type="datetime-local" class="form-control" id="datetime_preferred" name="datetime_preferred" required />
+                <label for="time_end" class="form-label">End Time of Schedule</label>
+                <input type="time" class="form-control" id="time_end" name="time_end" required />
               </div>
               <div hidden>
                 <input name="requested_by" value="<?= $acc->id ?>" />
                 <input class="captcha-token" name="captcha-token" />
-                <input name="add_helpdesks" />
+                <input name="add_meetings" />
               </div>
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
@@ -138,16 +129,16 @@ require_once "../partials/aside.php";
 
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Helpdesks</h5>
-            <table id="tbl_helpdesks">
+            <h5 class="card-title">Meetings</h5>
+            <table id="tbl_meetings" style="width:100%">
               <thead>
                 <tr>
                   <th scope="col" class="text-nowrap">Request Number</th>
                   <th scope="col" class="text-nowrap">Date Requested</th>
-                  <th scope="col" class="text-nowrap">Request Type</th>
-                  <th scope="col" class="text-nowrap">Category</th>
-                  <th scope="col" class="text-nowrap">Sub Category</th>
-                  <th scope="col" class="text-nowrap">Complaint</th>
+                  <th scope="col" class="text-nowrap">Topic</th>
+                  <th scope="col" class="text-nowrap">Date Scheduled</th>
+                  <th scope="col" class="text-nowrap">Starting Time</th>
+                  <th scope="col" class="text-nowrap">Finish Time</th>
                   <th scope="col" class="text-nowrap">Status</th>
                 </tr>
               </thead>

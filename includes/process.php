@@ -191,7 +191,7 @@ if ($g_response == 1) {
         $categories_id = $_POST['categories_id'];
         $sub_categories_id = $_POST['sub_categories_id'];
         $complaint = $_POST['complaint'];
-        $datetime_preferred = $_POST['datetime_preferred'];
+        $datetime_preferred = !empty($_POST['datetime_preferred']) ? $_POST['datetime_preferred'] : date('Y-m-d H:i:s');
 
         $query = "INSERT INTO helpdesks(`requested_by`,`date_requested`,`request_types_id`,`categories_id`,`sub_categories_id`,`complaint`,`datetime_preferred`) VALUE (?,?,?,?,?,?,?)";
         $result = $conn->execute_query($query, [$requested_by, $date_requested, $request_types_id, $categories_id, $sub_categories_id, $complaint, $datetime_preferred]);
@@ -206,12 +206,13 @@ if ($g_response == 1) {
     if (isset($_POST['add_meetings'])) {
         $requested_by = $_POST['requested_by'];
         $date_requested = $_POST['date_requested'];
+        $topic = $_POST['topic'];
         $date_scheduled = $_POST['date_scheduled'];
         $time_start = $_POST['time_start'];
         $time_end = $_POST['time_end'];
 
-        $query = "INSERT INTO meetings(`requested_by`,`date_requested`,`date_scheduled`,`time_start`,`time_end`) VALUE (?,?,?,?,?)";
-        $result = $conn->execute_query($query, [$requested_by, $date_requested, $date_scheduled, $time_start, $time_end]);
+        $query = "INSERT INTO meetings(`requested_by`,`topic`,`date_requested`,`date_scheduled`,`time_start`,`time_end`) VALUE (?,?,?,?,?,?)";
+        $result = $conn->execute_query($query, [$requested_by, $topic, $date_requested, $date_scheduled, $time_start, $time_end]);
 
         $response = [
             'status' => 'success',

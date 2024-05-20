@@ -53,108 +53,103 @@ require_once "../partials/aside.php";
 
                 <!-- Profile Edit Form -->
                 <form>
+
                   <div class="row mb-3">
-                    <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Profile Image</label>
+                    <label for="id_number" class="col-md-4 col-lg-3 col-form-label">ID Number</label>
                     <div class="col-md-8 col-lg-9">
-                      <img src="assets/img/profile-img.jpg" alt="Profile">
-                      <div class="pt-2">
-                        <a href="#" class="btn btn-primary btn-sm" title="Upload new profile image"><i
-                            class="bi bi-upload"></i></a>
-                        <a href="#" class="btn btn-danger btn-sm" title="Remove my profile image"><i
-                            class="bi bi-trash"></i></a>
-                      </div>
+                      <input name="id_number" type="text" class="form-control" id="id_number"
+                        value="<?= $acc->id_number ?>">
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Full Name</label>
+                    <label for="first_name" class="col-md-4 col-lg-3 col-form-label">First Name</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="fullName" type="text" class="form-control" id="fullName" value="Kevin Anderson">
+                      <input name="first_name" type="text" class="form-control" id="first_name"
+                        value="<?= $acc->first_name ?>">
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="about" class="col-md-4 col-lg-3 col-form-label">About</label>
+                    <label for="middle_name" class="col-md-4 col-lg-3 col-form-label">Middle Name</label>
                     <div class="col-md-8 col-lg-9">
-                      <textarea name="about" class="form-control" id="about"
-                        style="height: 100px">Sunt est soluta temporibus accusantium neque nam maiores cumque temporibus. Tempora libero non est unde veniam est qui dolor. Ut sunt iure rerum quae quisquam autem eveniet perspiciatis odit. Fuga sequi sed ea saepe at unde.</textarea>
+                      <input name="middle_name" type="text" class="form-control" id="middle_name"
+                        value="<?= $acc->middle_name ?>">
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="company" class="col-md-4 col-lg-3 col-form-label">Company</label>
+                    <label for="last_name" class="col-md-4 col-lg-3 col-form-label">Last Name</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="company" type="text" class="form-control" id="company"
-                        value="Lueilwitz, Wisoky and Leuschke">
+                      <input name="last_name" type="text" class="form-control" id="last_name"
+                        value="<?= $acc->last_name ?>">
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="Job" class="col-md-4 col-lg-3 col-form-label">Job</label>
+                    <label for="date_birth" class="col-md-4 col-lg-3 col-form-label">Date of Birth</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="job" type="text" class="form-control" id="Job" value="Web Designer">
+                      <input name="date_birth" type="date" class="form-control" id="date_birth"
+                        value="<?= $acc->date_birth ?>">
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="Country" class="col-md-4 col-lg-3 col-form-label">Country</label>
+                    <label for="is_pwd" class="col-md-4 col-lg-3 col-form-label"></label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="country" type="text" class="form-control" id="Country" value="USA">
+                      <input name="is_pwd" type="checkbox" class="form-check-input" id="is_pwd" <?= $acc->is_pwd ? 'checked' : '' ?>>
+                      <label class="form-check-label small" for="is_pwd">Person with disability</label>
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="Address" class="col-md-4 col-lg-3 col-form-label">Address</label>
+                    <label for="phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="address" type="text" class="form-control" id="Address"
-                        value="A108 Adam Street, New York, NY 535022">
+                      <input name="phone" type="text" class="form-control" id="phone" value="<?= $acc->phone ?>">
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Phone</label>
+                    <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="phone" type="text" class="form-control" id="Phone" value="(436) 486-3538 x29071">
+                      <input name="email" type="email" class="form-control" id="email" value="<?= $acc->email ?>">
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                    <label for="address" class="col-md-4 col-lg-3 col-form-label">Address</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="email" type="email" class="form-control" id="Email" value="k.anderson@example.com">
+                      <textarea name="address" type="text" class="form-control"
+                        id="address"><?= $acc->address ?></textarea>
                     </div>
                   </div>
 
                   <div class="row mb-3">
-                    <label for="Twitter" class="col-md-4 col-lg-3 col-form-label">Twitter Profile</label>
+                    <label for="designation" class="col-md-4 col-lg-3 col-form-label">designation</label>
                     <div class="col-md-8 col-lg-9">
-                      <input name="twitter" type="text" class="form-control" id="Twitter" value="https://twitter.com/#">
+                      <input name="designation" type="text" class="form-control" id="designation"
+                        value="<?= $acc->designation ?>">
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="sex" class="col-md-4 col-lg-3 col-form-label">sex</label>
+                    <div class="col-md-8 col-lg-9">
+                      <select class="form-select" id="sex" name="sex" required>
+                        <option value="" selected disabled>choose...</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                      </select>
+
+                      <script>
+                        $(document).ready(function () {
+                          var sexValue = '<?= $acc->sex ?>';
+                          $('#sex').val(sexValue);
+                        });
+                      </script>
                     </div>
                   </div>
 
-                  <div class="row mb-3">
-                    <label for="Facebook" class="col-md-4 col-lg-3 col-form-label">Facebook Profile</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="facebook" type="text" class="form-control" id="Facebook"
-                        value="https://facebook.com/#">
-                    </div>
-                  </div>
 
-                  <div class="row mb-3">
-                    <label for="Instagram" class="col-md-4 col-lg-3 col-form-label">Instagram Profile</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="instagram" type="text" class="form-control" id="Instagram"
-                        value="https://instagram.com/#">
-                    </div>
-                  </div>
-
-                  <div class="row mb-3">
-                    <label for="Linkedin" class="col-md-4 col-lg-3 col-form-label">Linkedin Profile</label>
-                    <div class="col-md-8 col-lg-9">
-                      <input name="linkedin" type="text" class="form-control" id="Linkedin"
-                        value="https://linkedin.com/#">
-                    </div>
-                  </div>
 
                   <div class="text-center">
                     <button type="submit" class="btn btn-primary">Save Changes</button>

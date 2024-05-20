@@ -24,10 +24,10 @@ require_once "../partials/aside.php";
 
       <div class="col-lg-3">
         <div class="card info-card count-card">
-          <div class="card-body" id="filter_open">
+          <div class="card-body" id="h_open">
             <h5 class="card-title">Open</h5>
             <div class="d-flex align-items-center">
-              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-primary">
                 <i class="bi bi-people-fill"></i>
               </div>
               <div class="ps-3">
@@ -40,10 +40,10 @@ require_once "../partials/aside.php";
 
       <div class="col-lg-3">
         <div class="card info-card count-card">
-          <div class="card-body" id="filter_pending">
+          <div class="card-body" id="h_pending">
             <h5 class="card-title">Pending</h5>
             <div class="d-flex align-items-center">
-              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-warning">
                 <i class="bi bi-people-fill"></i>
               </div>
               <div class="ps-3">
@@ -56,10 +56,10 @@ require_once "../partials/aside.php";
 
       <div class="col-lg-3">
         <div class="card info-card count-card">
-          <div class="card-body" id="filter_completed">
+          <div class="card-body" id="h_completed">
             <h5 class="card-title">Completed</h5>
             <div class="d-flex align-items-center">
-              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-success">
                 <i class="bi bi-people-fill"></i>
               </div>
               <div class="ps-3">
@@ -72,10 +72,10 @@ require_once "../partials/aside.php";
 
       <div class="col-lg-3">
         <div class="card info-card count-card">
-          <div class="card-body" id="filter_prerepair">
+          <div class="card-body" id="h_prerepair">
             <h5 class="card-title">Pre-repair</h5>
             <div class="d-flex align-items-center">
-              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-secondary">
                 <i class="bi bi-people-fill"></i>
               </div>
               <div class="ps-3">
@@ -120,7 +120,7 @@ require_once "../partials/aside.php";
               </div>
               <div>
                 <label for="datetime_preferred" class="form-label">Preferred date and time</label>
-                <input type="datetime-local" class="form-control" id="datetime_preferred" name="datetime_preferred" required />
+                <input type="datetime-local" class="form-control" id="datetime_preferred" name="datetime_preferred" />
               </div>
               <div hidden>
                 <input name="requested_by" value="<?= $acc->id ?>" />
@@ -139,7 +139,7 @@ require_once "../partials/aside.php";
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Helpdesks</h5>
-            <table id="tbl_helpdesks">
+            <table id="tbl_helpdesks" style="width:100%">
               <thead>
                 <tr>
                   <th scope="col" class="text-nowrap">Request Number</th>

@@ -181,8 +181,8 @@ require_once "../partials/aside.php";
                 <input type="date" class="form-control" id="date_requested" name="date_requested" value="<?= date('Y-m-d') ?>" required />
               </div>
               <div>
-                <label for="complaint" class="form-label">Topic or Title of meeting</label>
-                <textarea class="form-control" id="complaint" name="complaint"></textarea>
+                <label for="topic" class="form-label">Topic or Title of meeting</label>
+                <textarea class="form-control" id="topic" name="topic"></textarea>
               </div>
               <div>
                 <label for="date_scheduled" class="form-label">Date of Schedule</label>
