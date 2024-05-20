@@ -22,132 +22,136 @@ require_once "../partials/aside.php";
   <section class="section dashboard">
     <div class="row">
 
-      <?php
-      $acc_id = $acc->id;
-
-      $count_day_helpdesks = $conn->query("SELECT COUNT(*) as count_day FROM helpdesks WHERE DATE(date_requested) = CURDATE() AND requested_by = $acc_id")->fetch_object()->count_day;
-      $count_month_helpdesks = $conn->query("SELECT COUNT(*) as count_month FROM helpdesks WHERE YEAR(date_requested) = YEAR(CURDATE()) AND MONTH(date_requested) = MONTH(CURDATE()) AND requested_by = $acc_id")->fetch_object()->count_month;
-      $count_year_helpdesks = $conn->query("SELECT COUNT(*) as count_year FROM helpdesks WHERE YEAR(date_requested) = YEAR(CURDATE()) AND requested_by = $acc_id")->fetch_object()->count_year;
-
-      $count_day_meetings = $conn->query("SELECT COUNT(*) as count_day FROM meetings WHERE DATE(date_requested) = CURDATE() AND requested_by = $acc_id")->fetch_object()->count_day;
-      $count_month_meetings = $conn->query("SELECT COUNT(*) as count_month FROM meetings WHERE YEAR(date_requested) = YEAR(CURDATE()) AND MONTH(date_requested) = MONTH(CURDATE()) AND requested_by = $acc_id")->fetch_object()->count_month;
-      $count_year_meetings = $conn->query("SELECT COUNT(*) as count_year FROM meetings WHERE YEAR(date_requested) = YEAR(CURDATE()) AND requested_by = $acc_id")->fetch_object()->count_year;
-      ?>
-
-      <!-- Sales Card -->
-      <div class="col-lg-6">
-        <div class="card info-card sales-card">
-          <div class="filter">
-            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-              <li class="dropdown-header text-start">
-                <h6>Filter</h6>
-              </li>
-              <li><button class="dropdown-item" id="today-helpdesks">Today</button></li>
-              <li><button class="dropdown-item" id="month-helpdesks">This Month</button></li>
-              <li><button class="dropdown-item" id="year-helpdesks">This Year</button></li>
-            </ul>
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">Helpdesks</h5>
+      <div class="col-lg-3">
+        <div class="card info-card count-card">
+          <div class="card-body" id="filter_pending">
+            <h5 class="card-title">Pending</h5>
             <div class="d-flex align-items-center">
               <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                <i class="bi bi-cart"></i>
+                <i class="bi bi-people-fill"></i>
               </div>
               <div class="ps-3">
-                <h6 id="helpdesks_count"><?= $count_day_helpdesks ?></h6>
+                <h6 id="helpdesks_count"><?= $m_pending ?></h6>
               </div>
             </div>
           </div>
         </div>
-      </div><!-- End Sales Card -->
+      </div>
 
-      <!-- Revenue Card -->
-      <div class="col-lg-6">
-        <div class="card info-card revenue-card">
-          <div class="filter">
-            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-              <li class="dropdown-header text-start">
-                <h6>Filter</h6>
-              </li>
-              <li><button class="dropdown-item" id="today-meetings">Today</button></li>
-              <li><button class="dropdown-item" id="month-meetings">This Month</button></li>
-              <li><button class="dropdown-item" id="year-meetings">This Year</button></li>
-            </ul>
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">Revenue <span>| This Month</span></h5>
+      <div class="col-lg-3">
+        <div class="card info-card count-card">
+          <div class="card-body" id="filter_scheduled">
+            <h5 class="card-title">Scheduled</h5>
             <div class="d-flex align-items-center">
               <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                <i class="bi bi-currency-dollar"></i>
+                <i class="bi bi-people-fill"></i>
               </div>
               <div class="ps-3">
-                <h6 id="meetings_count"><?= $count_day_meetings ?></h6>
+                <h6 id="meetings_count"><?= $m_scheduled ?></h6>
               </div>
             </div>
           </div>
         </div>
-      </div><!-- End Revenue Card -->
+      </div>
 
-      <script>
-        document.addEventListener("DOMContentLoaded", function () {
-          const counts = {
-            helpdesks: {
-              today: <?= $count_day_helpdesks ?>,
-              month: <?= $count_month_helpdesks ?>,
-              year: <?= $count_year_helpdesks ?>
-            },
-            meetings: {
-              today: <?= $count_day_meetings ?>,
-              month: <?= $count_month_meetings ?>,
-              year: <?= $count_year_meetings ?>
-            }
-          };
+      <div class="col-lg-3">
+        <div class="card info-card count-card">
+          <div class="card-body" id="filter_unavailable">
+            <h5 class="card-title">Unavailable</h5>
+            <div class="d-flex align-items-center">
+              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                <i class="bi bi-people-fill"></i>
+              </div>
+              <div class="ps-3">
+                <h6 id="helpdesks_count"><?= $m_unavailable ?></h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-          document.getElementById('today-helpdesks').addEventListener('click', function () {
-            document.getElementById('helpdesks_count').innerText = counts.helpdesks.today;
-          });
+      <div class="col-lg-3">
+        <div class="card info-card count-card">
+          <div class="card-body" id="filter_cancelled">
+            <h5 class="card-title">Cancelled</h5>
+            <div class="d-flex align-items-center">
+              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                <i class="bi bi-people-fill"></i>
+              </div>
+              <div class="ps-3">
+                <h6 id="meetings_count"><?= $m_cancelled ?></h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-          document.getElementById('month-helpdesks').addEventListener('click', function () {
-            document.getElementById('helpdesks_count').innerText = counts.helpdesks.month;
-          });
-
-          document.getElementById('year-helpdesks').addEventListener('click', function () {
-            document.getElementById('helpdesks_count').innerText = counts.helpdesks.year;
-          });
-
-          document.getElementById('today-meetings').addEventListener('click', function () {
-            document.getElementById('meetings_count').innerText = counts.meetings.today;
-          });
-
-          document.getElementById('month-meetings').addEventListener('click', function () {
-            document.getElementById('meetings_count').innerText = counts.meetings.month;
-          });
-
-          document.getElementById('year-meetings').addEventListener('click', function () {
-            document.getElementById('meetings_count').innerText = counts.meetings.year;
-          });
-        });
-      </script>
-
-      <div class="col-lg-6">
+      <div class="col-lg-4">
 
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Example Card</h5>
-            <p>This is an examle page with no contrnt. You can use it as a starter for your custom pages.</p>
+            <h5 class="card-title">ICT Helpdesk</h5>
+            <form class="row g-3 form-validation">
+              <div>
+                <label for="date_requested" class="form-label">Date of Request</label>
+                <input type="date" class="form-control" id="date_requested" name="date_requested" value="<?= date('Y-m-d') ?>" required />
+              </div>
+              <div>
+                <label for="request_types_id" class="form-label">Type of Request</label>
+                <select type="text" class="form-select select-init" id="request_types_id" name="request_types_id" required>
+                  <option value="" selected disabled>choose...</option>
+                </select>
+              </div>
+              <div>
+                <label for="categories_id" class="form-label">Category of Request</label>
+                <select type="text" class="form-select" id="categories_id" name="categories_id" required>
+                  <option value="" selected disabled>choose...</option>
+                </select>
+              </div>
+              <div>
+                <label for="sub_categories_id" class="form-label">Sub-Category of Request</label>
+                <select type="text" class="form-select" id="sub_categories_id" name="sub_categories_id" required>
+                  <option value="" selected disabled>choose...</option>
+                </select>
+              </div>
+              <div>
+                <label for="complaint" class="form-label">Defect, Complaint, or Request</label>
+                <textarea class="form-control" id="complaint" name="complaint"></textarea>
+              </div>
+              <div>
+                <label for="datetime_preferred" class="form-label">Preferred date and time</label>
+                <input type="datetime-local" class="form-control" id="datetime_preferred" name="datetime_preferred" required />
+              </div>
+              <div hidden>
+                <input name="requested_by" value="<?= $acc->id ?>" />
+                <input class="captcha-token" name="captcha-token" />
+                <input name="add_helpdesks" />
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
           </div>
         </div>
 
       </div>
 
-      <div class="col-lg-6">
+      <div class="col-lg-8">
 
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Example Card</h5>
-            <p>This is an examle page with no contrnt. You can use it as a starter for your custom pages.</p>
+            <h5 class="card-title">Helpdesks</h5>
+            <table id="tbl_helpdesks">
+              <thead>
+                <tr>
+                  <th scope="col" class="text-nowrap">Request Number</th>
+                  <th scope="col" class="text-nowrap">Date Requested</th>
+                  <th scope="col" class="text-nowrap">Request Type</th>
+                  <th scope="col" class="text-nowrap">Category</th>
+                  <th scope="col" class="text-nowrap">Sub Category</th>
+                  <th scope="col" class="text-nowrap">Complaint</th>
+                  <th scope="col" class="text-nowrap">Status</th>
+                </tr>
+              </thead>
+            </table>
           </div>
         </div>
 

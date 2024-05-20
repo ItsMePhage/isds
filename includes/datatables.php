@@ -45,7 +45,42 @@ if (isset($_GET['tbl_helpdesks'])) {
         sub_categories sc ON h.sub_categories_id = sc.id
     LEFT JOIN 
         h_statuses hs ON h.h_statuses_id = hs.id
-    ) AS tbl_helpdesks";
+    WHERE requested_by = " . $_SESSION['id'] . ") AS tbl_helpdesks";
+
+    $columns = array(
+        array('db' => 'request_number', 'dt' => 0),
+        array('db' => 'date_requested', 'dt' => 1),
+        array('db' => 'request_type', 'dt' => 2),
+        array('db' => 'category', 'dt' => 3),
+        array('db' => 'sub_category', 'dt' => 4),
+        array('db' => 'complaint', 'dt' => 5),
+        array('db' => 'status', 'dt' => 6)
+    );
+}
+if (isset($_GET['tbl_meetings'])) {
+    $table = "(SELECT 
+        m.id, 
+        m.request_number, 
+        m.requested_by, 
+        m.date_requested, 
+        m.request_types_id, 
+        m.categories_id, 
+        m.sub_categories_id, 
+        m.complaint, 
+        m.datetime_preferred, 
+        m.h_statuses_id,
+        ms.status
+    FROM 
+        meetings m
+    LEFT JOIN 
+        request_types rt ON m.request_types_id = rt.id
+    LEFT JOIN 
+        categories c ON m.categories_id = c.id
+    LEFT JOIN 
+        sub_categories sc ON m.sub_categories_id = sc.id
+    LEFT JOIN 
+        h_statuses ms ON m.m_statuses_id = ms.id
+    WHERE requested_by = " . $_SESSION['id'] . ") AS tbl_meetings";
 
     $columns = array(
         array('db' => 'request_number', 'dt' => 0),

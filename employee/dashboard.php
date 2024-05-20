@@ -185,8 +185,8 @@ require_once "../partials/aside.php";
                 <textarea class="form-control" id="complaint" name="complaint"></textarea>
               </div>
               <div>
-                <label for="date_schedule" class="form-label">Date of Schedule</label>
-                <input type="date" class="form-control" id="date_schedule" name="date_schedule" required />
+                <label for="date_scheduled" class="form-label">Date of Schedule</label>
+                <input type="date" class="form-control" id="date_scheduled" name="date_scheduled" required />
               </div>
               <div>
                 <label for="time_start" class="form-label">Start Time of Schedule</label>
@@ -197,8 +197,9 @@ require_once "../partials/aside.php";
                 <input type="time" class="form-control" id="time_end" name="time_end" required />
               </div>
               <div hidden>
+                <input name="requested_by" value="<?= $acc->id ?>" />
                 <input class="captcha-token" name="captcha-token" />
-                <input name="add_meeting" />
+                <input name="add_meetings" />
               </div>
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>

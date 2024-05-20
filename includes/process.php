@@ -202,7 +202,22 @@ if ($g_response == 1) {
             'redirect' => '../employee/helpdesks.php'
         ];
     }
-    if (isset($_POST['edit_helpdesks'])) {
+
+    if (isset($_POST['add_meetings'])) {
+        $requested_by = $_POST['requested_by'];
+        $date_requested = $_POST['date_requested'];
+        $date_scheduled = $_POST['date_scheduled'];
+        $time_start = $_POST['time_start'];
+        $time_end = $_POST['time_end'];
+
+        $query = "INSERT INTO meetings(`requested_by`,`date_requested`,`date_scheduled`,`time_start`,`time_end`) VALUE (?,?,?,?,?)";
+        $result = $conn->execute_query($query, [$requested_by, $date_requested, $date_scheduled, $time_start, $time_end]);
+
+        $response = [
+            'status' => 'success',
+            'message' => 'Request submitted.',
+            'redirect' => '../employee/meetings.php'
+        ];
     }
 } else {
     $response = [

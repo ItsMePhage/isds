@@ -52,7 +52,12 @@ $count_day_meetings = $conn->query("SELECT COUNT(*) as count_day FROM meetings W
 $count_month_meetings = $conn->query("SELECT COUNT(*) as count_month FROM meetings WHERE YEAR(date_requested) = YEAR(CURDATE()) AND MONTH(date_requested) = MONTH(CURDATE()) AND requested_by = $acc->id")->fetch_object()->count_month;
 $count_year_meetings = $conn->query("SELECT COUNT(*) as count_year FROM meetings WHERE YEAR(date_requested) = YEAR(CURDATE()) AND requested_by = $acc->id")->fetch_object()->count_year;
 
-$count_open = $conn->query("SELECT COUNT(*) as count_open FROM helpdesks WHERE h_statuses_id = 1 AND requested_by = $acc->id")->fetch_object()->count_open;
-$count_pending = $conn->query("SELECT COUNT(*) as count_pending FROM helpdesks WHERE h_statuses_id = 3 AND requested_by = $acc->id")->fetch_object()->count_pending;
-$count_completed = $conn->query("SELECT COUNT(*) as count_completed FROM helpdesks WHERE h_statuses_id = 5 AND requested_by = $acc->id")->fetch_object()->count_completed;
-$count_prerepair = $conn->query("SELECT COUNT(*) as count_prerepair FROM helpdesks WHERE h_statuses_id = 4 AND requested_by = $acc->id")->fetch_object()->count_prerepair;
+$h_open = $conn->query("SELECT COUNT(*) as h_open FROM helpdesks WHERE h_statuses_id = 1 AND requested_by = $acc->id")->fetch_object()->h_open;
+$h_pending = $conn->query("SELECT COUNT(*) as h_pending FROM helpdesks WHERE h_statuses_id = 3 AND requested_by = $acc->id")->fetch_object()->h_pending;
+$h_completed = $conn->query("SELECT COUNT(*) as h_completed FROM helpdesks WHERE h_statuses_id = 5 AND requested_by = $acc->id")->fetch_object()->h_completed;
+$h_prerepair = $conn->query("SELECT COUNT(*) as h_prerepair FROM helpdesks WHERE h_statuses_id = 4 AND requested_by = $acc->id")->fetch_object()->h_prerepair;
+
+$m_pending = $conn->query("SELECT COUNT(*) as m_pending FROM meetings WHERE m_statuses_id = 1 AND requested_by = $acc->id")->fetch_object()->m_pending;
+$m_scheduled = $conn->query("SELECT COUNT(*) as m_scheduled FROM meetings WHERE m_statuses_id = 2 AND requested_by = $acc->id")->fetch_object()->m_scheduled;
+$m_unavailable = $conn->query("SELECT COUNT(*) as m_unavailable FROM meetings WHERE m_statuses_id = 3 AND requested_by = $acc->id")->fetch_object()->m_unavailable;
+$m_cancelled = $conn->query("SELECT COUNT(*) as m_cancelled FROM meetings WHERE m_statuses_id = 4 AND requested_by = $acc->id")->fetch_object()->m_cancelled;

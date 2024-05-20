@@ -1,5 +1,5 @@
 <?php
-$page = "Dashboard";
+$page = "ICT Helpdesks";
 $is_protected = true;
 require_once "session.php";
 require_once "../partials/head.php";
@@ -13,6 +13,7 @@ require_once "../partials/aside.php";
     <nav>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
+        <li class="breadcrumb-item">Forms</li>
         <li class="breadcrumb-item active"><?= $page ?></li>
       </ol>
     </nav>
@@ -30,7 +31,7 @@ require_once "../partials/aside.php";
                 <i class="bi bi-people-fill"></i>
               </div>
               <div class="ps-3">
-                <h6 id="helpdesks_count"><?= $count_open ?></h6>
+                <h6 id="helpdesks_count"><?= $h_open ?></h6>
               </div>
             </div>
           </div>
@@ -46,7 +47,7 @@ require_once "../partials/aside.php";
                 <i class="bi bi-people-fill"></i>
               </div>
               <div class="ps-3">
-                <h6 id="meetings_count"><?= $count_pending ?></h6>
+                <h6 id="meetings_count"><?= $h_pending ?></h6>
               </div>
             </div>
           </div>
@@ -62,7 +63,7 @@ require_once "../partials/aside.php";
                 <i class="bi bi-people-fill"></i>
               </div>
               <div class="ps-3">
-                <h6 id="helpdesks_count"><?= $count_completed ?></h6>
+                <h6 id="helpdesks_count"><?= $h_completed ?></h6>
               </div>
             </div>
           </div>
@@ -78,7 +79,7 @@ require_once "../partials/aside.php";
                 <i class="bi bi-people-fill"></i>
               </div>
               <div class="ps-3">
-                <h6 id="meetings_count"><?= $count_prerepair ?></h6>
+                <h6 id="meetings_count"><?= $h_prerepair ?></h6>
               </div>
             </div>
           </div>
