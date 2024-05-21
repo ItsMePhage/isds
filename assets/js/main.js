@@ -284,12 +284,22 @@ $(function () {
       dataType: "json",
       success: function (response) {
         var len = response.length;
-        for (var i = 0; i < len; i++) {
-          var id = response[i]["id"];
-          var name = response[i]["name"];
-          $("#" + select_data).append(
-            "<option value='" + id + "'>" + name + "</option>"
-          );
+        if (select_data_val.length > 0) {
+          for (var i = 0; i < len; i++) {
+            var id = response[i]["id"];
+            var name = response[i]["name"];
+            $("#" + select_data).append(
+              "<option value='" + id + "' " + (id == select_data_val[index] ? 'selected' : '') + ">" + name + "</option>"
+            );
+          }
+        } else {
+          for (var i = 0; i < len; i++) {
+            var id = response[i]["id"];
+            var name = response[i]["name"];
+            $("#" + select_data).append(
+              "<option value='" + id + "'>" + name + "</option>"
+            );
+          }
         }
       },
     });

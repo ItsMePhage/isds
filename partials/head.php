@@ -39,6 +39,7 @@
   <script src="https://www.google.com/recaptcha/api.js?render=<?= sitekey ?>"></script>
   <script>
     window.sitekey = "<?= sitekey ?>";
+    const select_data_val = [];
   </script>
 
 </head>

@@ -142,15 +142,16 @@ if ($g_response == 1) {
         $first_name = $_POST['first_name'];
         $middle_name = $_POST['middle_name'];
         $last_name = $_POST['last_name'];
-        $designation = $_POST['designation'];
-        $division_id = $_POST['division_id'];
-        $client_type_id = $_POST['client_type_id'];
         $date_birth = $_POST['date_birth'];
+        $sex = $_POST['sex'];
+        $is_pwd = isset($_POST['is_pwd']) ? 1 : 0;
         $phone = $_POST['phone'];
         $email = $_POST['email'];
-        $sex = $_POST['sex'];
         $address = $_POST['address'];
-        $pwd = isset($_POST['pwd']) ? 1 : 0;
+        $designation = $_POST['designation'];
+        $offices_id = $_POST['offices_id'];
+        $divisions_id = $_POST['divisions_id'];
+        $client_types_id = $_POST['client_types_id'];
 
         $query = "SELECT * 
         FROM users 
@@ -166,11 +167,9 @@ if ($g_response == 1) {
             $result = $conn->execute_query($query, [$email, $_SESSION['id']]);
 
             if (!$result->num_rows) {
-                $query = "UPDATE users
-                SET `id_number` = ?, `first_name` = ?, `middle_name` = ?, `last_name` = ?, `designation` = ?, `division_id` = ?, `client_type_id` = ?, `date_birth` = ?, `phone` = ?, `email` = ?, `sex` = ?, `address` = ?, `pwd` = ?
-                WHERE id = ?";
+                $query = "UPDATE `users` SET `id_number` = ?, `first_name` = ?, `middle_name` = ?, `last_name` = ?, `date_birth` = ?, `sex` = ?, `is_pwd` = ?, `phone` = ?, `email` = ?, `address` = ?, `designation` = ?, `offices_id` = ?, `divisions_id` = ?, `client_types_id` = ? WHERE `id` = ?";
 
-                $result = $conn->execute_query($query, [$id_number, $first_name, $middle_name, $last_name, $designation, $division_id, $client_type_id, $date_birth, $phone, $email, $sex, $address, $pwd, $_SESSION['id']]);
+                $result = $conn->execute_query($query, [$id_number, $first_name, $middle_name, $last_name, $date_birth, $sex, $is_pwd, $phone, $email, $address, $designation, $offices_id, $divisions_id, $client_types_id, $_SESSION['id']]);
                 $response['status'] = 'success';
                 $response['message'] = 'User updated successful!';
             } else {

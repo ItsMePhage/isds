@@ -153,7 +153,6 @@ require_once "../partials/aside.php";
                       </select>
 
                       <script>
-                        const select_data_val = [];
                         select_data_val[0] = <?= $acc->offices_id ?>;
                       </script>
                     </div>
