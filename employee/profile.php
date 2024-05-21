@@ -93,6 +93,20 @@ require_once "../partials/aside.php";
                         value="<?= $acc->date_birth ?>">
                     </div>
                   </div>
+                  <div class="row mb-3">
+                    <label for="sex" class="col-md-4 col-lg-3 col-form-label">Sex</label>
+                    <div class="col-md-8 col-lg-9">
+                      <select class="form-select" id="sex" name="sex" required>
+                        <option value="" selected disabled>choose...</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                      </select>
+
+                      <script>
+                        document.getElementById('sex').value = '<?= $acc->sex ?>';
+                      </script>
+                    </div>
+                  </div>
 
                   <div class="row mb-3">
                     <label for="is_pwd" class="col-md-4 col-lg-3 col-form-label"></label>
@@ -132,19 +146,39 @@ require_once "../partials/aside.php";
                     </div>
                   </div>
                   <div class="row mb-3">
-                    <label for="sex" class="col-md-4 col-lg-3 col-form-label">sex</label>
+                    <label for="offices_id" class="col-md-4 col-lg-3 col-form-label">Office</label>
                     <div class="col-md-8 col-lg-9">
-                      <select class="form-select" id="sex" name="sex" required>
+                      <select class="form-select select-init" id="offices_id" name="offices_id" required>
                         <option value="" selected disabled>choose...</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
                       </select>
 
                       <script>
-                        $(document).ready(function () {
-                          var sexValue = '<?= $acc->sex ?>';
-                          $('#sex').val(sexValue);
-                        });
+                        const select_data_val = [];
+                        select_data_val[0] = <?= $acc->offices_id ?>;
+                      </script>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="divisions_id" class="col-md-4 col-lg-3 col-form-label">Division</label>
+                    <div class="col-md-8 col-lg-9">
+                      <select class="form-select select-init" id="divisions_id" name="divisions_id" required>
+                        <option value="" selected disabled>choose...</option>
+                      </select>
+
+                      <script>
+                        select_data_val[1] = <?= $acc->divisions_id ?>;
+                      </script>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="client_types_id" class="col-md-4 col-lg-3 col-form-label">Client Type</label>
+                    <div class="col-md-8 col-lg-9">
+                      <select class="form-select select-init" id="client_types_id" name="client_types_id" required>
+                        <option value="" selected disabled>choose...</option>
+                      </select>
+
+                      <script>
+                        select_data_val[2] = <?= $acc->client_types_id ?>;
                       </script>
                     </div>
                   </div>

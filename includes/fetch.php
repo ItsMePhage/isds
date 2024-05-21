@@ -66,6 +66,18 @@ if (isset($_GET['select_data'])) {
     }
 }
 
+if (isset($_GET['meetings'])) {
+    $query = "SELECT * FROM meetings WHERE requested_by = " . $_SESSION['id'];
+    $result = $conn->execute_query($query);
+
+    while ($row = $result->fetch_object()) {
+        $row->title = $row->topic;
+        $row->start = $row->date_scheduled . "T" . $row->time_start;
+        $row->end = $row->date_scheduled . "T" . $row->time_end;
+        $response[] = $row;
+    }
+}
+
 $responseJSON = json_encode($response);
 
 echo $responseJSON;

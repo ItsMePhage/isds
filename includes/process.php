@@ -211,19 +211,46 @@ if ($g_response == 1) {
         $time_start = $_POST['time_start'];
         $time_end = $_POST['time_end'];
 
-        $query = "INSERT INTO meetings(`requested_by`,`topic`,`date_requested`,`date_scheduled`,`time_start`,`time_end`) VALUE (?,?,?,?,?,?)";
-        $result = $conn->execute_query($query, [$requested_by, $topic, $date_requested, $date_scheduled, $time_start, $time_end]);
+        $query = 'SELECT *
+        FROM meetings
+        WHERE
+            date_scheduled = ?
+            AND (
+                (
+                    time_start < ?
+                    AND time_end > ?
+                )
+                OR (
+                    time_start < ?
+                    AND time_end > ?
+                )
+                OR (
+                    time_start >= ?
+                    AND time_end <= ?
+                )
+            )';
+        $result = $conn->execute_query($query, [$date_scheduled, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end]);
+        if ($result->num_rows == 0) {
+            $query = "INSERT INTO meetings(`requested_by`,`topic`,`date_requested`,`date_scheduled`,`time_start`,`time_end`) VALUE (?,?,?,?,?,?)";
+            $result = $conn->execute_query($query, [$requested_by, $topic, $date_requested, $date_scheduled, $time_start, $time_end]);
 
-        $response = [
-            'status' => 'success',
-            'message' => 'Request submitted.',
-            'redirect' => '../employee/meetings.php'
-        ];
+            $response = [
+                'status' => 'success',
+                'message' => 'Request submitted.',
+                'redirect' => '../employee/meetings.php'
+            ];
+        } else {
+            $response = [
+                'status' => 'warning',
+                'message' => 'Conflict meeting.'
+            ];
+        }
     }
 } else {
     $response = [
         'status' => 'warning',
-        'message' => 'robot verification failed.'
+        'message' => 'robot verification failed.',
+        'reload' => true
     ];
 }
 

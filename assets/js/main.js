@@ -406,5 +406,17 @@ $(function () {
       }
     }
   });
+
+  if ($('#calendar').length) {
+    var calendarEl = document.querySelector('#calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      events: '/isds/includes/fetch.php?meetings'
+    });
+
+    calendar.render();
+
+    var calendarjQ = $(calendarEl);
+  }
 });
 

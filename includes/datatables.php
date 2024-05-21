@@ -34,7 +34,8 @@ if (isset($_GET['tbl_helpdesks'])) {
         rt.request_type, 
         c.category, 
         sc.sub_category, 
-        hs.status
+        hs.status, 
+        hs.status_color
     FROM 
         helpdesks h
     LEFT JOIN 
@@ -54,7 +55,14 @@ if (isset($_GET['tbl_helpdesks'])) {
         array('db' => 'category', 'dt' => 3),
         array('db' => 'sub_category', 'dt' => 4),
         array('db' => 'complaint', 'dt' => 5),
-        array('db' => 'status', 'dt' => 6)
+        array('db' => 'status_color', 'dt' => null),
+        array(
+            'db' => 'status',
+            'dt' => 6,
+            'formatter' => function ($d, $row) {
+                return '<span class="text-' . $row['status_color'] . '">' . $d . '</span>';
+            }
+        )
     );
 }
 if (isset($_GET['tbl_meetings'])) {
@@ -68,7 +76,8 @@ if (isset($_GET['tbl_meetings'])) {
         m.time_start, 
         m.time_end, 
         m.m_statuses_id,
-        ms.status
+        ms.status,
+        ms.status_color
     FROM 
         meetings m
     LEFT JOIN 
@@ -82,7 +91,14 @@ if (isset($_GET['tbl_meetings'])) {
         array('db' => 'date_scheduled', 'dt' => 3),
         array('db' => 'time_start', 'dt' => 4),
         array('db' => 'time_end', 'dt' => 5),
-        array('db' => 'status', 'dt' => 6)
+        array('db' => 'status_color', 'dt' => null),
+        array(
+            'db' => 'status',
+            'dt' => 6,
+            'formatter' => function ($d, $row) {
+                return '<span class="text-' . $row['status_color'] . '">' . $d . '</span>';
+            }
+        )
     );
 }
 

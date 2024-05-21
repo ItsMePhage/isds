@@ -12,6 +12,9 @@
 <script src="\<?= root ?>\node_modules\datatables.net\js\dataTables.min.js"></script>
 <script src="\<?= root ?>\node_modules\tinymce\tinymce.min.js"></script>
 <script src="\<?= root ?>\node_modules\imask\dist\imask.min.js"></script>
+<script src="\<?= root ?>\node_modules\@fullcalendar\core\index.global.js"></script>
+<script src="\<?= root ?>\node_modules\@fullcalendar\daygrid\index.global.js"></script>
+<script src="\<?= root ?>\node_modules\@fullcalendar\interaction\index.global.js"></script>
 
 <!-- Template Main JS File -->
 <script src="\<?= root ?>\assets\js\main.js"></script>

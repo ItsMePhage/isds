@@ -1,8 +1,10 @@
+CREATE DATABASE  IF NOT EXISTS `dti6db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `dti6db`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: localhost    Database: dti6db
 -- ------------------------------------------------------
--- Server version	8.0.36
+-- Server version	8.0.37
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -100,6 +102,7 @@ DROP TABLE IF EXISTS `h_statuses`;
 CREATE TABLE `h_statuses` (
   `id` int NOT NULL AUTO_INCREMENT,
   `status` varchar(45) DEFAULT NULL,
+  `status_color` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -110,7 +113,7 @@ CREATE TABLE `h_statuses` (
 
 LOCK TABLES `h_statuses` WRITE;
 /*!40000 ALTER TABLE `h_statuses` DISABLE KEYS */;
-INSERT INTO `h_statuses` VALUES (1,'Open'),(2,'Cancelled'),(3,'Pending'),(4,'Pre-repair'),(5,'Completed'),(6,'Unserviceable');
+INSERT INTO `h_statuses` VALUES (1,'Open','primary'),(2,'Cancelled','danger'),(3,'Pending','warning'),(4,'Pre-repair','secondary'),(5,'Completed','success'),(6,'Unserviceable','secondary');
 /*!40000 ALTER TABLE `h_statuses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,7 +175,7 @@ CREATE TABLE `helpdesks` (
   CONSTRAINT `fk_helpdesks_users1` FOREIGN KEY (`requested_by`) REFERENCES `users` (`id`),
   CONSTRAINT `fk_helpdesks_users2` FOREIGN KEY (`serviced_by`) REFERENCES `users` (`id`),
   CONSTRAINT `fk_helpdesks_users3` FOREIGN KEY (`approved_by`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -181,9 +184,45 @@ CREATE TABLE `helpdesks` (
 
 LOCK TABLES `helpdesks` WRITE;
 /*!40000 ALTER TABLE `helpdesks` DISABLE KEYS */;
-INSERT INTO `helpdesks` VALUES (1,'REQ-2024-05-001',1,'2024-05-19',1,1,1,'asdasd','2024-05-19 20:43:00',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-19 12:43:35',NULL),(2,'REQ-2024-05-002',1,'2024-05-19',1,1,3,'asdasd','2024-05-19 21:20:00',5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-19 13:21:01',NULL),(3,'REQ-2024-05-003',1,'2024-05-19',2,5,20,'asdasd','2024-05-19 11:28:00',5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-19 15:28:37',NULL),(4,'REQ-2024-05-004',1,'2024-05-19',1,2,6,'asdasd','2024-05-19 23:28:00',3,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-19 15:28:48',NULL),(5,'REQ-2024-05-005',2,'2024-05-20',1,1,1,'asdasd','2024-05-20 12:59:00',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-20 04:59:59',NULL);
+INSERT INTO `helpdesks` VALUES (1,'REQ-2024-05-001',1,'2024-05-20',1,1,1,'asdasda',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-20 05:30:02',NULL),(3,'REQ-2024-05-002',1,'2024-05-21',1,1,1,'sadasd','2024-05-21 14:20:00',3,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-21 06:20:07',NULL),(4,'REQ-2024-05-003',1,'2024-05-21',1,1,2,'asdasd','2024-05-21 08:24:13',5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-21 06:24:13',NULL),(5,'REQ-2024-05-004',1,'2024-04-21',1,1,1,'asdasd','2024-05-21 15:04:00',2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-21 07:04:49',NULL),(9,'REQ-2024-05-005',1,'2024-05-21',2,4,14,'asdasda','2024-05-21 09:26:55',3,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-21 07:26:55',NULL),(10,'REQ-2024-04-001',1,'2024-04-21',1,2,7,'asdasd','2024-05-21 09:27:10',4,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-21 07:27:10',NULL),(11,'REQ-2024-03-001',1,'2024-03-21',1,1,2,'asdasd','2024-05-21 09:27:35',2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-21 07:27:35',NULL);
 /*!40000 ALTER TABLE `helpdesks` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `helpdesks_BEFORE_INSERT` BEFORE INSERT ON `helpdesks` FOR EACH ROW BEGIN
+	DECLARE seq_num INT;
+    DECLARE current_year_month VARCHAR(7);
+    
+    -- Get the current year and month from date_requested
+    SET current_year_month = DATE_FORMAT(NEW.date_requested, '%Y-%m');
+    
+    -- Get the current max sequence number for the month
+SELECT 
+    IFNULL(MAX(CAST(SUBSTRING_INDEX(request_number, '-', - 1)
+                AS UNSIGNED)),
+            0) + 1
+INTO seq_num FROM
+    helpdesks
+WHERE
+    DATE_FORMAT(created_at, '%Y-%m') = current_year_month;
+    
+    -- Set the request number in the format REQ-YYYY-MM-NUM
+    SET NEW.request_number = CONCAT(
+        'REQ-', current_year_month, '-', LPAD(seq_num, 3, '0')
+    );
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `hosts`
@@ -218,6 +257,7 @@ DROP TABLE IF EXISTS `m_statuses`;
 CREATE TABLE `m_statuses` (
   `id` int NOT NULL AUTO_INCREMENT,
   `status` varchar(45) DEFAULT NULL,
+  `status_color` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -228,7 +268,7 @@ CREATE TABLE `m_statuses` (
 
 LOCK TABLES `m_statuses` WRITE;
 /*!40000 ALTER TABLE `m_statuses` DISABLE KEYS */;
-INSERT INTO `m_statuses` VALUES (1,'Pending'),(2,'Unavailable'),(3,'Scheduled'),(4,'Cancelled');
+INSERT INTO `m_statuses` VALUES (1,'Pending','warning'),(2,'Unavailable','secondary'),(3,'Scheduled','success'),(4,'Cancelled','danger');
 /*!40000 ALTER TABLE `m_statuses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -290,7 +330,7 @@ CREATE TABLE `meetings` (
   CONSTRAINT `fk_meetings_users1` FOREIGN KEY (`requested_by`) REFERENCES `users` (`id`),
   CONSTRAINT `fk_meetings_users2` FOREIGN KEY (`generated_by`) REFERENCES `users` (`id`),
   CONSTRAINT `fk_meetings_users3` FOREIGN KEY (`approved_by`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -299,9 +339,42 @@ CREATE TABLE `meetings` (
 
 LOCK TABLES `meetings` WRITE;
 /*!40000 ALTER TABLE `meetings` DISABLE KEYS */;
-INSERT INTO `meetings` VALUES (1,'MTG-2024-05-001',1,'2024-05-20',NULL,'2024-05-20','11:59:00','12:59:00',NULL,1,NULL,NULL,NULL,'2024-05-20 03:59:53','2024-05-20 03:59:53'),(2,'MTG-2024-05-002',2,'2024-05-20',NULL,'2024-05-20','12:02:00','13:02:00',NULL,1,NULL,NULL,NULL,'2024-05-20 04:02:24','2024-05-20 04:02:24');
+INSERT INTO `meetings` VALUES (1,'MTG-2024-05-001',1,'2024-05-20',NULL,'2024-05-20','11:59:00','12:59:00',NULL,1,NULL,NULL,NULL,'2024-05-20 03:59:53','2024-05-20 03:59:53'),(2,'MTG-2024-05-002',2,'2024-05-20',NULL,'2024-05-20','12:02:00','13:02:00',NULL,1,NULL,NULL,NULL,'2024-05-20 04:02:24','2024-05-20 04:02:24'),(3,'MTG-2024-05-003',1,'2024-05-20',NULL,'2024-05-21','13:53:00','14:53:00',NULL,1,NULL,NULL,NULL,'2024-05-20 05:54:00','2024-05-20 05:54:00'),(4,'MTG-2024-05-004',1,'2024-05-20',NULL,'2024-05-20','17:59:00','18:59:00',NULL,1,NULL,NULL,NULL,'2024-05-20 05:55:33','2024-05-20 05:55:33'),(5,'MTG-2024-05-005',1,'2024-05-20','asdasd','2024-05-20','13:56:00','14:56:00',NULL,1,NULL,NULL,NULL,'2024-05-20 05:56:40','2024-05-20 05:56:40');
 /*!40000 ALTER TABLE `meetings` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER `meetings_BEFORE_INSERT` BEFORE INSERT ON `meetings` FOR EACH ROW BEGIN
+DECLARE seq_num INT;
+
+    -- Get the current year and month
+    SET @current_year_month = DATE_FORMAT(NOW(), '%Y-%m');
+
+    -- Get the current max sequence number for the month
+SELECT 
+    IFNULL(MAX(CAST(SUBSTRING_INDEX(request_number, '-', - 1)
+                AS UNSIGNED)),
+            0) + 1
+INTO seq_num FROM
+    meetings
+WHERE
+    DATE_FORMAT(created_at, '%Y-%m') = @current_year_month;
+
+    -- Set the request number in the format REQ-YYYY-MM-NUM
+    SET NEW.request_number = CONCAT('MTG-', @current_year_month, '-', LPAD(seq_num, 3, '0'));
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `offices`
@@ -520,9 +593,17 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'COS6-004','Dan Alfrei','Celestial','Fuerte','2000-09-29','Male',1,'09818098637','dace.phage@gmail.com','Iloilo City','JO/COS',1,1,3,'user','$argon2i$v=19$m=65536,t=4,p=1$UWVxSWsyTkMuZ1dOdG0xdQ$K1XDCN1hqQqz3riRkonCXBi39TH5VT455w1lG+YC8jc',NULL,3,1,'2024-05-19 10:02:00','2024-05-19 10:02:00'),(2,'COS6-005','Kristopher Gerard','','Jovero','1993-06-17','Male',NULL,'','a@gmail.com','','',1,1,3,'user2','$argon2i$v=19$m=65536,t=4,p=1$MGFXVTBVYS9tRW9VR2FjNQ$mN8fn92ZQVBg8JA6mrujyS4rwp1iDtnOJPT+N8VO86o',NULL,3,1,'2024-05-20 03:00:39','2024-05-20 03:00:39');
+INSERT INTO `users` VALUES (1,'COS6-004','Dan Alfrei','Celestial','Fuerte','2000-09-29','Male',1,'09818098637','dace.phage@gmail.com','Iloilo City','JO/COS',1,5,2,'user','$argon2i$v=19$m=65536,t=4,p=1$UWVxSWsyTkMuZ1dOdG0xdQ$K1XDCN1hqQqz3riRkonCXBi39TH5VT455w1lG+YC8jc',NULL,3,1,'2024-05-19 10:02:00','2024-05-21 02:19:42'),(2,'COS6-005','Kristopher Gerard','','Jovero','1993-06-17','Male',NULL,'','a@gmail.com','','',1,1,3,'user2','$argon2i$v=19$m=65536,t=4,p=1$MGFXVTBVYS9tRW9VR2FjNQ$mN8fn92ZQVBg8JA6mrujyS4rwp1iDtnOJPT+N8VO86o',NULL,3,1,'2024-05-20 03:00:39','2024-05-20 03:00:39');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'dti6db'
+--
+
+--
+-- Dumping routines for database 'dti6db'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -533,4 +614,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-20 13:08:01
+-- Dump completed on 2024-05-21 16:33:39

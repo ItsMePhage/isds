@@ -125,11 +125,11 @@ require_once "../partials/aside.php";
 
       </div>
 
-      <div class="col-lg-8">
+      <div class="col-lg-8" id="tbl_meetings_card">
 
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Meetings</h5>
+            <h5 class="card-title">Meetings <button class="btn btn-link float-end" onclick="tbl_meetings_card.style.display = 'none';cal_meetings_card.style.visibility = 'visible'">calendar view</button></h5>
             <table id="tbl_meetings" style="width:100%">
               <thead>
                 <tr>
@@ -143,6 +143,16 @@ require_once "../partials/aside.php";
                 </tr>
               </thead>
             </table>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-lg-8" id="cal_meetings_card" style="visibility: hidden">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Meetings <button class="btn btn-link float-end" onclick="tbl_meetings_card.style.display = '';cal_meetings_card.style.visibility = 'hidden'">table view</button></h5>
+            <div id='calendar'></div>
           </div>
         </div>
 
