@@ -1,5 +1,5 @@
 <?php
-$page = "Dashboard";
+$page = "Login";
 require_once "includes/conn.php";
 require_once "partials/head.php";
 ?>
@@ -12,10 +12,15 @@ require_once "partials/head.php";
                     <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
                         <div class="d-flex justify-content-center py-4">
-                            <a href="dashboard.php" class="logo d-flex align-items-center w-auto">
-                                <img src="assets/img/logo.png" alt="">
-                                <span class="d-block"><?= website ?></span>
-                            </a>
+                            <span class="logo d-flex align-items-center w-auto text-center">
+                                <br>
+                                <span>
+                                    <img src="assets/img/logo.png" class="fs-2" alt="">
+                                    <img src="assets/img/logo-bp.png" class="fs-2" alt="">
+                                    <br>
+                                    <?= website_name ?>
+                                </span>
+                            </span>
                         </div><!-- End Logo -->
 
                         <div class="card mb-3">
@@ -28,7 +33,7 @@ require_once "partials/head.php";
                                 </div>
                                 <form class="row g-3 form-validation">
                                     <div>
-                                        <label for="username" class="form-label">Username or Email address</label>
+                                        <label for="username" class="form-label">Username/Email</label>
                                         <input type="text" class="form-control" id="username" name="username"
                                             required />
                                     </div>
@@ -41,6 +46,7 @@ require_once "partials/head.php";
                                         <input type="checkbox" class="form-check-input" id="showPassword"
                                             onclick="password.type = password.type === 'password' ? 'text' : 'password'">
                                         <label class="form-check-label" for="showPassword">show password</label>
+                                        <a href="forgot-password.php" class="float-end btn-link">forgot password?</a>
                                     </div>
                                     <div hidden>
                                         <input class="captcha-token" name="captcha-token" />

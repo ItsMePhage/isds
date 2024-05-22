@@ -5,7 +5,7 @@
 
     <li class="nav-item">
       <a class="nav-link collapsed" href="dashboard.php">
-        <i class="bi bi-grid"></i>
+        <i class="bi bi-speedometer2"></i>
         <span>Dashboard</span>
       </a>
     </li>
@@ -14,14 +14,14 @@
 
     <li class="nav-item">
       <a class="nav-link collapsed" href="helpdesks.php">
-        <i class="bi bi-person"></i>
+        <i class="bi bi-people-fill"></i>
         <span>Helpdesks</span>
       </a>
     </li>
 
     <li class="nav-item">
       <a class="nav-link collapsed" href="meetings.php">
-        <i class="bi bi-question-circle"></i>
+        <i class="bi bi-person-video2"></i>
         <span>Meetings</span>
       </a>
     </li>

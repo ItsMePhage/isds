@@ -152,19 +152,19 @@ $(function () {
   });
 
   $('#h_open').on('click', function () {
-    tbl_helpdesks.column(6).search('Open').draw();
+    tbl_helpdesks.column(4).search('Open').draw();
   });
 
   $('#h_pending').on('click', function () {
-    tbl_helpdesks.column(6).search('Pending').draw();
+    tbl_helpdesks.column(4).search('Pending').draw();
   });
 
   $('#h_completed').on('click', function () {
-    tbl_helpdesks.column(6).search('Completed').draw();
+    tbl_helpdesks.column(4).search('Completed').draw();
   });
 
   $('#h_prerepair').on('click', function () {
-    tbl_helpdesks.column(6).search('Pre-repair').draw();
+    tbl_helpdesks.column(4).search('Pre-repair').draw();
   });
 
   var tbl_meetings = new DataTable("#tbl_meetings", {
@@ -175,23 +175,24 @@ $(function () {
   });
 
   $('#m_pending').on('click', function () {
-    tbl_meetings.column(6).search('Pending').draw();
+    tbl_meetings.column(4).search('Pending').draw();
   });
 
   $('#m_scheduled').on('click', function () {
-    tbl_meetings.column(6).search('Scheduled').draw();
+    tbl_meetings.column(4).search('Scheduled').draw();
   });
 
   $('#m_unavailable').on('click', function () {
-    tbl_meetings.column(6).search('Unavailable').draw();
+    tbl_meetings.column(4).search('Unavailable').draw();
   });
 
   $('#m_cancelled').on('click', function () {
-    tbl_meetings.column(6).search('Cancelled').draw();
+    tbl_meetings.column(4).search('Cancelled').draw();
   });
 
   grecaptcha.ready(function () {
     grecaptcha.execute(window.sitekey).then(function (token) {
+      window.captchaToken = token;
       $(".captcha-token").val(token);
     });
   });
@@ -417,6 +418,118 @@ $(function () {
     }
   });
 
+  window.delhelpdesksbtn = function (id) {
+    console.log('Helpdesk ID: ' + id);
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You are trying to delete this item.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Loading",
+          html: "Please wait...",
+          allowOutsideClick: false,
+          didOpen: function () {
+            Swal.showLoading();
+          }
+        });
+
+        $.ajax({
+          type: "POST",
+          url: "/isds/includes/process.php",
+          data: { 'del_helpdesks': true, 'helpdesk_id': id, 'captcha-token': captchaToken },
+          dataType: "json",
+          success: function (response) {
+            setTimeout(function () {
+              Swal.fire({
+                icon: response.status,
+                title: response.message,
+                showConfirmButton: false,
+                timer: 1000
+              }).then(function () {
+                if (response.redirect) {
+                  window.location.href = response.redirect;
+                }
+                if (response.reload) {
+                  window.reload();
+                }
+              });
+            }, 1000);
+
+            grecaptcha.ready(function () {
+              grecaptcha.execute(window.sitekey).then(function (token) {
+                $(".captcha-token").val(token);
+              });
+            });
+          }
+        });
+      }
+    });
+
+  }
+
+  window.delmeetingsbtn = function (id) {
+    console.log('meeting ID: ' + id);
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You are trying to delete this item.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Loading",
+          html: "Please wait...",
+          allowOutsideClick: false,
+          didOpen: function () {
+            Swal.showLoading();
+          }
+        });
+
+        $.ajax({
+          type: "POST",
+          url: "/isds/includes/process.php",
+          data: { 'del_meetings': true, 'meeting_id': id, 'captcha-token': captchaToken },
+          dataType: "json",
+          success: function (response) {
+            setTimeout(function () {
+              Swal.fire({
+                icon: response.status,
+                title: response.message,
+                showConfirmButton: false,
+                timer: 1000
+              }).then(function () {
+                if (response.redirect) {
+                  window.location.href = response.redirect;
+                }
+                if (response.reload) {
+                  window.reload();
+                }
+              });
+            }, 1000);
+
+            grecaptcha.ready(function () {
+              grecaptcha.execute(window.sitekey).then(function (token) {
+                $(".captcha-token").val(token);
+              });
+            });
+          }
+        });
+      }
+    });
+
+  }
+
   if ($('#calendar').length) {
     var calendarEl = document.querySelector('#calendar');
 
@@ -429,4 +542,5 @@ $(function () {
     var calendarjQ = $(calendarEl);
   }
 });
+
 

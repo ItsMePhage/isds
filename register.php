@@ -12,10 +12,15 @@ require_once "partials/head.php";
           <div class="col-lg-8 col-md-10 d-flex flex-column align-items-center justify-content-center">
 
             <div class="d-flex justify-content-center py-4">
-              <a href="dashboard.php" class="logo d-flex align-items-center w-auto">
-                <img src="assets/img/logo.png" alt="">
-                <span class="d-block"><?= website ?></span>
-              </a>
+              <span class="logo d-flex align-items-center w-auto text-center">
+                <br>
+                <span>
+                  <img src="assets/img/logo.png" class="fs-2" alt="">
+                  <img src="assets/img/logo-bp.png" class="fs-2" alt="">
+                  <br>
+                  <?= website_name ?>
+                </span>
+              </span>
             </div><!-- End Logo -->
 
             <div class="card mb-3">
@@ -109,7 +114,8 @@ require_once "partials/head.php";
                   </div>
                   <div class="col-lg-12">
                     <div class="mb-3 form-check">
-                      <input type="checkbox" class="form-check-input" id="showPassword" onclick="password.type = password.type === 'password' ? 'text' : 'password'">
+                      <input type="checkbox" class="form-check-input" id="showPassword"
+                        onclick="password.type = password.type === 'password' ? 'text' : 'password'">
                       <label class="form-check-label" for="showPassword">show password</label>
                     </div>
                   </div>

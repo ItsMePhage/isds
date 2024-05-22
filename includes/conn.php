@@ -6,6 +6,7 @@ define('username', 'root');
 define('password', 'Password@123!');
 define('dbname', 'dti6db');
 define('website', 'DTI6 ISDS');
+define('website_name', 'DTI6 ICT Service Desk System (ISDS)');
 
 // Encryption
 define('encryptionkey', 'dti2024mis');

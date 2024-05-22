@@ -26,15 +26,40 @@ if ($g_response == 1) {
             $row = $result->fetch_object();
 
             if (password_verify($password, $row->password)) {
+                if (password_verify($password, $row->password)) {
+
+                }
                 if ($row->is_active == 1) {
 
-                    $_SESSION['id'] = $row->id;
+                    if (!empty($row->password_exp)) {
+                        $current = new DateTime();
+                        $expiry = new DateTime($row->password_exp);
 
-                    $response = [
-                        'status' => 'success',
-                        'message' => 'Login successful.',
-                        'redirect' => $row->role . '/dashboard.php'
-                    ];
+                        if ($current > $expiry) {
+                            $response = [
+                                'status' => 'warning',
+                                'message' => 'Password has expired.'
+                            ];
+                        } else {
+                            $_SESSION['id'] = $row->id;
+
+                            $response = [
+                                'status' => 'success',
+                                'message' => 'Login successful.',
+                                'redirect' => $row->role . '/dashboard.php'
+                            ];
+                        }
+                    } else {
+                        $_SESSION['id'] = $row->id;
+
+                        $response = [
+                            'status' => 'success',
+                            'message' => 'Login successful.',
+                            'redirect' => $row->role . '/dashboard.php'
+                        ];
+                    }
+
+
                 } else {
                     $response = [
                         'status' => 'warning',
@@ -91,6 +116,62 @@ if ($g_response == 1) {
             $response = [
                 'status' => 'warning',
                 'message' => 'Username or Email already exist.'
+            ];
+        }
+    }
+
+    if (isset($_POST['forgot_password'])) {
+        $username = $_POST['username'];
+
+        $query = "SELECT * FROM `users` WHERE `username` = ? OR `email` = ?";
+        $result = $conn->execute_query($query, [$username, $username]);
+
+        if ($result->num_rows) {
+            $password = generatePassword();
+            $password_hashed = password_hash($password, PASSWORD_ARGON2I);
+            $password_exp = date("Y-m-d H:i:s", strtotime("+2 minutes"));
+
+            $query2 = "UPDATE `users` SET `password` = ?, `password_exp` = ? WHERE `email` = ?";
+            $result2 = $conn->execute_query($query2, [$password_hashed, $password_exp, $username]);
+
+            $query3 = $conn->execute_query($query, [$username, $username]);
+
+            while ($user = $query3->fetch_object()) {
+                $Subject = "DTI6 MIS | Temporary Password";
+
+                $Message = "";
+                $Message .= "<p><img src='https://upload.wikimedia.org/wikipedia/commons/1/14/DTI_Logo_2019.png' alt='' width='58' height='55'></p>";
+                $Message .= "<hr>";
+                $Message .= "<div>";
+                $Message .= "<div>Good day!,</div>";
+                $Message .= "<br>";
+                $Message .= "<div>You have requested a temporary password. Please use the temporary password below to login:</div>";
+                $Message .= "<br><br>";
+                $Message .= "<div>Username: " . $user->username . "</div>";
+                $Message .= "<div>Password: " . $password . "</div>";
+                $Message .= "<br><br>";
+                $Message .= "<div>For security reasons, we recommend that you change your password after your first login.</div>";
+                $Message .= "<div><a href='http://r6itbpm.site/DTI6-MIS/index.php'>Click here</a> to login. Thank you.</div>";
+                $Message .= "<br><br>";
+                $Message .= "<div>Best Regards,</div>";
+                $Message .= "<br>";
+                $Message .= "<div>DTI6 MIS Administrator</div>";
+                $Message .= "<div>IT Support Staff</div>";
+                $Message .= "<div>DTI Region VI</div>";
+                $Message .= "<br><hr>";
+                $Message .= "<div>&copy; Copyright&nbsp;<strong>DTI6 MIS&nbsp;</strong>2024. All Rights Reserved</div>";
+                $Message .= "</div>";
+
+                sendEmail($user->email, $Subject, $Message);
+            }
+
+            $response['status'] = 'success';
+            $response['message'] = 'Temporary password sent!';
+            $response['redirect'] = 'login.php';
+        } else {
+            $response = [
+                'status' => 'warning',
+                'message' => 'Email not found!'
             ];
         }
     }
@@ -202,6 +283,21 @@ if ($g_response == 1) {
         ];
     }
 
+    if (isset($_POST['del_helpdesks'])) {
+        $helpdesk_id = $_POST['helpdesk_id'];
+
+        $conn->query("SET @audit_user_id = " . (int) $_SESSION['id']);
+
+        $query = "DELETE FROM helpdesks WHERE id = ?";
+        $result = $conn->execute_query($query, [$helpdesk_id]);
+
+        $response = [
+            'status' => 'success',
+            'message' => 'Request deleted.',
+            'redirect' => '../employee/helpdesks.php'
+        ];
+    }
+
     if (isset($_POST['add_meetings'])) {
         $requested_by = $_SESSION['id'];
         $date_requested = $_POST['date_requested'];
@@ -244,6 +340,21 @@ if ($g_response == 1) {
                 'message' => 'Conflict meeting.'
             ];
         }
+    }
+
+    if (isset($_POST['del_meetings'])) {
+        $meeting_id = $_POST['meeting_id'];
+
+        $conn->query("SET @audit_user_id = " . (int) $_SESSION['id']);
+
+        $query = "DELETE FROM meetings WHERE id = ?";
+        $result = $conn->execute_query($query, [$meeting_id]);
+
+        $response = [
+            'status' => 'success',
+            'message' => 'Request deleted.',
+            'redirect' => '../employee/meetings.php'
+        ];
     }
 } else {
     $response = [

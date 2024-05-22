@@ -49,18 +49,32 @@ if (isset($_GET['tbl_helpdesks'])) {
     WHERE requested_by = " . $_SESSION['id'] . ") AS tbl_helpdesks";
 
     $columns = array(
-        array('db' => 'request_number', 'dt' => 0),
-        array('db' => 'date_requested', 'dt' => 1),
-        array('db' => 'request_type', 'dt' => 2),
-        array('db' => 'category', 'dt' => 3),
-        array('db' => 'sub_category', 'dt' => 4),
-        array('db' => 'complaint', 'dt' => 5),
+        array(
+            'db' => 'date_requested',
+            'dt' => 0,
+            'formatter' => function ($d, $row) {
+                return date_format(date_create($d), 'd/m/Y');
+            }
+        ),
+        array('db' => 'request_number', 'dt' => 1),
+        array('db' => 'category', 'dt' => 2),
+        array('db' => 'sub_category', 'dt' => 3),
         array('db' => 'status_color', 'dt' => null),
         array(
             'db' => 'status',
-            'dt' => 6,
+            'dt' => 4,
             'formatter' => function ($d, $row) {
-                return '<span class="text-' . $row['status_color'] . '">' . $d . '</span>';
+                return '<center><span class="badge text-bg-' . $row['status_color'] . '">' . $d . '</span></center>';
+            }
+        ),
+        array(
+            'db' => 'id',
+            'dt' => 5,
+            'formatter' => function ($d, $row) {
+                $html = '<small class="text-nowrap small"><button type="button" class="btn btn-primary mx-1 my-0 small"><i class="bi bi-pencil-square small"></i></button>';
+                $html .= '<button type="button" class="btn btn-danger mx-1 my-0 small" onclick="delhelpdesksbtn(' . $row['id'] . ')"><i class="bi bi-trash3-fill small"></i></button></small>';
+
+                return $html;
             }
         )
     );
@@ -85,18 +99,48 @@ if (isset($_GET['tbl_meetings'])) {
     WHERE requested_by = " . $_SESSION['id'] . ") AS tbl_meetings";
 
     $columns = array(
-        array('db' => 'request_number', 'dt' => 0),
-        array('db' => 'date_requested', 'dt' => 1),
-        array('db' => 'topic', 'dt' => 2),
-        array('db' => 'date_scheduled', 'dt' => 3),
-        array('db' => 'time_start', 'dt' => 4),
-        array('db' => 'time_end', 'dt' => 5),
+        array(
+            'db' => 'date_requested',
+            'dt' => 0,
+            'formatter' => function ($d, $row) {
+                return date_format(date_create($d), 'd/m/Y');
+            }
+        ),
+        array('db' => 'request_number', 'dt' => 1),
+        array(
+            'db' => 'date_scheduled',
+            'dt' => 2,
+            'formatter' => function ($d, $row) {
+                return date_format(date_create($row['date_scheduled']), 'd/m/Y');
+            }
+        ),
+        array(
+            'db' => 'time_start',
+            'dt' => null
+        ),
+        array(
+            'db' => 'time_end',
+            'dt' => 3,
+            'formatter' => function ($d, $row) {
+                return date_format(date_create($row['time_start']), 'H:i a') . "-" . date_format(date_create($row['time_end']), 'H:i a');
+            }
+        ),
         array('db' => 'status_color', 'dt' => null),
         array(
             'db' => 'status',
-            'dt' => 6,
+            'dt' => 4,
             'formatter' => function ($d, $row) {
-                return '<span class="text-' . $row['status_color'] . '">' . $d . '</span>';
+                return '<span class="badge text-bg-' . $row['status_color'] . '">' . $d . '</span>';
+            }
+        ),
+        array(
+            'db' => 'id',
+            'dt' => 5,
+            'formatter' => function ($d, $row) {
+                $html = '<small class="text-nowrap small"><button type="button" class="btn btn-primary mx-1 my-0 small"><i class="bi bi-pencil-square small"></i></button>';
+                $html .= '<button type="button" class="btn btn-danger mx-1 my-0 small" onclick="delmeetingsbtn(' . $row['id'] . ')"><i class="bi bi-trash3-fill small"></i></button></small>';
+
+                return $html;
             }
         )
     );

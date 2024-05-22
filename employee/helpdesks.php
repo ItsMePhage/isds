@@ -94,11 +94,13 @@ require_once "../partials/aside.php";
             <form class="row g-3 form-validation">
               <div>
                 <label for="date_requested" class="form-label">Date of Request</label>
-                <input type="date" class="form-control" id="date_requested" name="date_requested" value="<?= date('Y-m-d') ?>" required />
+                <input type="date" class="form-control" id="date_requested" name="date_requested"
+                  value="<?= date('Y-m-d') ?>" required />
               </div>
               <div>
                 <label for="request_types_id" class="form-label">Type of Request</label>
-                <select type="text" class="form-select select-init" id="request_types_id" name="request_types_id" required>
+                <select type="text" class="form-select select-init" id="request_types_id" name="request_types_id"
+                  required>
                   <option value="" selected disabled>choose...</option>
                 </select>
               </div>
@@ -141,13 +143,12 @@ require_once "../partials/aside.php";
             <table id="tbl_helpdesks" style="width:100%">
               <thead>
                 <tr>
-                  <th scope="col" class="text-nowrap">Request Number</th>
                   <th scope="col" class="text-nowrap">Date Requested</th>
-                  <th scope="col" class="text-nowrap">Request Type</th>
+                  <th scope="col" class="text-nowrap">Request Number</th>
                   <th scope="col" class="text-nowrap">Category</th>
                   <th scope="col" class="text-nowrap">Sub Category</th>
-                  <th scope="col" class="text-nowrap">Complaint</th>
                   <th scope="col" class="text-nowrap">Status</th>
+                  <th scope="col" class="text-nowrap">Action</th>
                 </tr>
               </thead>
             </table>

@@ -132,13 +132,12 @@ require_once "../partials/aside.php";
             <table id="tbl_meetings" style="width:100%">
               <thead>
                 <tr>
-                  <th scope="col" class="text-nowrap">Request Number</th>
                   <th scope="col" class="text-nowrap">Date Requested</th>
-                  <th scope="col" class="text-nowrap">Topic</th>
-                  <th scope="col" class="text-nowrap">Date Scheduled</th>
-                  <th scope="col" class="text-nowrap">Starting Time</th>
-                  <th scope="col" class="text-nowrap">Finish Time</th>
+                  <th scope="col" class="text-nowrap">Request Number</th>
+                  <th scope="col" class="text-nowrap">Schedule</th>
+                  <th scope="col" class="text-nowrap">Time</th>
                   <th scope="col" class="text-nowrap">Status</th>
+                  <th scope="col" class="text-nowrap">Action</th>
                 </tr>
               </thead>
             </table>
