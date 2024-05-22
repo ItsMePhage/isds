@@ -184,7 +184,7 @@ if ($g_response == 1) {
 
     /* employees process */
     if (isset($_POST['add_helpdesks'])) {
-        $requested_by = $_POST['requested_by'];
+        $requested_by = $_SESSION['id'];
         $date_requested = $_POST['date_requested'];
         $request_types_id = $_POST['request_types_id'];
         $categories_id = $_POST['categories_id'];
@@ -203,7 +203,7 @@ if ($g_response == 1) {
     }
 
     if (isset($_POST['add_meetings'])) {
-        $requested_by = $_POST['requested_by'];
+        $requested_by = $_SESSION['id'];
         $date_requested = $_POST['date_requested'];
         $topic = $_POST['topic'];
         $date_scheduled = $_POST['date_scheduled'];

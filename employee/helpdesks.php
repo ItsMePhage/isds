@@ -123,7 +123,6 @@ require_once "../partials/aside.php";
                 <input type="datetime-local" class="form-control" id="datetime_preferred" name="datetime_preferred" />
               </div>
               <div hidden>
-                <input name="requested_by" value="<?= $acc->id ?>" />
                 <input class="captcha-token" name="captcha-token" />
                 <input name="add_helpdesks" />
               </div>

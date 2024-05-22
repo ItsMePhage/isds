@@ -159,7 +159,6 @@ require_once "../partials/aside.php";
                 <input type="datetime-local" class="form-control" id="datetime_preferred" name="datetime_preferred" required />
               </div>
               <div hidden>
-                <input name="requested_by" value="<?= $acc->id ?>" />
                 <input class="captcha-token" name="captcha-token" />
                 <input name="add_helpdesks" />
               </div>
@@ -197,7 +196,6 @@ require_once "../partials/aside.php";
                 <input type="time" class="form-control" id="time_end" name="time_end" required />
               </div>
               <div hidden>
-                <input name="requested_by" value="<?= $acc->id ?>" />
                 <input class="captcha-token" name="captcha-token" />
                 <input name="add_meetings" />
               </div>
