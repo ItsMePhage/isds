@@ -32,8 +32,8 @@ require_once "partials/head.php";
 
               <form class="row g-3 form-validation">
                 <div>
-                  <label for="username" class="form-label">Username/Email</label>
-                  <input type="text" class="form-control" id="username" name="username" required />
+                  <label for="username" class="form-label">Email Address</label>
+                  <input type="email" class="form-control" id="username" name="username" required />
                 </div>
                 <span>
                   <a href="login.php" class="float-end btn-link">Return to Login.</a>
@@ -43,7 +43,9 @@ require_once "partials/head.php";
                   <input name="forgot_password" />
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
-                <span class="text-center"><a href="register.php" class="btn-link">Need an account? Sign up!</a></span>
+                <p class="small mb-0">
+                  Need an account? <a href="register.php">Sign up</a>
+                </p>
               </form>
 
 

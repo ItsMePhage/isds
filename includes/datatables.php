@@ -71,7 +71,7 @@ if (isset($_GET['tbl_helpdesks'])) {
             'db' => 'id',
             'dt' => 5,
             'formatter' => function ($d, $row) {
-                $html = '<small class="text-nowrap small"><button type="button" class="btn btn-primary mx-1 my-0 small"><i class="bi bi-pencil-square small"></i></button>';
+                $html = '<small class="text-nowrap small"><button type="button" class="btn btn-primary mx-1 my-0 small" onclick="updhelpdesksbtn(' . $row['id'] . ')"><i class="bi bi-pencil-square small"></i></button>';
                 $html .= '<button type="button" class="btn btn-danger mx-1 my-0 small" onclick="delhelpdesksbtn(' . $row['id'] . ')"><i class="bi bi-trash3-fill small"></i></button></small>';
 
                 return $html;
@@ -137,7 +137,7 @@ if (isset($_GET['tbl_meetings'])) {
             'db' => 'id',
             'dt' => 5,
             'formatter' => function ($d, $row) {
-                $html = '<small class="text-nowrap small"><button type="button" class="btn btn-primary mx-1 my-0 small"><i class="bi bi-pencil-square small"></i></button>';
+                $html = '<small class="text-nowrap small"><button type="button" class="btn btn-primary mx-1 my-0 small" onclick="updmeetingsbtn(' . $row['id'] . ')"><i class="bi bi-pencil-square small"></i></button>';
                 $html .= '<button type="button" class="btn btn-danger mx-1 my-0 small" onclick="delmeetingsbtn(' . $row['id'] . ')"><i class="bi bi-trash3-fill small"></i></button></small>';
 
                 return $html;

@@ -161,6 +161,7 @@ require_once "../partials/aside.php";
 </main><!-- End #main -->
 
 <?php
+require_once "../partials/modal.php";
 require_once "../partials/footer.php";
 require_once "../partials/foot.php";
 ?>

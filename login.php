@@ -56,7 +56,7 @@ require_once "partials/head.php";
                                 </form>
                                 <br>
                                 <p class="small mb-0">
-                                    Don't have account? <a href="register.php">Create an account</a>
+                                    Don't have account? <a href="register.php">Sign up</a>
                                 </p>
 
                             </div>

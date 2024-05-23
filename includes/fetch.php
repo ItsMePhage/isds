@@ -45,6 +45,15 @@ if (isset($_GET['select_data'])) {
                 $response[] = $row;
             }
             break;
+        case 'upd_request_types_id':
+            $query = "SELECT * FROM request_types";
+            $result = $conn->execute_query($query);
+
+            while ($row = $result->fetch_object()) {
+                $row->name = $row->request_type;
+                $response[] = $row;
+            }
+            break;
         case 'categories_id':
             $query = "SELECT * FROM categories WHERE request_types_id = " . $_GET['request_types_id'];
             $result = $conn->execute_query($query);
@@ -54,7 +63,25 @@ if (isset($_GET['select_data'])) {
                 $response[] = $row;
             }
             break;
+        case 'upd_categories_id':
+            $query = "SELECT * FROM categories WHERE request_types_id = " . $_GET['request_types_id'];
+            $result = $conn->execute_query($query);
+
+            while ($row = $result->fetch_object()) {
+                $row->name = $row->category;
+                $response[] = $row;
+            }
+            break;
         case 'sub_categories_id':
+            $query = "SELECT * FROM sub_categories WHERE categories_id = " . $_GET['categories_id'];
+            $result = $conn->execute_query($query);
+
+            while ($row = $result->fetch_object()) {
+                $row->name = $row->sub_category;
+                $response[] = $row;
+            }
+            break;
+        case 'upd_sub_categories_id':
             $query = "SELECT * FROM sub_categories WHERE categories_id = " . $_GET['categories_id'];
             $result = $conn->execute_query($query);
 
@@ -76,6 +103,42 @@ if (isset($_GET['meetings'])) {
         $row->end = $row->date_scheduled . "T" . $row->time_end;
         $response[] = $row;
     }
+}
+
+if (isset($_GET["upd_helpdesks"])) {
+
+    $helpdesks_id = $_GET['helpdesks_id'];
+    $query = "SELECT * FROM helpdesks WHERE id = ?";
+    $result = $conn->execute_query($query, [$helpdesks_id]);
+
+    $response = $result->fetch_object();
+
+
+}
+
+if (isset($_GET["upd_meetings"])) {
+
+    $meetings_id = $_GET['meetings_id'];
+    $query = "SELECT * FROM meetings WHERE id = ?";
+    $result = $conn->execute_query($query, [$meetings_id]);
+
+    $response = $result->fetch_object();
+
+
+}
+
+if (isset($_GET["chart_category"])) {
+    $response = [
+        'series' => [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380],
+        'labels' => ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan', 'United States', 'China', 'Germany']
+    ];
+}
+
+if (isset($_GET["chart_division"])) {
+    $response = [
+        'series' => [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380],
+        'labels' => ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan', 'United States', 'China', 'Germany']
+    ];
 }
 
 $responseJSON = json_encode($response);

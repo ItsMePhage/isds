@@ -41,6 +41,7 @@ if ($g_response == 1) {
                                 'message' => 'Password has expired.'
                             ];
                         } else {
+                            $conn->query('UPDATE `users` SET `password_exp` = NULL WHERE `id` = ' . $row->id);
                             $_SESSION['id'] = $row->id;
 
                             $response = [
@@ -283,13 +284,32 @@ if ($g_response == 1) {
         ];
     }
 
+    if (isset($_POST['upd_helpdesks'])) {
+        $upd_helpdesks_id = $_POST['upd_helpdesks_id'];
+        $date_requested = $_POST['date_requested'];
+        $request_types_id = $_POST['request_types_id'];
+        $categories_id = $_POST['categories_id'];
+        $sub_categories_id = $_POST['sub_categories_id'];
+        $complaint = $_POST['complaint'];
+        $datetime_preferred = !empty($_POST['datetime_preferred']) ? $_POST['datetime_preferred'] : date('Y-m-d H:i:s');
+
+        $query = "UPDATE `helpdesks` SET `date_requested` = ?, `request_types_id` = ?, `categories_id` = ?, `sub_categories_id` = ?, `complaint` = ?, `datetime_preferred` = ? WHERE `id` = ?";
+        $result = $conn->execute_query($query, [$date_requested, $request_types_id, $categories_id, $sub_categories_id, $complaint, $datetime_preferred, $upd_helpdesks_id]);
+
+        $response = [
+            'status' => 'success',
+            'message' => 'Request updated.',
+            'redirect' => '../employee/helpdesks.php'
+        ];
+    }
+
     if (isset($_POST['del_helpdesks'])) {
-        $helpdesk_id = $_POST['helpdesk_id'];
+        $helpdesks_id = $_POST['helpdesks_id'];
 
         $conn->query("SET @audit_user_id = " . (int) $_SESSION['id']);
 
         $query = "DELETE FROM helpdesks WHERE id = ?";
-        $result = $conn->execute_query($query, [$helpdesk_id]);
+        $result = $conn->execute_query($query, [$helpdesks_id]);
 
         $response = [
             'status' => 'success',
@@ -342,13 +362,31 @@ if ($g_response == 1) {
         }
     }
 
+    if (isset($_POST['upd_meetings'])) {
+        $upd_meetings_id = $_POST['upd_meetings_id'];
+        $date_requested = $_POST['date_requested'];
+        $topic = $_POST['topic'];
+        $date_scheduled = $_POST['date_scheduled'];
+        $time_start = $_POST['time_start'];
+        $time_end = $_POST['time_end'];
+
+        $query = "UPDATE meetings SET date_requested = ?, topic = ?, date_scheduled = ?, time_start = ?, time_end = ? FROM meetings WHERE id = ?";
+        $result = $conn->execute_query($query, [$upd_meetings_id]);
+
+        $response = [
+            'status' => 'success',
+            'message' => 'Request deleted.',
+            'redirect' => '../employee/meetings.php'
+        ];
+    }
+
     if (isset($_POST['del_meetings'])) {
-        $meeting_id = $_POST['meeting_id'];
+        $meetings_id = $_POST['meetings_id'];
 
         $conn->query("SET @audit_user_id = " . (int) $_SESSION['id']);
 
         $query = "DELETE FROM meetings WHERE id = ?";
-        $result = $conn->execute_query($query, [$meeting_id]);
+        $result = $conn->execute_query($query, [$meetings_id]);
 
         $response = [
             'status' => 'success',

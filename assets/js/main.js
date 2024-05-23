@@ -140,31 +140,12 @@ $(function () {
     }
   });
 
-  /**
-   * Loading overlay
-   */
-
+  // Initialize DataTables
   var tbl_helpdesks = new DataTable("#tbl_helpdesks", {
     ajax: "/isds/includes/datatables.php?tbl_helpdesks",
     processing: true,
     serverSide: true,
     scrollX: true
-  });
-
-  $('#h_open').on('click', function () {
-    tbl_helpdesks.column(4).search('Open').draw();
-  });
-
-  $('#h_pending').on('click', function () {
-    tbl_helpdesks.column(4).search('Pending').draw();
-  });
-
-  $('#h_completed').on('click', function () {
-    tbl_helpdesks.column(4).search('Completed').draw();
-  });
-
-  $('#h_prerepair').on('click', function () {
-    tbl_helpdesks.column(4).search('Pre-repair').draw();
   });
 
   var tbl_meetings = new DataTable("#tbl_meetings", {
@@ -174,21 +155,24 @@ $(function () {
     scrollX: true
   });
 
-  $('#m_pending').on('click', function () {
-    tbl_meetings.column(4).search('Pending').draw();
-  });
+  // Function to bind click events for filtering
+  function bindFilterButton(buttonId, table, columnIdx, filterValue) {
+    $(buttonId).on('click', function () {
+      table.column(columnIdx).search(filterValue).draw();
+    });
+  }
 
-  $('#m_scheduled').on('click', function () {
-    tbl_meetings.column(4).search('Scheduled').draw();
-  });
+  // Bind filter buttons for Helpdesks
+  bindFilterButton('#h_open', tbl_helpdesks, 4, 'Open');
+  bindFilterButton('#h_pending', tbl_helpdesks, 4, 'Pending');
+  bindFilterButton('#h_completed', tbl_helpdesks, 4, 'Completed');
+  bindFilterButton('#h_prerepair', tbl_helpdesks, 4, 'Pre-repair');
 
-  $('#m_unavailable').on('click', function () {
-    tbl_meetings.column(4).search('Unavailable').draw();
-  });
-
-  $('#m_cancelled').on('click', function () {
-    tbl_meetings.column(4).search('Cancelled').draw();
-  });
+  // Bind filter buttons for Meetings
+  bindFilterButton('#m_pending', tbl_meetings, 4, 'Pending');
+  bindFilterButton('#m_scheduled', tbl_meetings, 4, 'Scheduled');
+  bindFilterButton('#m_unavailable', tbl_meetings, 4, 'Unavailable');
+  bindFilterButton('#m_cancelled', tbl_meetings, 4, 'Cancelled');
 
   grecaptcha.ready(function () {
     grecaptcha.execute(window.sitekey).then(function (token) {
@@ -306,60 +290,32 @@ $(function () {
     });
   });
 
-  $('#request_types_id').on('change', function () {
+  function updateOptions(url, data, categorySelector, subCategorySelector) {
     $.ajax({
-      url: "/isds/includes/fetch.php",
+      url: url,
       type: "GET",
-      data: {
-        select_data: 'categories_id',
-        request_types_id: $(this).val()
-      },
+      data: data,
       dataType: "json",
       success: function (response) {
         var len = response.length;
-        $('#categories_id').empty();
-        $('#sub_categories_id').empty();
-        $('#categories_id').append(
-          "<option value='' selected disabled>choose...</option>"
-        );
-        $('#sub_categories_id').append(
-          "<option value='' selected disabled>choose...</option>"
-        );
+        $(categorySelector).empty().append("<option value='' selected disabled>choose...</option>");
+        $(subCategorySelector).empty().append("<option value='' selected disabled>choose...</option>");
+
         for (var i = 0; i < len; i++) {
           var id = response[i]["id"];
           var name = response[i]["name"];
-          $('#categories_id').append(
-            "<option value='" + id + "'>" + name + "</option>"
-          );
+          $(categorySelector).append("<option value='" + id + "'>" + name + "</option>");
         }
-      },
+      }
     });
+  }
+
+  $('#request_types_id').on('change', function () {
+    updateOptions("/isds/includes/fetch.php", { select_data: 'categories_id', request_types_id: $(this).val() }, '#categories_id', '#sub_categories_id');
   });
 
   $('#categories_id').on('change', function () {
-    $.ajax({
-      url: "/isds/includes/fetch.php",
-      type: "GET",
-      data: {
-        select_data: 'sub_categories_id',
-        categories_id: $(this).val()
-      },
-      dataType: "json",
-      success: function (response) {
-        var len = response.length;
-        $('#sub_categories_id').empty();
-        $('#sub_categories_id').append(
-          "<option value='' selected disabled>choose...</option>"
-        );
-        for (var i = 0; i < len; i++) {
-          var id = response[i]["id"];
-          var name = response[i]["name"];
-          $('#sub_categories_id').append(
-            "<option value='" + id + "'>" + name + "</option>"
-          );
-        }
-      },
-    });
+    updateOptions("/isds/includes/fetch.php", { select_data: 'sub_categories_id', categories_id: $(this).val() }, '#sub_categories_id', '#sub_categories_id');
   });
 
   $('#time_start').on('change', function () {
@@ -443,7 +399,7 @@ $(function () {
         $.ajax({
           type: "POST",
           url: "/isds/includes/process.php",
-          data: { 'del_helpdesks': true, 'helpdesk_id': id, 'captcha-token': captchaToken },
+          data: { 'del_helpdesks': true, 'helpdesks_id': id, 'captcha-token': captchaToken },
           dataType: "json",
           success: function (response) {
             setTimeout(function () {
@@ -472,6 +428,89 @@ $(function () {
       }
     });
 
+  }
+
+  window.updhelpdesksbtn = function (id) {
+    console.log('Helpdesk ID: ' + id);
+
+    $.ajax({
+      url: "/isds/includes/fetch.php",
+      type: "GET",
+      data: {
+        upd_helpdesks: true,
+        helpdesks_id: id
+      },
+      dataType: "json",
+      success: function (response) {
+        console.log(response);
+
+        // Update form fields with the initial response data
+        $('#upd_date_requested').val(response.date_requested);
+        $('#upd_request_types_id').val(response.request_types_id);
+
+        // Fetch and update categories
+        $.ajax({
+          url: "/isds/includes/fetch.php",
+          type: "GET",
+          data: {
+            select_data: 'categories_id',
+            request_types_id: response.request_types_id
+          },
+          dataType: "json",
+          success: function (categoriesResponse) {
+            updateSelectOptions('#upd_categories_id', categoriesResponse, response.categories_id);
+
+            // Fetch and update sub-categories
+            $.ajax({
+              url: "/isds/includes/fetch.php",
+              type: "GET",
+              data: {
+                select_data: 'sub_categories_id',
+                categories_id: response.categories_id
+              },
+              dataType: "json",
+              success: function (subCategoriesResponse) {
+                updateSelectOptions('#upd_sub_categories_id', subCategoriesResponse, response.sub_categories_id);
+              }
+            });
+          }
+        });
+
+        $('#upd_complaint').val(response.complaint);
+        let date = new Date(response.datetime_preferred);
+
+        function pad(n) {
+          return n < 10 ? '0' + n : n;
+        }
+
+        let formattedDateTime = date.getFullYear() + '-' +
+          pad(date.getMonth() + 1) + '-' +
+          pad(date.getDate()) + 'T' +
+          pad(date.getHours()) + ':' +
+          pad(date.getMinutes());
+
+        $('#upd_datetime_preferred').val(formattedDateTime);
+        $('#upd_helpdesks_id').val(response.id);
+      }
+    });
+
+    function updateSelectOptions(selectId, optionsData, selectedValue) {
+      var len = optionsData.length;
+      $(selectId).empty();
+      $(selectId).append("<option value='' selected disabled>choose...</option>");
+
+      for (var i = 0; i < len; i++) {
+        var id = optionsData[i]["id"];
+        var name = optionsData[i]["name"];
+        $(selectId).append("<option value='" + id + "'>" + name + "</option>");
+      }
+
+      $(selectId).val(selectedValue);
+    }
+
+
+    $('#updhelpdesksmodal').modal('toggle');
+    $('#updhelpdesksmodal').modal('show');
   }
 
   window.delmeetingsbtn = function (id) {
@@ -499,7 +538,7 @@ $(function () {
         $.ajax({
           type: "POST",
           url: "/isds/includes/process.php",
-          data: { 'del_meetings': true, 'meeting_id': id, 'captcha-token': captchaToken },
+          data: { 'del_meetings': true, 'meetings_id': id, 'captcha-token': captchaToken },
           dataType: "json",
           success: function (response) {
             setTimeout(function () {
@@ -529,6 +568,139 @@ $(function () {
     });
 
   }
+
+  window.updmeetingsbtn = function (id) {
+    console.log('Meeting ID: ' + id);
+
+    $.ajax({
+      url: "/isds/includes/fetch.php",
+      type: "GET",
+      data: {
+        upd_meetings: true,
+        meetings_id: id
+      },
+      dataType: "json",
+      success: function (response) {
+        console.log(response);
+
+        // Update form fields with the initial response data
+        $('#upd_date_requested').val(response.date_requested);
+        $('#upd_topic').val(response.topic);
+        $('#upd_date_schedule').val(response.date_schedule);
+        $('#upd_time_start').val(response.time_start);
+        $('#upd_time_end').val(response.time_end);
+      }
+    });
+
+    $('#updmeetingsmodal').modal('toggle');
+    $('#updmeetingsmodal').modal('show');
+  }
+
+  function chart_category() {
+    $.ajax({
+      url: "/isds/includes/fetch.php",
+      type: "GET",
+      data: {
+        chart_category: true,
+      },
+      dataType: "json",
+      success: function (response) {
+        var seriesData = response.series;
+        var labelsData = response.labels;
+
+        var options = {
+          series: [{
+            data: seriesData
+          }],
+          chart: {
+            type: 'bar',
+            height: 350,
+            toolbar: {
+              show: true,
+              tools: {
+                download: true,
+              },
+              autoSelected: 'zoom'
+            }
+          },
+          plotOptions: {
+            bar: {
+              borderRadius: 4,
+              borderRadiusApplication: 'end',
+              horizontal: true,
+            }
+          },
+          dataLabels: {
+            enabled: false
+          },
+          xaxis: {
+            categories: labelsData
+          },
+          colors:['#F44336', '#E91E63', '#9C27B0','#F44336', '#E91E63', '#9C27B0','#F44336', '#E91E63', '#9C27B0']
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart_category"), options);
+        chart.render();
+      },
+      error: function (error) {
+        console.error('Error fetching data:', error);
+      }
+    });
+  }
+
+  chart_category();
+
+  function chart_division() {
+    $.ajax({
+      url: "/isds/includes/fetch.php",
+      type: "GET",
+      data: {
+        chart_division: true,
+      },
+      dataType: "json",
+      success: function (response) {
+        var seriesData = response.series;
+        var labelsData = response.labels;
+
+        var options = {
+          series: seriesData,
+          chart: {
+            type: 'donut',
+            height: 350,
+            toolbar: {
+              show: true,
+              tools: {
+                download: true,
+              },
+              autoSelected: 'zoom'
+            }
+          },
+          labels: labelsData,
+          responsive: [{
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 200
+              },
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }],
+          colors:['#F44336', '#E91E63', '#9C27B0','#F44336', '#E91E63', '#9C27B0','#F44336', '#E91E63', '#9C27B0']
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart_division"), options);
+        chart.render();
+      },
+      error: function (error) {
+        console.error('Error fetching data:', error);
+      }
+    });
+  }
+
+  chart_division();
+
 
   if ($('#calendar').length) {
     var calendarEl = document.querySelector('#calendar');
