@@ -155,6 +155,21 @@ $(function () {
     scrollX: true
   });
 
+  var tbl_allhelpdesks = new DataTable("#tbl_allhelpdesks", {
+    ajax: "/isds/includes/datatables.php?tbl_allhelpdesks",
+    processing: true,
+    serverSide: true,
+    scrollX: true
+  });
+
+  var tbl_allmeetings = new DataTable("#tbl_allmeetings", {
+    ajax: "/isds/includes/datatables.php?tbl_allmeetings",
+    processing: true,
+    serverSide: true,
+    scrollX: true
+  });
+
+
   // Function to bind click events for filtering
   function bindFilterButton(buttonId, table, columnIdx, filterValue) {
     $(buttonId).on('click', function () {
@@ -173,6 +188,19 @@ $(function () {
   bindFilterButton('#m_scheduled', tbl_meetings, 4, 'Scheduled');
   bindFilterButton('#m_unavailable', tbl_meetings, 4, 'Unavailable');
   bindFilterButton('#m_cancelled', tbl_meetings, 4, 'Cancelled');
+
+
+  // Bind filter buttons for Helpdesks
+  bindFilterButton('#h_open', tbl_allhelpdesks, 5, 'Open');
+  bindFilterButton('#h_pending', tbl_allhelpdesks, 5, 'Pending');
+  bindFilterButton('#h_completed', tbl_allhelpdesks, 5, 'Completed');
+  bindFilterButton('#h_prerepair', tbl_allhelpdesks, 5, 'Pre-repair');
+
+  // Bind filter buttons for Meetings
+  bindFilterButton('#m_pending', tbl_allmeetings, 5, 'Pending');
+  bindFilterButton('#m_scheduled', tbl_allmeetings, 5, 'Scheduled');
+  bindFilterButton('#m_unavailable', tbl_allmeetings, 5, 'Unavailable');
+  bindFilterButton('#m_cancelled', tbl_allmeetings, 5, 'Cancelled');
 
   grecaptcha.ready(function () {
     grecaptcha.execute(window.sitekey).then(function (token) {
@@ -596,6 +624,79 @@ $(function () {
     $('#updmeetingsmodal').modal('show');
   }
 
+  function chart_month() {
+    $.ajax({
+      url: "/isds/includes/fetch.php", // Replace with your server endpoint
+      type: "GET",
+      data: {
+        chart_month: true, // Example parameter to identify the request
+      },
+      dataType: "json",
+      success: function (response) {
+        var seriesData = response.series;
+        var labelsData = response.labels;
+
+        var options = {
+          series: [{
+            name: "Desktops",
+            data: seriesData
+          }],
+          chart: {
+            height: 350,
+            type: 'line',
+            toolbar: {
+              show: true,
+              tools: {
+                download: true,
+                selection: false,
+                zoom: false,
+                zoomin: false,
+                zoomout: false,
+                pan: false,
+                reset: false
+              },
+              autoSelected: 'zoom'
+            }
+          },
+          dataLabels: {
+            enabled: false
+          },
+          stroke: {
+            curve: 'straight'
+          },
+          grid: {
+            row: {
+              colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+              opacity: 0.5
+            },
+          },
+          xaxis: {
+            categories: labelsData,
+          },
+          colors: [
+            "#0e1355",
+            "#233b76",
+            "#2e56b6",
+            "#3961d7",
+            "#457ced",
+            "#5182f1",
+            "#5c8dfa",
+            "#6798ff",
+            "#729ee3",
+          ],
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart_month"), options);
+        chart.render();
+      },
+      error: function (error) {
+        console.error('Error fetching data:', error);
+      }
+    });
+  }
+
+  chart_month();
+
   function chart_category() {
     $.ajax({
       url: "/isds/includes/fetch.php",
@@ -625,18 +726,45 @@ $(function () {
           },
           plotOptions: {
             bar: {
+              distributed: true,
+              horizontal: true,
               borderRadius: 4,
               borderRadiusApplication: 'end',
-              horizontal: true,
+              dataLabels: {
+                position: 'bottom'
+              },
             }
           },
+          colors: [
+            "#0e1355",
+            "#233b76",
+            "#2e56b6",
+            "#3961d7",
+            "#457ced",
+            "#5182f1",
+            "#5c8dfa",
+            "#6798ff",
+            "#729ee3",
+          ],
           dataLabels: {
-            enabled: false
+            enabled: true,
+            textAnchor: 'start',
+            style: {
+              colors: ['#fff']
+            },
+            formatter: function (val, opt) {
+              return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val
+            },
+            offsetX: 0,
           },
           xaxis: {
             categories: labelsData
           },
-          colors:['#F44336', '#E91E63', '#9C27B0','#F44336', '#E91E63', '#9C27B0','#F44336', '#E91E63', '#9C27B0']
+          yaxis: {
+            labels: {
+              show: false
+            }
+          }
         };
 
         var chart = new ApexCharts(document.querySelector("#chart_category"), options);
@@ -687,7 +815,17 @@ $(function () {
               }
             }
           }],
-          colors:['#F44336', '#E91E63', '#9C27B0','#F44336', '#E91E63', '#9C27B0','#F44336', '#E91E63', '#9C27B0']
+          colors: [
+            "#0e1355",
+            "#233b76",
+            "#2e56b6",
+            "#3961d7",
+            "#457ced",
+            "#5182f1",
+            "#5c8dfa",
+            "#6798ff",
+            "#729ee3",
+          ],
         };
 
         var chart = new ApexCharts(document.querySelector("#chart_division"), options);
@@ -702,11 +840,84 @@ $(function () {
   chart_division();
 
 
+  function chart_sex() {
+    $.ajax({
+      url: "/isds/includes/fetch.php",
+      type: "GET",
+      data: {
+        chart_sex: true,
+      },
+      dataType: "json",
+      success: function (response) {
+        var seriesData = response.series;
+        var labelsData = response.labels;
+
+        var options = {
+          series: seriesData,
+          chart: {
+            type: 'pie',
+            height: 350,
+            toolbar: {
+              show: true,
+              tools: {
+                download: true,
+              },
+              autoSelected: 'zoom'
+            }
+          },
+          labels: labelsData,
+          responsive: [{
+            breakpoint: 480,
+            options: {
+              chart: {
+                width: 200
+              },
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }],
+          colors: [
+            "#0e1355",
+            "#233b76",
+            "#2e56b6",
+            "#3961d7",
+            "#457ced",
+            "#5182f1",
+            "#5c8dfa",
+            "#6798ff",
+            "#729ee3",
+          ],
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart_sex"), options);
+        chart.render();
+      },
+      error: function (error) {
+        console.error('Error fetching data:', error);
+      }
+    });
+  }
+
+  chart_sex();
+
   if ($('#calendar').length) {
     var calendarEl = document.querySelector('#calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
       events: '/isds/includes/fetch.php?meetings'
+    });
+
+    calendar.render();
+
+    var calendarjQ = $(calendarEl);
+  }
+
+  if ($('#cal_allmeetings').length) {
+    var calendarEl = document.querySelector('#cal_allmeetings');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      events: '/isds/includes/fetch.php?allmeetings'
     });
 
     calendar.render();

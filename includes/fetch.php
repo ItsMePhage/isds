@@ -105,6 +105,18 @@ if (isset($_GET['meetings'])) {
     }
 }
 
+if (isset($_GET['allmeetings'])) {
+    $query = "SELECT * FROM meetings";
+    $result = $conn->execute_query($query);
+
+    while ($row = $result->fetch_object()) {
+        $row->title = $row->topic;
+        $row->start = $row->date_scheduled . "T" . $row->time_start;
+        $row->end = $row->date_scheduled . "T" . $row->time_end;
+        $response[] = $row;
+    }
+}
+
 if (isset($_GET["upd_helpdesks"])) {
 
     $helpdesks_id = $_GET['helpdesks_id'];
@@ -129,15 +141,29 @@ if (isset($_GET["upd_meetings"])) {
 
 if (isset($_GET["chart_category"])) {
     $response = [
-        'series' => [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380],
-        'labels' => ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan', 'United States', 'China', 'Germany']
+        'series' => [400, 430, 448, 470, 540],
+        'labels' => ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy']
     ];
 }
 
 if (isset($_GET["chart_division"])) {
     $response = [
-        'series' => [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380],
-        'labels' => ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy', 'France', 'Japan', 'United States', 'China', 'Germany']
+        'series' => [400, 430, 448, 470, 540],
+        'labels' => ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy']
+    ];
+}
+
+if (isset($_GET["chart_sex"])) {
+    $response = [
+        'series' => [400, 430],
+        'labels' => ['Male', 'Female']
+    ];
+}
+
+if (isset($_GET["chart_month"])) {
+    $response = [
+        'series' => [400, 430, 448, 470, 540],
+        'labels' => ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy']
     ];
 }
 

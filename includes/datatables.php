@@ -79,6 +79,7 @@ if (isset($_GET['tbl_helpdesks'])) {
         )
     );
 }
+
 if (isset($_GET['tbl_meetings'])) {
     $table = "(SELECT 
         m.id, 
@@ -136,6 +137,141 @@ if (isset($_GET['tbl_meetings'])) {
         array(
             'db' => 'id',
             'dt' => 5,
+            'formatter' => function ($d, $row) {
+                $html = '<small class="text-nowrap small"><button type="button" class="btn btn-primary mx-1 my-0 small" onclick="updmeetingsbtn(' . $row['id'] . ')"><i class="bi bi-pencil-square small"></i></button>';
+                $html .= '<button type="button" class="btn btn-danger mx-1 my-0 small" onclick="delmeetingsbtn(' . $row['id'] . ')"><i class="bi bi-trash3-fill small"></i></button></small>';
+
+                return $html;
+            }
+        )
+    );
+}
+
+if (isset($_GET['tbl_allhelpdesks'])) {
+    $table = "(SELECT 
+        h.id, 
+        h.request_number, 
+        h.requested_by,  
+        CONCAT(u.first_name,' ',u.last_name) AS requested_by_name, 
+        h.date_requested, 
+        h.request_types_id, 
+        h.categories_id, 
+        h.sub_categories_id, 
+        h.complaint, 
+        h.datetime_preferred, 
+        h.h_statuses_id, 
+        rt.request_type, 
+        c.category, 
+        sc.sub_category, 
+        hs.status, 
+        hs.status_color
+    FROM 
+        helpdesks h
+    LEFT JOIN 
+        request_types rt ON h.request_types_id = rt.id
+    LEFT JOIN 
+        users u ON h.requested_by = u.id
+    LEFT JOIN 
+        categories c ON h.categories_id = c.id
+    LEFT JOIN 
+        sub_categories sc ON h.sub_categories_id = sc.id
+    LEFT JOIN 
+        h_statuses hs ON h.h_statuses_id = hs.id) AS tbl_helpdesks";
+
+    $columns = array(
+        array(
+            'db' => 'date_requested',
+            'dt' => 0,
+            'formatter' => function ($d, $row) {
+                return date_format(date_create($d), 'd/m/Y');
+            }
+        ),
+        array('db' => 'requested_by_name', 'dt' => 1),
+        array('db' => 'request_number', 'dt' => 2),
+        array('db' => 'category', 'dt' => 3),
+        array('db' => 'sub_category', 'dt' => 4),
+        array('db' => 'status_color', 'dt' => null),
+        array(
+            'db' => 'status',
+            'dt' => 5,
+            'formatter' => function ($d, $row) {
+                return '<center><span class="badge text-bg-' . $row['status_color'] . '">' . $d . '</span></center>';
+            }
+        ),
+        array(
+            'db' => 'id',
+            'dt' => 6,
+            'formatter' => function ($d, $row) {
+                $html = '<small class="text-nowrap small"><button type="button" class="btn btn-primary mx-1 my-0 small" onclick="updhelpdesksbtn(' . $row['id'] . ')"><i class="bi bi-pencil-square small"></i></button>';
+                $html .= '<button type="button" class="btn btn-danger mx-1 my-0 small" onclick="delhelpdesksbtn(' . $row['id'] . ')"><i class="bi bi-trash3-fill small"></i></button></small>';
+
+                return $html;
+            }
+        )
+    );
+}
+
+if (isset($_GET['tbl_allmeetings'])) {
+    $table = "(SELECT 
+        m.id, 
+        m.request_number, 
+        m.requested_by, 
+        CONCAT(u.first_name,' ',u.last_name) AS requested_by_name, 
+        m.date_requested, 
+        m.topic, 
+        m.date_scheduled, 
+        m.time_start, 
+        m.time_end, 
+        m.m_statuses_id,
+        ms.status,
+        ms.status_color
+    FROM 
+        meetings m
+    LEFT JOIN 
+        m_statuses ms ON m.m_statuses_id = ms.id
+    LEFT JOIN 
+        users u ON m.requested_by = u.id
+    ) AS tbl_meetings";
+
+    $columns = array(
+        array(
+            'db' => 'date_requested',
+            'dt' => 0,
+            'formatter' => function ($d, $row) {
+                return date_format(date_create($d), 'd/m/Y');
+            }
+        ),
+        array('db' => 'requested_by_name', 'dt' => 1),
+        array('db' => 'request_number', 'dt' => 2),
+        array(
+            'db' => 'date_scheduled',
+            'dt' => 3,
+            'formatter' => function ($d, $row) {
+                return date_format(date_create($row['date_scheduled']), 'd/m/Y');
+            }
+        ),
+        array(
+            'db' => 'time_start',
+            'dt' => null
+        ),
+        array(
+            'db' => 'time_end',
+            'dt' => 4,
+            'formatter' => function ($d, $row) {
+                return date_format(date_create($row['time_start']), 'H:i a') . "-" . date_format(date_create($row['time_end']), 'H:i a');
+            }
+        ),
+        array('db' => 'status_color', 'dt' => null),
+        array(
+            'db' => 'status',
+            'dt' => 5,
+            'formatter' => function ($d, $row) {
+                return '<span class="badge text-bg-' . $row['status_color'] . '">' . $d . '</span>';
+            }
+        ),
+        array(
+            'db' => 'id',
+            'dt' => 6,
             'formatter' => function ($d, $row) {
                 $html = '<small class="text-nowrap small"><button type="button" class="btn btn-primary mx-1 my-0 small" onclick="updmeetingsbtn(' . $row['id'] . ')"><i class="bi bi-pencil-square small"></i></button>';
                 $html .= '<button type="button" class="btn btn-danger mx-1 my-0 small" onclick="delmeetingsbtn(' . $row['id'] . ')"><i class="bi bi-trash3-fill small"></i></button></small>';

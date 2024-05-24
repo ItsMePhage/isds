@@ -45,8 +45,8 @@ require_once "partials/head.php";
                                     <div class="mb-3 form-check">
                                         <input type="checkbox" class="form-check-input" id="showPassword"
                                             onclick="password.type = password.type === 'password' ? 'text' : 'password'">
-                                        <label class="form-check-label" for="showPassword">show password</label>
-                                        <a href="forgot-password.php" class="float-end btn-link">forgot password?</a>
+                                        <label class="form-check-label" for="showPassword">Show password</label>
+                                        <a href="forgot-password.php" class="float-end btn-link">Forgot password?</a>
                                     </div>
                                     <div hidden>
                                         <input class="captcha-token" name="captcha-token" />

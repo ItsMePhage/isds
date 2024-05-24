@@ -121,6 +121,16 @@ require_once "../partials/aside.php";
           });
         });
       </script>
+      <div class="col-lg-6">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">CHART</h5>
+            <div id="chart_month"></div>
+          </div>
+        </div>
+
+      </div>
 
       <div class="col-lg-6">
 
@@ -138,6 +148,16 @@ require_once "../partials/aside.php";
           <div class="card-body">
             <h5 class="card-title">CHART</h5>
             <div id="chart_division"></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-lg-6">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">CHART</h5>
+            <div id="chart_sex"></div>
           </div>
         </div>
 

@@ -43,6 +43,7 @@ if ($g_response == 1) {
                         } else {
                             $conn->query('UPDATE `users` SET `password_exp` = NULL WHERE `id` = ' . $row->id);
                             $_SESSION['id'] = $row->id;
+                            $_SESSION['role'] = $row->role;
 
                             $response = [
                                 'status' => 'success',
