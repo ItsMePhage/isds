@@ -53,6 +53,7 @@ if ($g_response == 1) {
                         }
                     } else {
                         $_SESSION['id'] = $row->id;
+                        $_SESSION['role'] = $row->role;
 
                         $response = [
                             'status' => 'success',
@@ -267,22 +268,57 @@ if ($g_response == 1) {
 
     /* employees process */
     if (isset($_POST['add_helpdesks'])) {
-        $requested_by = $_SESSION['id'];
-        $date_requested = $_POST['date_requested'];
-        $request_types_id = $_POST['request_types_id'];
-        $categories_id = $_POST['categories_id'];
-        $sub_categories_id = $_POST['sub_categories_id'];
-        $complaint = $_POST['complaint'];
-        $datetime_preferred = !empty($_POST['datetime_preferred']) ? $_POST['datetime_preferred'] : date('Y-m-d H:i:s');
+        switch ($_SESSION['role']) {
+            case 'employee':
+                $requested_by = $_SESSION['id'];
+                $date_requested = $_POST['date_requested'];
+                $request_types_id = $_POST['request_types_id'];
+                $categories_id = $_POST['categories_id'];
+                $sub_categories_id = $_POST['sub_categories_id'];
+                $complaint = $_POST['complaint'];
+                $datetime_preferred = !empty($_POST['datetime_preferred']) ? $_POST['datetime_preferred'] : date('Y-m-d H:i:s');
 
-        $query = "INSERT INTO helpdesks(`requested_by`,`date_requested`,`request_types_id`,`categories_id`,`sub_categories_id`,`complaint`,`datetime_preferred`) VALUE (?,?,?,?,?,?,?)";
-        $result = $conn->execute_query($query, [$requested_by, $date_requested, $request_types_id, $categories_id, $sub_categories_id, $complaint, $datetime_preferred]);
+                $query = "INSERT INTO helpdesks(`requested_by`,`date_requested`,`request_types_id`,`categories_id`,`sub_categories_id`,`complaint`,`datetime_preferred`) VALUE (?,?,?,?,?,?,?)";
+                $result = $conn->execute_query($query, [$requested_by, $date_requested, $request_types_id, $categories_id, $sub_categories_id, $complaint, $datetime_preferred]);
 
-        $response = [
-            'status' => 'success',
-            'message' => 'Request submitted.',
-            'redirect' => '../employee/helpdesks.php'
-        ];
+                $response = [
+                    'status' => 'success',
+                    'message' => 'Request submitted.',
+                    'redirect' => '../employee/helpdesks.php'
+                ];
+                break;
+            case 'admin':
+                $requested_by = $_SESSION['id'];
+                $date_requested = $_POST['date_requested'];
+                $request_types_id = $_POST['request_types_id'];
+                $categories_id = $_POST['categories_id'];
+                $sub_categories_id = $_POST['sub_categories_id'];
+                $complaint = $_POST['complaint'];
+                $datetime_preferred = !empty($_POST['datetime_preferred']) ? $_POST['datetime_preferred'] : date('Y-m-d H:i:s');
+                $h_statuses_id = !empty($_POST['h_statuses_id']) ? $_POST['h_statuses_id'] : NULL;
+                $property_number = $_POST['property_number'];
+                $priority_levels_id = $_POST['priority_levels_id'];
+                $repair_types_id = $_POST['repair_types_id'];
+                $repair_classes_id = $_POST['repair_classes_id'];
+                $mediums_id = $_POST['mediums_id'];
+                $datetime_start = !empty($_POST['datetime_start']) ? $_POST['datetime_start'] : NULL;
+                $is_pullout = $_POST['is_pullout'] ?? null;
+                $datetime_end = !empty($_POST['datetime_end']) ? $_POST['datetime_end'] : NULL;
+                $is_turnover = $_POST['is_turnover'] ?? null;
+                $diagnosis = $_POST['diagnosis'];
+                $action_taken = $_POST['action_taken'];
+                $remarks = $_POST['remarks'];
+
+                $query = "INSERT INTO helpdesks(`requested_by`,`date_requested`,`request_types_id`,`categories_id`,`sub_categories_id`,`complaint`,`datetime_preferred`,`h_statuses_id`,`property_number`,`priority_levels_id`,`repair_types_id`,`repair_classes_id`,`mediums_id`,`datetime_start`,`is_pullout`,`datetime_end`,`is_turnover`,`diagnosis`,`action_taken`,`remarks`) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                $result = $conn->execute_query($query, [$requested_by, $date_requested, $request_types_id, $categories_id, $sub_categories_id, $complaint, $datetime_preferred, $h_statuses_id, $property_number, $priority_levels_id, $repair_types_id, $repair_classes_id, $mediums_id, $datetime_start, $is_pullout, $datetime_end, $is_turnover, $diagnosis, $action_taken, $remarks]);
+
+                $response = [
+                    'status' => 'success',
+                    'message' => 'Request submitted.',
+                    'redirect' => '../employee/helpdesks.php'
+                ];
+                break;
+        }
     }
 
     if (isset($_POST['upd_helpdesks'])) {

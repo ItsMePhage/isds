@@ -518,6 +518,12 @@ $(function () {
           pad(date.getMinutes());
 
         $('#upd_datetime_preferred').val(formattedDateTime);
+        $('#upd_h_statuses_id').val(response.h_statuses_id);
+        $('#upd_property_number').val(response.property_number);
+        $('#upd_priority_levels_id').val(response.priority_levels_id);
+        $('#upd_repair_types_id').val(response.repair_types_id);
+        $('#upd_repair_classes_id').val(response.repair_classes_id);
+        $('#upd_mediums_id').val(response.mediums_id);
         $('#upd_helpdesks_id').val(response.id);
       }
     });
@@ -694,8 +700,9 @@ $(function () {
       }
     });
   }
-
-  chart_month();
+  if ($('#chart_month').length) {
+    chart_month();
+  }
 
   function chart_category() {
     $.ajax({
@@ -776,7 +783,9 @@ $(function () {
     });
   }
 
-  chart_category();
+  if ($('#chart_category').length) {
+    chart_category();
+  }
 
   function chart_division() {
     $.ajax({
@@ -836,8 +845,9 @@ $(function () {
       }
     });
   }
-
-  chart_division();
+  if ($('#chart_division').length) {
+    chart_division();
+  }
 
 
   function chart_sex() {
@@ -898,8 +908,9 @@ $(function () {
       }
     });
   }
-
-  chart_sex();
+  if ($('#chart_sex').length) {
+    chart_sex();
+  }
 
   if ($('#calendar').length) {
     var calendarEl = document.querySelector('#calendar');

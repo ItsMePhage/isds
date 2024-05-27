@@ -25,7 +25,6 @@ if ($protected == true) {
 
         if ($result && $result->num_rows > 0) {
             $acc = $result->fetch_object();
-            $_SESSION['role'] = $acc->role;
         } else {
             header('Location: assets/components/includes/logout.php');
             exit();

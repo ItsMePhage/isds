@@ -36,15 +36,58 @@ if (isset($_GET['select_data'])) {
                 $response[] = $row;
             }
             break;
-        case 'request_types_id':
-            $query = "SELECT * FROM request_types";
+        case 'h_statuses_id':
+        case 'upd_h_statuses_id':
+            $query = "SELECT * FROM h_statuses";
             $result = $conn->execute_query($query);
 
             while ($row = $result->fetch_object()) {
-                $row->name = $row->request_type;
+                $row->name = $row->status;
                 $response[] = $row;
             }
             break;
+
+        case 'priority_levels_id':
+        case 'upd_priority_levels_id':
+            $query = "SELECT * FROM priority_levels";
+            $result = $conn->execute_query($query);
+
+            while ($row = $result->fetch_object()) {
+                $row->name = $row->priority_level;
+                $response[] = $row;
+            }
+            break;
+        case 'repair_types_id':
+        case 'upd_repair_types_id':
+            $query = "SELECT * FROM repair_types";
+            $result = $conn->execute_query($query);
+
+            while ($row = $result->fetch_object()) {
+                $row->name = $row->repair_type;
+                $response[] = $row;
+            }
+            break;
+        case 'repair_classes_id':
+        case 'upd_repair_classes_id':
+            $query = "SELECT * FROM repair_classes";
+            $result = $conn->execute_query($query);
+
+            while ($row = $result->fetch_object()) {
+                $row->name = $row->repair_class;
+                $response[] = $row;
+            }
+            break;
+        case 'mediums_id':
+        case 'upd_mediums_id':
+            $query = "SELECT * FROM mediums";
+            $result = $conn->execute_query($query);
+
+            while ($row = $result->fetch_object()) {
+                $row->name = $row->medium;
+                $response[] = $row;
+            }
+            break;
+        case 'request_types_id':
         case 'upd_request_types_id':
             $query = "SELECT * FROM request_types";
             $result = $conn->execute_query($query);
@@ -55,14 +98,6 @@ if (isset($_GET['select_data'])) {
             }
             break;
         case 'categories_id':
-            $query = "SELECT * FROM categories WHERE request_types_id = " . $_GET['request_types_id'];
-            $result = $conn->execute_query($query);
-
-            while ($row = $result->fetch_object()) {
-                $row->name = $row->category;
-                $response[] = $row;
-            }
-            break;
         case 'upd_categories_id':
             $query = "SELECT * FROM categories WHERE request_types_id = " . $_GET['request_types_id'];
             $result = $conn->execute_query($query);
@@ -73,14 +108,6 @@ if (isset($_GET['select_data'])) {
             }
             break;
         case 'sub_categories_id':
-            $query = "SELECT * FROM sub_categories WHERE categories_id = " . $_GET['categories_id'];
-            $result = $conn->execute_query($query);
-
-            while ($row = $result->fetch_object()) {
-                $row->name = $row->sub_category;
-                $response[] = $row;
-            }
-            break;
         case 'upd_sub_categories_id':
             $query = "SELECT * FROM sub_categories WHERE categories_id = " . $_GET['categories_id'];
             $result = $conn->execute_query($query);
@@ -140,31 +167,82 @@ if (isset($_GET["upd_meetings"])) {
 }
 
 if (isset($_GET["chart_category"])) {
+    $query = "";
+    $query .= "SELECT c.category, IFNULL(h.count_per_category, 0) AS count_per_category ";
+    $query .= "FROM categories c ";
+    $query .= "LEFT JOIN (SELECT categories_id, COUNT(id) AS count_per_category FROM helpdesks WHERE YEAR(CURRENT_DATE) = YEAR(date_requested) GROUP BY categories_id) h ON c.id = h.categories_id ";
+    $query .= "ORDER BY c.category";
+
+    $result = $conn->execute_query($query);
+
     $response = [
-        'series' => [400, 430, 448, 470, 540],
-        'labels' => ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy']
+        'series' => [],
+        'labels' => []
     ];
+
+    while ($row = $result->fetch_object()) {
+        $response['series'][] = $row->count_per_category;
+        $response['labels'][] = $row->category;
+    }
 }
 
 if (isset($_GET["chart_division"])) {
+    $query = "";
+    $query .= "SELECT d.division,IFNULL(hd.count_per_division, 0) AS count_per_division ";
+    $query .= "FROM divisions d ";
+    $query .= "LEFT JOIN (SELECT  u.divisions_id, COUNT(h.id) AS count_per_division FROM  helpdesks h INNER JOIN  users u ON h.requested_by = u.id WHERE  YEAR(h.date_requested) = YEAR(CURRENT_DATE) GROUP BY  u.divisions_id) hd ON d.id = hd.divisions_id ";
+    $query .= "ORDER BY d.division ";
+
+    $result = $conn->execute_query($query);
+
     $response = [
-        'series' => [400, 430, 448, 470, 540],
-        'labels' => ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy']
+        'series' => [],
+        'labels' => []
     ];
+
+    while ($row = $result->fetch_object()) {
+        $response['series'][] = $row->count_per_division;
+        $response['labels'][] = $row->division;
+    }
 }
 
 if (isset($_GET["chart_sex"])) {
+    $query = "";
+    $query .= "SELECT sex_table.sex,IFNULL(counts.count_per_sex, 0) AS count_per_sex ";
+    $query .= "FROM (SELECT 'Male' AS sex UNION ALL SELECT 'Female' AS sex) AS sex_table ";
+    $query .= "LEFT JOIN (SELECT  u.sex, COUNT(h.id) AS count_per_sex FROM  helpdesks h INNER JOIN  users u ON h.requested_by = u.id WHERE  YEAR(h.date_requested) = YEAR(CURRENT_DATE) GROUP BY  u.sex) AS counts ON sex_table.sex = counts.sex ";
+    $query .= "ORDER BY sex_table.sex ";
+    $result = $conn->execute_query($query);
+
     $response = [
-        'series' => [400, 430],
-        'labels' => ['Male', 'Female']
+        'series' => [],
+        'labels' => []
     ];
+
+    while ($row = $result->fetch_object()) {
+        $response['series'][] = $row->count_per_sex;
+        $response['labels'][] = $row->sex;
+    }
 }
 
 if (isset($_GET["chart_month"])) {
+    $query = "";
+    $query .= "SELECT months.month_name, IFNULL(counts.count_per_month, 0) AS count_per_month ";
+    $query .= "FROM ( SELECT 1 AS month_num, 'January' AS month_name UNION ALL SELECT 2, 'February' UNION ALL SELECT 3, 'March' UNION ALL SELECT 4, 'April' UNION ALL SELECT 5, 'May' UNION ALL SELECT 6, 'June' UNION ALL SELECT 7, 'July' UNION ALL SELECT 8, 'August' UNION ALL SELECT 9, 'September' UNION ALL SELECT 10, 'October' UNION ALL SELECT 11, 'November' UNION ALL SELECT 12, 'December') AS months ";
+    $query .= "LEFT JOIN ( SELECT MONTH(date_requested) AS month_num, COUNT(id) AS count_per_month FROM helpdesks WHERE YEAR(CURRENT_DATE) = YEAR(date_requested) GROUP BY MONTH(date_requested)) AS counts ON months.month_num = counts.month_num ";
+    $query .= "ORDER BY months.month_num ";
+
+    $result = $conn->execute_query($query);
+
     $response = [
-        'series' => [400, 430, 448, 470, 540],
-        'labels' => ['South Korea', 'Canada', 'United Kingdom', 'Netherlands', 'Italy']
+        'series' => [],
+        'labels' => []
     ];
+
+    while ($row = $result->fetch_object()) {
+        $response['series'][] = $row->count_per_month;
+        $response['labels'][] = $row->month_name;
+    }
 }
 
 $responseJSON = json_encode($response);

@@ -92,7 +92,8 @@ require_once "../partials/aside.php";
           <div class="card-body">
             <h5 class="card-title">
               Meetings
-              <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#add_meetings">Add Zoom Request</button>
+              <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#add_meetings">Add Zoom
+                Request</button>
               <button class="btn btn-link float-end"
                 onclick="tbl_meetings_card.style.display = 'none';cal_meetings_card.style.visibility = 'visible'">calendar
                 view</button>
@@ -132,7 +133,47 @@ require_once "../partials/aside.php";
       </div>
     </div>
   </section>
-
+  <!-- Modal -->
+  <div class="modal fade" id="add_meetings" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5">Add Zoom Request</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form class="row g-3 form-validation">
+            <div>
+              <label for="date_requested" class="form-label">Date of Request</label>
+              <input type="date" class="form-control" id="date_requested" name="date_requested"
+                value="<?= date('Y-m-d') ?>" required />
+            </div>
+            <div>
+              <label for="topic" class="form-label">Topic or Title of meeting</label>
+              <textarea class="form-control" id="topic" name="topic"></textarea>
+            </div>
+            <div>
+              <label for="date_scheduled" class="form-label">Date of Schedule</label>
+              <input type="date" class="form-control" id="date_scheduled" name="date_scheduled" required />
+            </div>
+            <div>
+              <label for="time_start" class="form-label">Start Time of Schedule</label>
+              <input type="time" class="form-control" id="time_start" name="time_start" required />
+            </div>
+            <div>
+              <label for="time_end" class="form-label">End Time of Schedule</label>
+              <input type="time" class="form-control" id="time_end" name="time_end" required />
+            </div>
+            <div hidden>
+              <input class="captcha-token" name="captcha-token" />
+              <input name="add_meetings" />
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 </main><!-- End #main -->
 
 <?php
