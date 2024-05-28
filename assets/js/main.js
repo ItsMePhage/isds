@@ -2,6 +2,19 @@ $(function () {
 
   ("use strict");
 
+  function generateHSLColors(count) {
+    let colors = [];
+    const hue = 221;
+    const saturation = 50;
+
+    for (let i = 0; i < count; i++) {
+      let lightness = 20 + (i * (50 / count));
+      colors.push(`hsl(${hue}, ${saturation}%, ${lightness}%)`);
+    }
+
+    return colors;
+  }
+
   /**
    * Easy selector helper function
    */
@@ -169,6 +182,13 @@ $(function () {
     scrollX: true
   });
 
+  var tbl_allusers = new DataTable("#tbl_allusers", {
+    ajax: "/isds/includes/datatables.php?tbl_allusers",
+    processing: true,
+    serverSide: true,
+    scrollX: true
+  });
+
 
   // Function to bind click events for filtering
   function bindFilterButton(buttonId, table, columnIdx, filterValue) {
@@ -176,6 +196,11 @@ $(function () {
       table.column(columnIdx).search(filterValue).draw();
     });
   }
+
+  // Bind filter buttons for Helpdesks
+  bindFilterButton('#u_admin', tbl_allusers, 5, 'Admin');
+  bindFilterButton('#u_staff', tbl_allusers, 5, 'Staff');
+  bindFilterButton('#u_employee', tbl_allusers, 5, 'Employee');
 
   // Bind filter buttons for Helpdesks
   bindFilterButton('#h_open', tbl_helpdesks, 4, 'Open');
@@ -472,8 +497,18 @@ $(function () {
       success: function (response) {
         console.log(response);
 
-        // Update form fields with the initial response data
-        $('#upd_date_requested').val(response.date_requested);
+        let fh_date_requested = new Date(response.date_requested);
+
+        function pad(n) {
+          return n < 10 ? '0' + n : n;
+        }
+
+        let h_date_requested = fh_date_requested.getFullYear() + '-' +
+          pad(fh_date_requested.getMonth() + 1) + '-' +
+          pad(fh_date_requested.getDate());
+
+        $('#upd_date_requested').val(h_date_requested);
+        $('#upd_requested_by').val(response.requested_by);
         $('#upd_request_types_id').val(response.request_types_id);
 
         // Fetch and update categories
@@ -505,25 +540,60 @@ $(function () {
         });
 
         $('#upd_complaint').val(response.complaint);
-        let date = new Date(response.datetime_preferred);
+        let fh_datetime_preferred = new Date(response.datetime_preferred);
 
         function pad(n) {
           return n < 10 ? '0' + n : n;
         }
 
-        let formattedDateTime = date.getFullYear() + '-' +
-          pad(date.getMonth() + 1) + '-' +
-          pad(date.getDate()) + 'T' +
-          pad(date.getHours()) + ':' +
-          pad(date.getMinutes());
+        let h_datetime_preferred = fh_datetime_preferred.getFullYear() + '-' +
+          pad(fh_datetime_preferred.getMonth() + 1) + '-' +
+          pad(fh_datetime_preferred.getDate()) + 'T' +
+          pad(fh_datetime_preferred.getHours()) + ':' +
+          pad(fh_datetime_preferred.getMinutes());
 
-        $('#upd_datetime_preferred').val(formattedDateTime);
+        $('#upd_datetime_preferred').val(h_datetime_preferred);
         $('#upd_h_statuses_id').val(response.h_statuses_id);
         $('#upd_property_number').val(response.property_number);
         $('#upd_priority_levels_id').val(response.priority_levels_id);
         $('#upd_repair_types_id').val(response.repair_types_id);
         $('#upd_repair_classes_id').val(response.repair_classes_id);
         $('#upd_mediums_id').val(response.mediums_id);
+        let fh_datetime_start = new Date(response.datetime_start);
+
+        function pad(n) {
+          return n < 10 ? '0' + n : n;
+        }
+
+        let h_datetime_start = fh_datetime_start.getFullYear() + '-' +
+          pad(fh_datetime_start.getMonth() + 1) + '-' +
+          pad(fh_datetime_start.getDate()) + 'T' +
+          pad(fh_datetime_start.getHours()) + ':' +
+          pad(fh_datetime_start.getMinutes());
+
+        $('#upd_datetime_start').val(h_datetime_start);
+        let fh_datetime_end = new Date(response.datetime_end);
+
+        function pad(n) {
+          return n < 10 ? '0' + n : n;
+        }
+
+        let h_datetime_end = fh_datetime_end.getFullYear() + '-' +
+          pad(fh_datetime_end.getMonth() + 1) + '-' +
+          pad(fh_datetime_end.getDate()) + 'T' +
+          pad(fh_datetime_end.getHours()) + ':' +
+          pad(fh_datetime_end.getMinutes());
+
+        $('#upd_datetime_end').val(h_datetime_end);
+
+        $('#upd_is_pullout').prop('checked', response.is_pullout == 1);
+        $('#upd_is_turnover').prop('checked', response.is_turnover == 1);
+
+
+        $('#upd_diagnosis').val(response.diagnosis);
+        $('#upd_action_taken').val(response.action_taken);
+        $('#upd_remarks').val(response.remarks);
+
         $('#upd_helpdesks_id').val(response.id);
       }
     });
@@ -617,8 +687,17 @@ $(function () {
       success: function (response) {
         console.log(response);
 
-        // Update form fields with the initial response data
-        $('#upd_date_requested').val(response.date_requested);
+        let fm_date_requested = new Date(response.date_requested);
+
+        function pad(n) {
+          return n < 10 ? '0' + n : n;
+        }
+
+        let m_date_requested = fm_date_requested.getFullYear() + '-' +
+          pad(fm_date_requested.getMonth() + 1) + '-' +
+          pad(fm_date_requested.getDate());
+
+        $('#upd_date_requested').val(m_date_requested);
         $('#upd_topic').val(response.topic);
         $('#upd_date_schedule').val(response.date_schedule);
         $('#upd_time_start').val(response.time_start);
@@ -670,26 +749,10 @@ $(function () {
           stroke: {
             curve: 'straight'
           },
-          grid: {
-            row: {
-              colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
-              opacity: 0.5
-            },
-          },
           xaxis: {
             categories: labelsData,
           },
-          colors: [
-            "#0e1355",
-            "#233b76",
-            "#2e56b6",
-            "#3961d7",
-            "#457ced",
-            "#5182f1",
-            "#5c8dfa",
-            "#6798ff",
-            "#729ee3",
-          ],
+          colors: generateHSLColors(response.series.length),
         };
 
         var chart = new ApexCharts(document.querySelector("#chart_month"), options);
@@ -742,23 +805,10 @@ $(function () {
               },
             }
           },
-          colors: [
-            "#0e1355",
-            "#233b76",
-            "#2e56b6",
-            "#3961d7",
-            "#457ced",
-            "#5182f1",
-            "#5c8dfa",
-            "#6798ff",
-            "#729ee3",
-          ],
+          colors: generateHSLColors(response.series.length),
           dataLabels: {
             enabled: true,
             textAnchor: 'start',
-            style: {
-              colors: ['#fff']
-            },
             formatter: function (val, opt) {
               return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val
             },
@@ -824,17 +874,7 @@ $(function () {
               }
             }
           }],
-          colors: [
-            "#0e1355",
-            "#233b76",
-            "#2e56b6",
-            "#3961d7",
-            "#457ced",
-            "#5182f1",
-            "#5c8dfa",
-            "#6798ff",
-            "#729ee3",
-          ],
+          colors: generateHSLColors(response.series.length),
         };
 
         var chart = new ApexCharts(document.querySelector("#chart_division"), options);
@@ -887,17 +927,7 @@ $(function () {
               }
             }
           }],
-          colors: [
-            "#0e1355",
-            "#233b76",
-            "#2e56b6",
-            "#3961d7",
-            "#457ced",
-            "#5182f1",
-            "#5c8dfa",
-            "#6798ff",
-            "#729ee3",
-          ],
+          colors: generateHSLColors(response.series.length),
         };
 
         var chart = new ApexCharts(document.querySelector("#chart_sex"), options);

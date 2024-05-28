@@ -121,7 +121,8 @@ require_once "../partials/aside.php";
           <div class="card-body">
             <h5 class="card-title">
               Meetings
-              <button class="btn btn-primary float-end">Add Meeting</button>
+              <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#add_meetings">Add Zoom
+                Request</button>
               <button class="btn btn-link float-end"
                 onclick="tbl_meetings_card.style.display = '';cal_meetings_card.style.visibility = 'hidden'">table
                 view</button>

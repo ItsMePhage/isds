@@ -36,6 +36,16 @@ if (isset($_GET['select_data'])) {
                 $response[] = $row;
             }
             break;
+        case "requested_by":
+        case "upd_requested_by":
+            $query = "SELECT * FROM users";
+            $result = $conn->execute_query($query);
+
+            while ($row = $result->fetch_object()) {
+                $row->name = $row->first_name . ' ' . $row->last_name;
+                $response[] = $row;
+            }
+            break;
         case 'h_statuses_id':
         case 'upd_h_statuses_id':
             $query = "SELECT * FROM h_statuses";
@@ -133,13 +143,14 @@ if (isset($_GET['meetings'])) {
 }
 
 if (isset($_GET['allmeetings'])) {
-    $query = "SELECT * FROM meetings";
+    $query = "SELECT m.*, ms.status_hex FROM meetings m LEFT JOIN m_statuses ms ON m.m_statuses_id = ms.id";
     $result = $conn->execute_query($query);
 
     while ($row = $result->fetch_object()) {
         $row->title = $row->topic;
         $row->start = $row->date_scheduled . "T" . $row->time_start;
         $row->end = $row->date_scheduled . "T" . $row->time_end;
+        $row->color = $row->status_hex;
         $response[] = $row;
     }
 }
@@ -171,7 +182,7 @@ if (isset($_GET["chart_category"])) {
     $query .= "SELECT c.category, IFNULL(h.count_per_category, 0) AS count_per_category ";
     $query .= "FROM categories c ";
     $query .= "LEFT JOIN (SELECT categories_id, COUNT(id) AS count_per_category FROM helpdesks WHERE YEAR(CURRENT_DATE) = YEAR(date_requested) GROUP BY categories_id) h ON c.id = h.categories_id ";
-    $query .= "ORDER BY c.category";
+    $query .= "ORDER BY h.count_per_category DESC";
 
     $result = $conn->execute_query($query);
 
@@ -191,7 +202,7 @@ if (isset($_GET["chart_division"])) {
     $query .= "SELECT d.division,IFNULL(hd.count_per_division, 0) AS count_per_division ";
     $query .= "FROM divisions d ";
     $query .= "LEFT JOIN (SELECT  u.divisions_id, COUNT(h.id) AS count_per_division FROM  helpdesks h INNER JOIN  users u ON h.requested_by = u.id WHERE  YEAR(h.date_requested) = YEAR(CURRENT_DATE) GROUP BY  u.divisions_id) hd ON d.id = hd.divisions_id ";
-    $query .= "ORDER BY d.division ";
+    $query .= "ORDER BY hd.count_per_division DESC";
 
     $result = $conn->execute_query($query);
 
@@ -211,7 +222,7 @@ if (isset($_GET["chart_sex"])) {
     $query .= "SELECT sex_table.sex,IFNULL(counts.count_per_sex, 0) AS count_per_sex ";
     $query .= "FROM (SELECT 'Male' AS sex UNION ALL SELECT 'Female' AS sex) AS sex_table ";
     $query .= "LEFT JOIN (SELECT  u.sex, COUNT(h.id) AS count_per_sex FROM  helpdesks h INNER JOIN  users u ON h.requested_by = u.id WHERE  YEAR(h.date_requested) = YEAR(CURRENT_DATE) GROUP BY  u.sex) AS counts ON sex_table.sex = counts.sex ";
-    $query .= "ORDER BY sex_table.sex ";
+    $query .= "ORDER BY counts.count_per_sex DESC";
     $result = $conn->execute_query($query);
 
     $response = [

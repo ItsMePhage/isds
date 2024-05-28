@@ -19,34 +19,51 @@ if (isset($_GET['MOCK_DATAs'])) {
     );
 }
 
+if (isset($_GET['tbl_allusers'])) {
+    $table = "";
+    $table .= "(SELECT u.*, o.office_code, o.office, d.division, c.client_type, r.role ";
+    $table .= "FROM users u ";
+    $table .= "LEFT JOIN offices o ON u.offices_id = o.id ";
+    $table .= "LEFT JOIN divisions d ON u.divisions_id = d.id ";
+    $table .= "LEFT JOIN client_types c ON u.client_types_id = c.id ";
+    $table .= "LEFT JOIN roles r ON u.roles_id = r.id) AS tbl_allusers ";
+
+    $columns = array(
+        array('db' => 'id_number', 'dt' => 0),
+        array('db' => 'first_name', 'dt' => null),
+        array(
+            'db' => 'last_name',
+            'dt' => 1,
+            'formatter' => function ($d, $row) {
+                return $row['first_name'] . ' ' . $row['last_name'];
+            }
+        ),
+        array('db' => 'email', 'dt' => 2),
+        array('db' => 'office', 'dt' => 3),
+        array('db' => 'division', 'dt' => 4),
+        array('db' => 'role', 'dt' => 5),
+        array(
+            'db' => 'id',
+            'dt' => 6,
+            'formatter' => function ($d, $row) {
+                $html = '<small class="text-nowrap small"><button type="button" class="btn btn-primary mx-1 my-0 small" onclick="updhelpdesksbtn(' . $d . ')"><i class="bi bi-pencil-square small"></i></button>';
+                $html .= '<button type="button" class="btn btn-danger mx-1 my-0 small" onclick="delhelpdesksbtn(' . $d . ')"><i class="bi bi-trash3-fill small"></i></button></small>';
+
+                return $html;
+            }
+        )
+    );
+}
+
 if (isset($_GET['tbl_helpdesks'])) {
-    $table = "(SELECT 
-        h.id, 
-        h.request_number, 
-        h.requested_by, 
-        h.date_requested, 
-        h.request_types_id, 
-        h.categories_id, 
-        h.sub_categories_id, 
-        h.complaint, 
-        h.datetime_preferred, 
-        h.h_statuses_id, 
-        rt.request_type, 
-        c.category, 
-        sc.sub_category, 
-        hs.status, 
-        hs.status_color
-    FROM 
-        helpdesks h
-    LEFT JOIN 
-        request_types rt ON h.request_types_id = rt.id
-    LEFT JOIN 
-        categories c ON h.categories_id = c.id
-    LEFT JOIN 
-        sub_categories sc ON h.sub_categories_id = sc.id
-    LEFT JOIN 
-        h_statuses hs ON h.h_statuses_id = hs.id
-    WHERE requested_by = " . $_SESSION['id'] . ") AS tbl_helpdesks";
+    $table = "";
+    $table .= "(SELECT h.id, h.request_number, h.requested_by, h.date_requested, h.request_types_id, h.categories_id, h.sub_categories_id, h.complaint, h.datetime_preferred, h.h_statuses_id, rt.request_type, c.category, sc.sub_category, hs.status, hs.status_color ";
+    $table .= "FROM helpdesks h ";
+    $table .= "LEFT JOIN request_types rt ON h.request_types_id = rt.id ";
+    $table .= "LEFT JOIN categories c ON h.categories_id = c.id ";
+    $table .= "LEFT JOIN sub_categories sc ON h.sub_categories_id = sc.id ";
+    $table .= "LEFT JOIN h_statuses hs ON h.h_statuses_id = hs.id ";
+    $table .= "WHERE requested_by = " . $_SESSION['id'] . ") AS tbl_helpdesks ";
 
     $columns = array(
         array(

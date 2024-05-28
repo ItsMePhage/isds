@@ -11,8 +11,21 @@
                     <div>
                         <label for="upd_date_requested" class="form-label">Date of Request</label>
                         <input type="date" class="form-control" id="upd_date_requested" name="date_requested"
-                            value="<?= date('Y-m-d') ?>" required />
+                            required />
                     </div>
+                    <?php
+                    if ($acc->role == 'admin') {
+                        ?>
+
+                        <div>
+                            <label for="upd_requested_by" class="form-label">Requestor</label>
+                            <select type="text" class="form-select select-init" id="upd_requested_by" name="requested_by">
+                                <option value="" selected disabled>choose...</option>
+                            </select>
+                        </div>
+                        <?php
+                    }
+                    ?>
                     <div>
                         <label for="upd_request_types_id" class="form-label">Type of Request</label>
                         <select type="text" class="form-select select-init" id="upd_request_types_id"
@@ -49,20 +62,19 @@
 
                         <div>
                             <label for="upd_h_statuses_id" class="form-label">Status</label>
-                            <select type="text" class="form-select select-init" id="upd_h_statuses_id"
-                                name="upd_h_statuses_id">
+                            <select type="text" class="form-select select-init" id="upd_h_statuses_id" name="h_statuses_id">
                                 <option value="" selected disabled>choose...</option>
                             </select>
                         </div>
                         <div>
                             <label for="upd_property_number" class="form-label">Property Number</label>
-                            <input class="form-control" id="upd_property_number" name="upd_property_number" />
+                            <input class="form-control" id="upd_property_number" name="property_number" />
                         </div>
 
                         <div>
                             <label for="upd_priority_levels_id" class="form-label">Priority Level</label>
                             <select type="text" class="form-select select-init" id="upd_priority_levels_id"
-                                name="upd_priority_levels_id">
+                                name="priority_levels_id">
                                 <option value="" selected disabled>choose...</option>
                             </select>
                         </div>
@@ -70,7 +82,7 @@
                         <div>
                             <label for="upd_repair_types_id" class="form-label">Repair Type</label>
                             <select type="text" class="form-select select-init" id="upd_repair_types_id"
-                                name="upd_repair_types_id">
+                                name="repair_types_id">
                                 <option value="" selected disabled>choose...</option>
                             </select>
                         </div>
@@ -78,14 +90,14 @@
                         <div>
                             <label for="upd_repair_classes_id" class="form-label">Repair Classification</label>
                             <select type="text" class="form-select select-init" id="upd_repair_classes_id"
-                                name="upd_repair_classes_id">
+                                name="repair_classes_id">
                                 <option value="" selected disabled>choose...</option>
                             </select>
                         </div>
 
                         <div>
                             <label for="upd_mediums_id" class="form-label">Mode of Request</label>
-                            <select type="text" class="form-select select-init" id="upd_mediums_id" name="upd_mediums_id">
+                            <select type="text" class="form-select select-init" id="upd_mediums_id" name="mediums_id">
                                 <option value="" selected disabled>choose...</option>
                             </select>
                         </div>
@@ -93,32 +105,31 @@
                         <div>
                             <label for="upd_datetime_start" class="form-label">Date & Time Started</label>
                             <input type="datetime-local" class="form-control" id="upd_datetime_start"
-                                name="upd_datetime_start" />
+                                name="datetime_start" />
                         </div>
                         <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="upd_is_pullout" name="upd_is_pullout" />
+                            <input type="checkbox" class="form-check-input" id="upd_is_pullout" name="is_pullout" />
                             <label class="form-check-label" for="upd_is_pullout">Pulled out</label>
                         </div>
                         <div>
                             <label for="upd_datetime_end" class="form-label">Date & Time Finished</label>
-                            <input type="datetime-local" class="form-control" id="upd_datetime_end"
-                                name="upd_datetime_end" />
+                            <input type="datetime-local" class="form-control" id="upd_datetime_end" name="datetime_end" />
                         </div>
                         <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="upd_is_turnover" name="upd_is_turnover" />
+                            <input type="checkbox" class="form-check-input" id="upd_is_turnover" name="is_turnover" />
                             <label class="form-check-label" for="upd_is_turnover">Turned Over</label>
                         </div>
                         <div>
                             <label for="upd_diagnosis" class="form-label">Diagnosis</label>
-                            <textarea class="form-control" id="upd_diagnosis" name="upd_diagnosis"></textarea>
+                            <textarea class="form-control" id="upd_diagnosis" name="diagnosis"></textarea>
                         </div>
                         <div>
                             <label for="upd_action_taken" class="form-label">Action Taken</label>
-                            <textarea class="form-control" id="upd_action_taken" name="upd_action_taken"></textarea>
+                            <textarea class="form-control" id="upd_action_taken" name="action_taken"></textarea>
                         </div>
                         <div>
                             <label for="upd_remarks" class="form-label">Remarks</label>
-                            <textarea class="form-control" id="upd_remarks" name="upd_remarks"></textarea>
+                            <textarea class="form-control" id="upd_remarks" name="remarks"></textarea>
                         </div>
                         <?php
                     }

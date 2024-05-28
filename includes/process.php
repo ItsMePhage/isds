@@ -288,23 +288,23 @@ if ($g_response == 1) {
                 ];
                 break;
             case 'admin':
-                $requested_by = $_SESSION['id'];
+                $requested_by = !empty($_POST['requested_by']) ? $_POST['requested_by'] : $_SESSION['id'];
                 $date_requested = $_POST['date_requested'];
                 $request_types_id = $_POST['request_types_id'];
                 $categories_id = $_POST['categories_id'];
                 $sub_categories_id = $_POST['sub_categories_id'];
                 $complaint = $_POST['complaint'];
                 $datetime_preferred = !empty($_POST['datetime_preferred']) ? $_POST['datetime_preferred'] : date('Y-m-d H:i:s');
-                $h_statuses_id = !empty($_POST['h_statuses_id']) ? $_POST['h_statuses_id'] : NULL;
+                $h_statuses_id = !empty($_POST['h_statuses_id']) ? $_POST['h_statuses_id'] : 1;
                 $property_number = $_POST['property_number'];
-                $priority_levels_id = $_POST['priority_levels_id'];
-                $repair_types_id = $_POST['repair_types_id'];
-                $repair_classes_id = $_POST['repair_classes_id'];
-                $mediums_id = $_POST['mediums_id'];
+                $priority_levels_id = !empty($_POST['priority_levels_id']) ? $_POST['priority_levels_id'] : NULL;
+                $repair_types_id = !empty($_POST['repair_types_id']) ? $_POST['repair_types_id'] : NULL;
+                $repair_classes_id = !empty($_POST['repair_classes_id']) ? $_POST['repair_classes_id'] : NULL;
+                $mediums_id = !empty($_POST['mediums_id']) ? $_POST['mediums_id'] : NULL;
                 $datetime_start = !empty($_POST['datetime_start']) ? $_POST['datetime_start'] : NULL;
-                $is_pullout = $_POST['is_pullout'] ?? null;
+                $is_pullout = isset($_POST['is_pullout']) ? 1 : NULL;
                 $datetime_end = !empty($_POST['datetime_end']) ? $_POST['datetime_end'] : NULL;
-                $is_turnover = $_POST['is_turnover'] ?? null;
+                $is_turnover = isset($_POST['is_turnover']) ? 1 : NULL;
                 $diagnosis = $_POST['diagnosis'];
                 $action_taken = $_POST['action_taken'];
                 $remarks = $_POST['remarks'];
@@ -315,29 +315,67 @@ if ($g_response == 1) {
                 $response = [
                     'status' => 'success',
                     'message' => 'Request submitted.',
-                    'redirect' => '../employee/helpdesks.php'
+                    'redirect' => '../admin/helpdesks.php'
                 ];
                 break;
         }
     }
 
     if (isset($_POST['upd_helpdesks'])) {
-        $upd_helpdesks_id = $_POST['upd_helpdesks_id'];
-        $date_requested = $_POST['date_requested'];
-        $request_types_id = $_POST['request_types_id'];
-        $categories_id = $_POST['categories_id'];
-        $sub_categories_id = $_POST['sub_categories_id'];
-        $complaint = $_POST['complaint'];
-        $datetime_preferred = !empty($_POST['datetime_preferred']) ? $_POST['datetime_preferred'] : date('Y-m-d H:i:s');
 
-        $query = "UPDATE `helpdesks` SET `date_requested` = ?, `request_types_id` = ?, `categories_id` = ?, `sub_categories_id` = ?, `complaint` = ?, `datetime_preferred` = ? WHERE `id` = ?";
-        $result = $conn->execute_query($query, [$date_requested, $request_types_id, $categories_id, $sub_categories_id, $complaint, $datetime_preferred, $upd_helpdesks_id]);
+        switch ($_SESSION['role']) {
+            case 'employee':
+                $upd_helpdesks_id = $_POST['upd_helpdesks_id'];
+                $date_requested = $_POST['date_requested'];
+                $request_types_id = $_POST['request_types_id'];
+                $categories_id = $_POST['categories_id'];
+                $sub_categories_id = $_POST['sub_categories_id'];
+                $complaint = $_POST['complaint'];
+                $datetime_preferred = !empty($_POST['datetime_preferred']) ? $_POST['datetime_preferred'] : date('Y-m-d H:i:s');
 
-        $response = [
-            'status' => 'success',
-            'message' => 'Request updated.',
-            'redirect' => '../employee/helpdesks.php'
-        ];
+                $query = "UPDATE `helpdesks` SET `date_requested` = ?, `request_types_id` = ?, `categories_id` = ?, `sub_categories_id` = ?, `complaint` = ?, `datetime_preferred` = ? WHERE `id` = ?";
+                $result = $conn->execute_query($query, [$date_requested, $request_types_id, $categories_id, $sub_categories_id, $complaint, $datetime_preferred, $upd_helpdesks_id]);
+
+                $response = [
+                    'status' => 'success',
+                    'message' => 'Request updated.',
+                    'redirect' => '../employee/helpdesks.php'
+                ];
+                break;
+            case 'admin':
+                $helpdesks_id = $_POST['upd_helpdesks_id'];
+                $requested_by = !empty($_POST['requested_by']) ? $_POST['requested_by'] : $_SESSION['id'];
+                $date_requested = $_POST['date_requested'];
+                $request_types_id = $_POST['request_types_id'];
+                $categories_id = $_POST['categories_id'];
+                $sub_categories_id = $_POST['sub_categories_id'];
+                $complaint = $_POST['complaint'];
+                $datetime_preferred = !empty($_POST['datetime_preferred']) ? $_POST['datetime_preferred'] : date('Y-m-d H:i:s');
+                $h_statuses_id = !empty($_POST['h_statuses_id']) ? $_POST['h_statuses_id'] : 1;
+                $property_number = $_POST['property_number'];
+                $priority_levels_id = !empty($_POST['priority_levels_id']) ? $_POST['priority_levels_id'] : NULL;
+                $repair_types_id = !empty($_POST['repair_types_id']) ? $_POST['repair_types_id'] : NULL;
+                $repair_classes_id = !empty($_POST['repair_classes_id']) ? $_POST['repair_classes_id'] : NULL;
+                $mediums_id = !empty($_POST['mediums_id']) ? $_POST['mediums_id'] : NULL;
+                $datetime_start = !empty($_POST['datetime_start']) ? $_POST['datetime_start'] : NULL;
+                $is_pullout = isset($_POST['is_pullout']) ? 1 : NULL;
+                $datetime_end = !empty($_POST['datetime_end']) ? $_POST['datetime_end'] : NULL;
+                $is_turnover = isset($_POST['is_turnover']) ? 1 : NULL;
+                $diagnosis = $_POST['diagnosis'];
+                $action_taken = $_POST['action_taken'];
+                $remarks = $_POST['remarks'];
+
+
+                $query = "UPDATE `helpdesks` SET `requested_by` = ?, `date_requested` = ?, `request_types_id` = ?, `categories_id` = ?, `sub_categories_id` = ?, `complaint` = ?, `datetime_preferred` = ?, `h_statuses_id` = ?, `property_number` = ?, `priority_levels_id` = ?, `repair_types_id` = ?, `repair_classes_id` = ?, `mediums_id` = ?, `datetime_start` = ?, `is_pullout` = ?, `datetime_end` = ?, `is_turnover` = ?, `diagnosis` = ?, `action_taken` = ?, `remarks` = ? WHERE `id` = ?";
+                $result = $conn->execute_query($query, [$requested_by, $date_requested, $request_types_id, $categories_id, $sub_categories_id, $complaint, $datetime_preferred, $h_statuses_id, $property_number, $priority_levels_id, $repair_types_id, $repair_classes_id, $mediums_id, $datetime_start, $is_pullout, $datetime_end, $is_turnover, $diagnosis, $action_taken, $remarks, $helpdesks_id]);
+
+                $response = [
+                    'status' => 'success',
+                    'message' => 'Request updated.',
+                    'redirect' => '../admin/helpdesks.php'
+                ];
+                break;
+        }
     }
 
     if (isset($_POST['del_helpdesks'])) {
@@ -356,46 +394,34 @@ if ($g_response == 1) {
     }
 
     if (isset($_POST['add_meetings'])) {
-        $requested_by = $_SESSION['id'];
-        $date_requested = $_POST['date_requested'];
-        $topic = $_POST['topic'];
-        $date_scheduled = $_POST['date_scheduled'];
-        $time_start = $_POST['time_start'];
-        $time_end = $_POST['time_end'];
+        switch ($_SESSION['role']) {
+            case 'employee':
+                $requested_by = $_SESSION['id'];
+                $date_requested = $_POST['date_requested'];
+                $topic = $_POST['topic'];
+                $date_scheduled = $_POST['date_scheduled'];
+                $time_start = $_POST['time_start'];
+                $time_end = $_POST['time_end'];
 
-        $query = 'SELECT *
-        FROM meetings
-        WHERE
-            date_scheduled = ?
-            AND (
-                (
-                    time_start < ?
-                    AND time_end > ?
-                )
-                OR (
-                    time_start < ?
-                    AND time_end > ?
-                )
-                OR (
-                    time_start >= ?
-                    AND time_end <= ?
-                )
-            )';
-        $result = $conn->execute_query($query, [$date_scheduled, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end]);
-        if ($result->num_rows == 0) {
-            $query = "INSERT INTO meetings(`requested_by`,`topic`,`date_requested`,`date_scheduled`,`time_start`,`time_end`) VALUE (?,?,?,?,?,?)";
-            $result = $conn->execute_query($query, [$requested_by, $topic, $date_requested, $date_scheduled, $time_start, $time_end]);
+                $query = "SELECT * FROM meetings WHERE date_scheduled = ? AND ( ( time_start < ? AND time_end > ? ) OR ( time_start < ? AND time_end > ? ) OR ( time_start >= ? AND time_end <= ? ))";
 
-            $response = [
-                'status' => 'success',
-                'message' => 'Request submitted.',
-                'redirect' => '../employee/meetings.php'
-            ];
-        } else {
-            $response = [
-                'status' => 'warning',
-                'message' => 'Conflict meeting.'
-            ];
+                $result = $conn->execute_query($query, [$date_scheduled, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end]);
+                if ($result->num_rows == 0) {
+                    $query = "INSERT INTO meetings(`requested_by`,`topic`,`date_requested`,`date_scheduled`,`time_start`,`time_end`) VALUE (?,?,?,?,?,?)";
+                    $result = $conn->execute_query($query, [$requested_by, $topic, $date_requested, $date_scheduled, $time_start, $time_end]);
+
+                    $response = [
+                        'status' => 'success',
+                        'message' => 'Request submitted.',
+                        'redirect' => '../employee/meetings.php'
+                    ];
+                } else {
+                    $response = [
+                        'status' => 'warning',
+                        'message' => 'Conflict meeting.'
+                    ];
+                }
+                break;
         }
     }
 
@@ -406,15 +432,24 @@ if ($g_response == 1) {
         $date_scheduled = $_POST['date_scheduled'];
         $time_start = $_POST['time_start'];
         $time_end = $_POST['time_end'];
+        $query = "SELECT * FROM meetings WHERE date_scheduled = ? AND ( ( time_start < ? AND time_end > ? ) OR ( time_start < ? AND time_end > ? ) OR ( time_start >= ? AND time_end <= ? ))";
 
-        $query = "UPDATE meetings SET date_requested = ?, topic = ?, date_scheduled = ?, time_start = ?, time_end = ? FROM meetings WHERE id = ?";
-        $result = $conn->execute_query($query, [$upd_meetings_id]);
+        $result = $conn->execute_query($query, [$date_scheduled, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end]);
+        if ($result->num_rows == 0) {
+            $query = "UPDATE meetings SET date_requested = ?, topic = ?, date_scheduled = ?, time_start = ?, time_end = ? FROM meetings WHERE id = ?";
+            $result = $conn->execute_query($query, [$upd_meetings_id]);
 
-        $response = [
-            'status' => 'success',
-            'message' => 'Request deleted.',
-            'redirect' => '../employee/meetings.php'
-        ];
+            $response = [
+                'status' => 'success',
+                'message' => 'Request updated.',
+                'redirect' => '../employee/meetings.php'
+            ];
+        } else {
+            $response = [
+                'status' => 'warning',
+                'message' => 'Conflict meeting.'
+            ];
+        }
     }
 
     if (isset($_POST['del_meetings'])) {
