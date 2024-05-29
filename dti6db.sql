@@ -75,7 +75,7 @@ DROP TABLE IF EXISTS `csf`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `csf` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `helpdesks_id` int NOT NULL,
+  `helpdesks_id` int DEFAULT NULL,
   `criteria_a` int DEFAULT NULL,
   `criteria_b` int DEFAULT NULL,
   `criteria_c` int DEFAULT NULL,
@@ -87,7 +87,7 @@ CREATE TABLE `csf` (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `fk_csf_helpdesks_idx_idx` (`helpdesks_id`),
-  CONSTRAINT `fk_csf_helpdesks_idx` FOREIGN KEY (`helpdesks_id`) REFERENCES `helpdesks` (`id`)
+  CONSTRAINT `fk_csf_helpdesks_idx` FOREIGN KEY (`helpdesks_id`) REFERENCES `helpdesks` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -160,7 +160,7 @@ DROP TABLE IF EXISTS `helpdesks`;
 CREATE TABLE `helpdesks` (
   `id` int NOT NULL AUTO_INCREMENT,
   `request_number` varchar(45) DEFAULT NULL,
-  `requested_by` int NOT NULL,
+  `requested_by` int DEFAULT NULL,
   `date_requested` date DEFAULT NULL,
   `request_types_id` int NOT NULL,
   `categories_id` int NOT NULL,
@@ -205,10 +205,10 @@ CREATE TABLE `helpdesks` (
   CONSTRAINT `fk_helpdesks_repair_types` FOREIGN KEY (`repair_types_id`) REFERENCES `repair_types` (`id`),
   CONSTRAINT `fk_helpdesks_request_types` FOREIGN KEY (`request_types_id`) REFERENCES `request_types` (`id`),
   CONSTRAINT `fk_helpdesks_sub_categories` FOREIGN KEY (`sub_categories_id`) REFERENCES `sub_categories` (`id`),
-  CONSTRAINT `fk_helpdesks_users1` FOREIGN KEY (`requested_by`) REFERENCES `users` (`id`),
-  CONSTRAINT `fk_helpdesks_users2` FOREIGN KEY (`serviced_by`) REFERENCES `users` (`id`),
-  CONSTRAINT `fk_helpdesks_users3` FOREIGN KEY (`approved_by`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb3;
+  CONSTRAINT `fk_helpdesks_users1` FOREIGN KEY (`requested_by`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `fk_helpdesks_users2` FOREIGN KEY (`serviced_by`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `fk_helpdesks_users3` FOREIGN KEY (`approved_by`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -217,7 +217,6 @@ CREATE TABLE `helpdesks` (
 
 LOCK TABLES `helpdesks` WRITE;
 /*!40000 ALTER TABLE `helpdesks` DISABLE KEYS */;
-INSERT INTO `helpdesks` VALUES (21,'REQ-2024-05-001',2,'2024-05-28',1,1,1,'No powerS','2024-05-28 04:06:00',1,'09218301',1,2,4,1,NULL,NULL,'2024-05-28 10:06:00','2024-05-28T10:06',1,NULL,'Defective Hard disk','Format hard disk','Done','2024-05-28 02:06:40',NULL),(22,'REQ-2024-05-002',3,'2024-05-28',1,2,6,'asdsad','2024-05-28 05:19:25',3,'saddas',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'','','','2024-05-28 03:19:25',NULL),(23,'REQ-2024-05-003',3,'2024-05-28',2,5,21,'ASDASD','2024-05-28 05:25:28',1,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'','','','2024-05-28 03:25:28',NULL),(24,'REQ-2024-05-004',1,'2024-05-28',2,4,15,'ASDASD','2024-05-28 05:26:27',5,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'','','','2024-05-28 03:26:27',NULL),(25,'REQ-2024-05-005',1,'2024-05-28',1,1,2,'','2024-05-28 07:55:50',1,'',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'','','','2024-05-28 05:55:50',NULL);
 /*!40000 ALTER TABLE `helpdesks` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -327,12 +326,12 @@ CREATE TABLE `helpdesks_audit` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   `audit_action` varchar(10) NOT NULL,
-  `audit_user` int NOT NULL,
+  `audit_user` int DEFAULT NULL,
   `audit_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`audit_id`),
   KEY `fk_helpdesks_audit_users_idx` (`audit_user`),
-  CONSTRAINT `fk_helpdesks_audit_users` FOREIGN KEY (`audit_user`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `fk_helpdesks_audit_users` FOREIGN KEY (`audit_user`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -341,7 +340,6 @@ CREATE TABLE `helpdesks_audit` (
 
 LOCK TABLES `helpdesks_audit` WRITE;
 /*!40000 ALTER TABLE `helpdesks_audit` DISABLE KEYS */;
-INSERT INTO `helpdesks_audit` VALUES (1,11,'REQ-2024-03-001',1,'2024-03-21',1,1,2,'asdasd','2024-05-21 09:27:35',2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-21 07:27:35',NULL,'DELETE',1,'2024-05-22 03:28:33'),(2,5,'REQ-2024-05-004',1,'2024-04-21',1,1,1,'asdasd','2024-05-21 15:04:00',2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-21 07:04:49',NULL,'DELETE',1,'2024-05-22 03:30:06'),(3,10,'REQ-2024-04-001',1,'2024-04-21',1,2,7,'asdasd','2024-05-21 09:27:10',4,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-21 07:27:10',NULL,'DELETE',1,'2024-05-22 03:30:10'),(4,1,'REQ-2024-05-001',1,'2024-05-20',1,1,1,'asdasda',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-20 05:30:02',NULL,'DELETE',1,'2024-05-22 03:30:14'),(5,3,'REQ-2024-05-002',1,'2024-05-21',1,1,1,'sadasd','2024-05-21 14:20:00',3,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-21 06:20:07',NULL,'DELETE',1,'2024-05-22 03:30:18'),(6,4,'REQ-2024-05-003',1,'2024-05-21',1,1,2,'asdasd','2024-05-21 08:24:13',5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-21 06:24:13',NULL,'DELETE',1,'2024-05-22 03:30:33'),(7,9,'REQ-2024-05-005',1,'2024-05-21',2,4,14,'asdasda','2024-05-21 09:26:55',3,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-21 07:26:55',NULL,'DELETE',1,'2024-05-22 03:30:37'),(8,14,'REQ-2024-05-003',1,'2024-05-23',1,1,2,'asdasdas','2024-05-23 04:57:47',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-23 02:57:47',NULL,'DELETE',1,'2024-05-23 03:10:37'),(9,13,'REQ-2024-05-002',1,'2024-05-22',1,1,3,'asdasd','2024-05-22 05:55:01',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-22 03:55:01',NULL,'DELETE',1,'2024-05-23 03:10:42'),(10,12,'REQ-2024-05-001',1,'2024-05-22',1,1,2,'asdasda','2024-05-22 05:47:37',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-22 03:47:37',NULL,'DELETE',1,'2024-05-23 03:10:46'),(11,15,'REQ-2024-05-004',1,'2024-05-23',1,2,7,'LOLs','2024-05-23 04:58:00',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-23 02:58:04',NULL,'DELETE',1,'2024-05-23 06:02:35'),(12,16,'REQ-2024-05-001',1,'2024-05-23',1,1,1,'asdasd','2024-05-23 08:03:30',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-23 06:03:30',NULL,'DELETE',3,'2024-05-24 06:48:48'),(13,17,'REQ-2024-05-001',3,'2024-05-27',1,1,2,'sadasd','2024-05-27 03:21:30',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-27 01:21:30',NULL,'DELETE',3,'2024-05-28 02:02:17'),(14,18,'REQ-2024-05-002',1,'2024-05-27',1,1,3,'asdas','2024-05-27 03:38:05',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-27 01:38:05',NULL,'DELETE',3,'2024-05-28 02:02:30'),(15,19,'REQ-2024-05-003',1,'2024-05-27',1,1,3,'asdasd','2024-05-27 07:27:07',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2024-05-27 05:27:07',NULL,'DELETE',3,'2024-05-28 02:02:35'),(16,20,'REQ-2024-05-004',3,'2024-05-27',1,1,1,'asdasd','2024-05-27 07:49:41',3,'asdasd',2,1,2,2,NULL,NULL,NULL,NULL,NULL,NULL,'','','','2024-05-27 05:49:41',NULL,'DELETE',3,'2024-05-28 02:02:39');
 /*!40000 ALTER TABLE `helpdesks_audit` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -356,7 +354,7 @@ CREATE TABLE `hosts` (
   `id` int NOT NULL AUTO_INCREMENT,
   `host` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -365,6 +363,7 @@ CREATE TABLE `hosts` (
 
 LOCK TABLES `hosts` WRITE;
 /*!40000 ALTER TABLE `hosts` DISABLE KEYS */;
+INSERT INTO `hosts` VALUES (1,'RO'),(2,'Aklan'),(3,'Antique'),(4,'Capiz'),(5,'Guimaras'),(6,'Iloilo'),(7,'Negros Occidental');
 /*!40000 ALTER TABLE `hosts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -428,7 +427,7 @@ DROP TABLE IF EXISTS `meetings`;
 CREATE TABLE `meetings` (
   `id` int NOT NULL AUTO_INCREMENT,
   `request_number` varchar(45) DEFAULT NULL,
-  `requested_by` int NOT NULL,
+  `requested_by` int DEFAULT NULL,
   `date_requested` date DEFAULT NULL,
   `topic` text,
   `date_scheduled` date DEFAULT NULL,
@@ -450,10 +449,10 @@ CREATE TABLE `meetings` (
   KEY `fk_meetings_users3_idx` (`approved_by`),
   CONSTRAINT `fk_meetings_hosts1` FOREIGN KEY (`hosts_id`) REFERENCES `hosts` (`id`),
   CONSTRAINT `fk_meetings_m_statuses1` FOREIGN KEY (`m_statuses_id`) REFERENCES `m_statuses` (`id`),
-  CONSTRAINT `fk_meetings_users1` FOREIGN KEY (`requested_by`) REFERENCES `users` (`id`),
-  CONSTRAINT `fk_meetings_users2` FOREIGN KEY (`generated_by`) REFERENCES `users` (`id`),
-  CONSTRAINT `fk_meetings_users3` FOREIGN KEY (`approved_by`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3;
+  CONSTRAINT `fk_meetings_users1` FOREIGN KEY (`requested_by`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `fk_meetings_users2` FOREIGN KEY (`generated_by`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `fk_meetings_users3` FOREIGN KEY (`approved_by`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -462,7 +461,7 @@ CREATE TABLE `meetings` (
 
 LOCK TABLES `meetings` WRITE;
 /*!40000 ALTER TABLE `meetings` DISABLE KEYS */;
-INSERT INTO `meetings` VALUES (2,'MTG-2024-05-002',2,'2024-05-20','asdasdasdasdaszxczxc','2024-05-20','12:02:00','13:02:00',NULL,1,NULL,NULL,NULL,'2024-05-20 04:02:24','2024-05-28 01:49:26');
+INSERT INTO `meetings` VALUES (1,'MTG-2024-05-001',1,'2024-05-29','asdasd','2024-05-29','15:54:00','16:54:00',NULL,1,'',NULL,NULL,'2024-05-29 07:54:17','2024-05-29 07:54:17');
 /*!40000 ALTER TABLE `meetings` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -553,12 +552,12 @@ CREATE TABLE `meetings_audit` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT NULL,
   `audit_action` varchar(10) NOT NULL,
-  `audit_user` int NOT NULL,
+  `audit_user` int DEFAULT NULL,
   `audit_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`audit_id`),
   KEY `fk_meetings_audit_users_idx` (`audit_user`),
-  CONSTRAINT `fk_meetings_audit_users` FOREIGN KEY (`audit_user`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `fk_meetings_audit_users` FOREIGN KEY (`audit_user`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -567,7 +566,6 @@ CREATE TABLE `meetings_audit` (
 
 LOCK TABLES `meetings_audit` WRITE;
 /*!40000 ALTER TABLE `meetings_audit` DISABLE KEYS */;
-INSERT INTO `meetings_audit` VALUES (1,1,'MTG-2024-05-001',1,'2024-05-20',NULL,'2024-05-20','11:59:00','12:59:00',NULL,1,NULL,NULL,NULL,'2024-05-20 03:59:53','2024-05-20 03:59:53','DELETE',1,'2024-05-22 03:39:17'),(2,3,'MTG-2024-05-003',1,'2024-05-20',NULL,'2024-05-21','13:53:00','14:53:00',NULL,1,NULL,NULL,NULL,'2024-05-20 05:54:00','2024-05-20 05:54:00','DELETE',1,'2024-05-22 03:39:32'),(3,4,'MTG-2024-05-004',1,'2024-05-20',NULL,'2024-05-20','17:59:00','18:59:00',NULL,1,NULL,NULL,NULL,'2024-05-20 05:55:33','2024-05-20 05:55:33','DELETE',1,'2024-05-22 03:39:37'),(4,5,'MTG-2024-05-005',1,'2024-05-20','asdasd','2024-05-20','13:56:00','14:56:00',NULL,1,NULL,NULL,NULL,'2024-05-20 05:56:40','2024-05-20 05:56:40','DELETE',1,'2024-05-22 03:39:42'),(5,6,'MTG-2024-05-006',1,'2024-05-22','asdasd','2024-05-23','08:51:00','09:51:00',NULL,1,NULL,NULL,NULL,'2024-05-22 00:51:36','2024-05-22 00:51:36','DELETE',1,'2024-05-22 03:39:46'),(6,7,'MTG-2024-05-007',1,'2024-05-22','Full Driver & Software Package','2024-05-22','08:51:00','09:51:00',NULL,1,NULL,NULL,NULL,'2024-05-22 00:52:02','2024-05-22 00:52:02','DELETE',1,'2024-05-22 03:39:50'),(7,8,'MTG-2024-05-003',1,'2024-05-22','sadasdasdasdwasdxczxcasdsadsada','2024-05-22','11:47:00','12:47:00',NULL,1,NULL,NULL,NULL,'2024-05-22 03:47:58','2024-05-22 03:47:58','DELETE',3,'2024-05-24 06:48:24');
 /*!40000 ALTER TABLE `meetings_audit` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -766,7 +764,7 @@ CREATE TABLE `users` (
   `offices_id` int NOT NULL,
   `divisions_id` int NOT NULL,
   `client_types_id` int NOT NULL,
-  `username` varchar(45) NOT NULL,
+  `username` varchar(45) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
   `password_exp` timestamp NULL DEFAULT NULL,
   `roles_id` int NOT NULL DEFAULT '3',
@@ -791,7 +789,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'COS6-004','Dan Alfreis','Celestial','Fuerte','2000-09-29','Female',1,'09818098637','dace.phage@gmail.com','Iloilo City','JO/COS',1,5,1,'user','$argon2i$v=19$m=65536,t=4,p=1$STA1M2tYZnVydUJvN1FYVQ$tx6Nsvi/SmLl7JnYUpzppc/9ueAIiL1yEtrlP4DCGyU',NULL,3,1,'2024-05-19 10:02:00','2024-05-28 08:14:49'),(2,'COS6-005','Kristopher Gerard','','Jovero','1993-06-17','Male',NULL,'','a@gmail.com','','',1,1,3,'user2','$argon2i$v=19$m=65536,t=4,p=1$MGFXVTBVYS9tRW9VR2FjNQ$mN8fn92ZQVBg8JA6mrujyS4rwp1iDtnOJPT+N8VO86o',NULL,3,1,'2024-05-20 03:00:39','2024-05-20 03:00:39'),(3,'','Jane','','Doe','2001-01-01','Male',NULL,'','dace.phage@gmail2.com','','',1,1,3,'admin','$argon2i$v=19$m=65536,t=4,p=1$ay9ueC9yRHpPTmF5empydQ$8RK5zrLMml/3s/stQx8bOQs4g/pO2Jk4ALMkaHn33JY',NULL,1,1,'2024-05-22 04:00:10','2024-05-27 01:52:51');
+INSERT INTO `users` VALUES (1,'MIS_Fuerte','Dan Alfrei','','Fuerte','2000-09-29','Male',NULL,'','dace.phage@gmail.com','','',1,1,3,'MIS_Fuerte','$argon2i$v=19$m=65536,t=4,p=1$YlovNGFVWkNLaWY3dnlnNQ$fO1ykADY0XG5CG0bRNnyGvbwJQ0Df8HCvS8TzvQXIhM',NULL,1,1,'2024-05-29 06:50:49','2024-05-29 06:54:07'),(2,'MIS_Patrimonio','Angelo','','Patrimonio','0001-01-01','Male',NULL,'','angelopatrimonio@dti.gov.ph','','',1,1,3,'MIS_Patrimonio','$argon2i$v=19$m=65536,t=4,p=1$WW11cmZxbFZlbDBETkxXbQ$g3Uhaz0GIvMJtIe8syH6lkkJ2Ca5N9N7S6ot808SRSs',NULL,3,1,'2024-05-29 06:52:47','2024-05-29 06:52:47'),(3,'MIS_Collado','Bemy John','','Collado','0001-01-01','Male',NULL,'','bemyjohncollado@dti.gov.ph','','',1,1,3,'MIS_Collado','$argon2i$v=19$m=65536,t=4,p=1$Z0tyd1dQTWxGNVVYQlc3Mw$3sokqlFFEwh/LGCQDhOd4zU1zpyRxRZ3NUKIg3xk8ag',NULL,1,1,'2024-05-29 07:49:10','2024-05-29 07:49:10');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -812,4 +810,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-28 17:30:04
+-- Dump completed on 2024-05-29 17:12:58

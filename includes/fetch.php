@@ -10,6 +10,7 @@ $response = array();
 if (isset($_GET['select_data'])) {
     switch ($_GET['select_data']) {
         case 'offices_id':
+        case 'upd_offices_id':
             $query = "SELECT * FROM offices";
             $result = $conn->execute_query($query);
 
@@ -18,7 +19,18 @@ if (isset($_GET['select_data'])) {
                 $response[] = $row;
             }
             break;
+        case 'roles_id':
+        case 'upd_roles_id':
+            $query = "SELECT * FROM roles";
+            $result = $conn->execute_query($query);
+
+            while ($row = $result->fetch_object()) {
+                $row->name = $row->role;
+                $response[] = $row;
+            }
+            break;
         case 'divisions_id':
+        case 'upd_divisions_id':
             $query = "SELECT * FROM divisions";
             $result = $conn->execute_query($query);
 
@@ -28,6 +40,7 @@ if (isset($_GET['select_data'])) {
             }
             break;
         case 'client_types_id':
+        case 'upd_client_types_id':
             $query = "SELECT * FROM client_types";
             $result = $conn->execute_query($query);
 
@@ -107,6 +120,26 @@ if (isset($_GET['select_data'])) {
                 $response[] = $row;
             }
             break;
+        case 'hosts_id':
+        case 'upd_hosts_id':
+            $query = "SELECT * FROM hosts";
+            $result = $conn->execute_query($query);
+
+            while ($row = $result->fetch_object()) {
+                $row->name = $row->host;
+                $response[] = $row;
+            }
+            break;
+        case 'm_statuses_id':
+        case 'upd_m_statuses_id':
+            $query = "SELECT * FROM m_statuses";
+            $result = $conn->execute_query($query);
+
+            while ($row = $result->fetch_object()) {
+                $row->name = $row->status;
+                $response[] = $row;
+            }
+            break;
         case 'categories_id':
         case 'upd_categories_id':
             $query = "SELECT * FROM categories WHERE request_types_id = " . $_GET['request_types_id'];
@@ -171,6 +204,17 @@ if (isset($_GET["upd_meetings"])) {
     $meetings_id = $_GET['meetings_id'];
     $query = "SELECT * FROM meetings WHERE id = ?";
     $result = $conn->execute_query($query, [$meetings_id]);
+
+    $response = $result->fetch_object();
+
+
+}
+
+if (isset($_GET["upd_users"])) {
+
+    $users_id = $_GET['users_id'];
+    $query = "SELECT * FROM users WHERE id = ?";
+    $result = $conn->execute_query($query, [$users_id]);
 
     $response = $result->fetch_object();
 

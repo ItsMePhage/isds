@@ -46,8 +46,8 @@ if (isset($_GET['tbl_allusers'])) {
             'db' => 'id',
             'dt' => 6,
             'formatter' => function ($d, $row) {
-                $html = '<small class="text-nowrap small"><button type="button" class="btn btn-primary mx-1 my-0 small" onclick="updhelpdesksbtn(' . $d . ')"><i class="bi bi-pencil-square small"></i></button>';
-                $html .= '<button type="button" class="btn btn-danger mx-1 my-0 small" onclick="delhelpdesksbtn(' . $d . ')"><i class="bi bi-trash3-fill small"></i></button></small>';
+                $html = '<small class="text-nowrap small"><button type="button" class="btn btn-primary mx-1 my-0 small" onclick="updusersbtn(' . $d . ')"><i class="bi bi-pencil-square small"></i></button>';
+                $html .= '<button type="button" class="btn btn-warning mx-1 my-0 small" onclick="rstusersbtn(' . $row['id'] . ')"><i class="bi bi-key"></i></button></small>';
 
                 return $html;
             }

@@ -1,10 +1,12 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use Dompdf\Dompdf;
 
 require 'src/Exception.php';
 require 'src/PHPMailer.php';
 require 'src/SMTP.php';
+require 'dompdf/autoload.inc.php';
 
 function sendEmail($sendTo, $subject, $content)
 {
@@ -72,7 +74,7 @@ function verifyCaptcha($recaptchaResponse, $secretKey)
 
 function generatePassword()
 {
-    $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $characters = '012345678AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz';
     $password = '';
     $length = 6;
 
@@ -98,4 +100,22 @@ function calculateDateOfBirth($age)
     $birthday = $currentDate->sub(new DateInterval('P' . $age . 'Y'));
 
     return $birthday->format('Y-m-d');
+}
+
+function generatePDF($html)
+{
+
+    $dompdf = new Dompdf();
+
+    ob_start();
+    include $html;
+    $html = ob_get_clean();
+
+    $dompdf->loadHtml($html);
+
+    $dompdf->setPaper('A4', 'landscape');
+
+    $dompdf->render();
+
+    $dompdf->stream('hakdog.pdf', array('Attachment' => false));
 }

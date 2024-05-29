@@ -77,7 +77,7 @@ require_once "../partials/aside.php";
             <h5 class="card-title">
               Helpdesks
               <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#add_helpdesks">Add
-                ICT Heldesks</button>
+                User</button>
             </h5>
             <table id="tbl_allusers" style="width:100%">
               <thead>
@@ -100,136 +100,111 @@ require_once "../partials/aside.php";
   </section>
   <!-- Modal -->
   <div class="modal fade" id="add_helpdesks" tabindex="-1">
-    <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5">Add ICT Request</h1>
+          <h1 class="modal-title fs-5">Add User</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
           <form class="row g-3 form-validation">
-            <div>
-              <label for="date_requested" class="form-label">Date of Request</label>
-              <input type="date" class="form-control" id="date_requested" name="date_requested"
-                value="<?= date('Y-m-d') ?>" required />
+            <div class="col-lg-12">
+              <label for="id_number" class="form-label">ID Number</label>
+              <input type="text" class="form-control" id="id_number" name="id_number" />
             </div>
-            <div>
-              <label for="requested_by" class="form-label">Requestor</label>
-              <select type="text" class="form-select select-init" id="requested_by" name="requested_by">
+            <div class="col-lg-4">
+              <label for="first_name" class="form-label">First Name<span class="text-danger"> *</span></label>
+              <input type="text" class="form-control" id="first_name" name="first_name" required />
+            </div>
+            <div class="col-lg-4">
+              <label for="middle_name" class="form-label">Middle Name</label>
+              <input type="text" class="form-control" id="middle_name" name="middle_name" />
+            </div>
+            <div class="col-lg-4">
+              <label for="last_name" class="form-label">Last Name<span class="text-danger"> *</span></label>
+              <input type="text" class="form-control" id="last_name" name="last_name" required />
+            </div>
+            <div class="col-lg-6">
+              <label for="date_birth" class="form-label">Date of Birth<span class="text-danger"> *</span></label>
+              <input type="date" class="form-control" id="date_birth" name="date_birth" required />
+            </div>
+            <div class="col-lg-6">
+              <label for="sex" class="form-label">Sex<span class="text-danger"> *</span></label>
+              <select class="form-select" id="sex" name="sex" required>
+                <option value="" selected disabled>choose...</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+            <div class="col-lg-12">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="1" id="is_pwd" name="is_pwd">
+                <label class="form-check-label" for="is_pwd">
+                  Person with disability
+                </label>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <label for="phone" class="form-label">Phone</label>
+              <input type="tel" class="form-control" id="phone" name="phone" />
+            </div>
+            <div class="col-lg-6">
+              <label for="email" class="form-label">Email<span class="text-danger"> *</span></label>
+              <input type="text" class="form-control" id="email" name="email" required />
+            </div>
+            <div class="col-lg-12">
+              <label for="address" class="form-label">Address</label>
+              <textarea type="text" class="form-control" id="address" name="address"></textarea>
+            </div>
+            <div class="col-lg-12">
+              <label for="designation" class="form-label">designation</label>
+              <input type="text" class="form-control" id="designation" name="designation" />
+            </div>
+            <div class="col-lg-6">
+              <label for="offices_id" class="form-label">Office<span class="text-danger"> *</span></label>
+              <select class="form-select select-init" id="offices_id" name="offices_id" required>
                 <option value="" selected disabled>choose...</option>
               </select>
             </div>
-            <div>
-              <label for="request_types_id" class="form-label">Type of Request</label>
-              <select type="text" class="form-select select-init" id="request_types_id" name="request_types_id"
-                required>
+            <div class="col-lg-6">
+              <label for="divisions_id" class="form-label">Division<span class="text-danger"> *</span></label>
+              <select class="form-select select-init" id="divisions_id" name="divisions_id" required>
                 <option value="" selected disabled>choose...</option>
               </select>
             </div>
-            <div>
-              <label for="categories_id" class="form-label">Category of Request</label>
-              <select type="text" class="form-select" id="categories_id" name="categories_id" required>
+            <div class="col-lg-12">
+              <label for="client_types_id" class="form-label">Client Type<span class="text-danger">
+                  *</span></label>
+              <select class="form-select select-init" id="client_types_id" name="client_types_id" required>
                 <option value="" selected disabled>choose...</option>
               </select>
-            </div>
-            <div>
-              <label for="sub_categories_id" class="form-label">Sub-Category of Request</label>
-              <select type="text" class="form-select" id="sub_categories_id" name="sub_categories_id" required>
-                <option value="" selected disabled>choose...</option>
-              </select>
-            </div>
-            <div>
-              <label for="complaint" class="form-label">Defect, Complaint, or Request</label>
-              <textarea class="form-control" id="complaint" name="complaint"></textarea>
-            </div>
-            <div>
-              <label for="datetime_preferred" class="form-label">Preferred date and time</label>
-              <input type="datetime-local" class="form-control" id="datetime_preferred" name="datetime_preferred" />
             </div>
             <hr>
-
-            <div>
-              <label for="h_statuses_id" class="form-label">Status</label>
-              <select type="text" class="form-select select-init" id="h_statuses_id" name="h_statuses_id">
+            <div class="col-lg-12">
+              <label for="roles_id" class="form-label">Role<span class="text-danger">
+                  *</span></label>
+              <select class="form-select select-init" id="roles_id" name="roles_id" required>
                 <option value="" selected disabled>choose...</option>
               </select>
             </div>
-            <div>
-              <label for="property_number" class="form-label">Property Number</label>
-              <input class="form-control" id="property_number" name="property_number" />
+            <div class="col-lg-12">
+              <label for="username" class="form-label">Username<span class="text-danger"> *</span></label>
+              <input type="text" class="form-control" id="username" name="username" required />
             </div>
-
-            <div>
-              <label for="priority_levels_id" class="form-label">Priority Level</label>
-              <select type="text" class="form-select select-init" id="priority_levels_id" name="priority_levels_id">
-                <option value="" selected disabled>choose...</option>
-              </select>
+            <div class="col-lg-12">
+              <label for="password" class="form-label">Password<span class="text-danger"> *</span></label>
+              <input type="password" class="form-control" id="password" name="password" required />
             </div>
-
-            <div>
-              <label for="repair_types_id" class="form-label">Repair Type</label>
-              <select type="text" class="form-select select-init" id="repair_types_id" name="repair_types_id">
-                <option value="" selected disabled>choose...</option>
-              </select>
+            <div class="col-lg-12">
+              <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="showPassword"
+                  onclick="password.type = password.type === 'password' ? 'text' : 'password'">
+                <label class="form-check-label" for="showPassword">show password</label>
+              </div>
             </div>
-
-            <div>
-              <label for="repair_classes_id" class="form-label">
-                Repair Classification
-                <button type="button" class="btn btn-link" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                  data-bs-html="true"
-                  title="<b>Simple:</b> Basic repairs requiring minimal effort, such as replacing peripherals or fixing minor issues.<br>
-               <b>Medium:</b> Moderately challenging repairs involving troubleshooting and basic technical knowledge.<br>
-               <b>Complex:</b> More involved repairs demanding significant troubleshooting and expertise.<br>
-               <b>Technical:</b> Repairs requiring a high level of technical knowledge and specialized skills.<br>
-               <b>Highly Technical:</b> The most challenging repairs demanding expert-level knowledge and advanced problem-solving skills.">
-                  <i class="bi bi-info-circle"></i>
-                </button>
-              </label>
-              <select type="text" class="form-select select-init" id="repair_classes_id" name="repair_classes_id">
-                <option value="" selected disabled>choose...</option>
-              </select>
-            </div>
-
-            <div>
-              <label for="mediums_id" class="form-label">Mode of Request</label>
-              <select type="text" class="form-select select-init" id="mediums_id" name="mediums_id">
-                <option value="" selected disabled>choose...</option>
-              </select>
-            </div>
-
-            <div>
-              <label for="datetime_start" class="form-label">Date & Time Started</label>
-              <input type="datetime-local" class="form-control" id="datetime_start" name="datetime_start" />
-            </div>
-            <div class="mb-3 form-check">
-              <input type="checkbox" class="form-check-input" value="1" id="is_pullout" name="is_pullout" />
-              <label class="form-check-label" for="is_pullout">Pulled out</label>
-            </div>
-            <div>
-              <label for="datetime_end" class="form-label">Date & Time Finished</label>
-              <input type="datetime-local" class="form-control" id="datetime_end" name="datetime_end" />
-            </div>
-            <div class="mb-3 form-check">
-              <input type="checkbox" class="form-check-input" value="1" id="is_turnover" name="is_turnover" />
-              <label class="form-check-label" for="is_turnover">Turned Over</label>
-            </div>
-            <div>
-              <label for="diagnosis" class="form-label">Diagnosis</label>
-              <textarea class="form-control" id="diagnosis" name="diagnosis"></textarea>
-            </div>
-            <div>
-              <label for="action_taken" class="form-label">Action Taken</label>
-              <textarea class="form-control" id="action_taken" name="action_taken"></textarea>
-            </div>
-            <div>
-              <label for="remarks" class="form-label">Remarks</label>
-              <textarea class="form-control" id="remarks" name="remarks"></textarea>
-            </div>
-
             <div hidden>
               <input class="captcha-token" name="captcha-token" />
-              <input name="add_helpdesks" />
+              <input name="add_users" />
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>

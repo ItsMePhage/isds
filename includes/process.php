@@ -19,8 +19,8 @@ if ($g_response == 1) {
         $username = $_POST['username'];
         $password = $_POST['password'];
 
-        $query = "SELECT u.*, r.role FROM users u LEFT JOIN roles r ON u.roles_id = r.id WHERE u.username = ? OR u.email = ?";
-        $result = $conn->execute_query($query, [$username, $username]);
+        $query = "SELECT u.*, r.role FROM users u LEFT JOIN roles r ON u.roles_id = r.id WHERE u.username = ? OR u.id_number = ? OR u.email = ?";
+        $result = $conn->execute_query($query, [$username, $username, $username]);
 
         if ($result && $result->num_rows === 1) {
             $row = $result->fetch_object();
@@ -179,6 +179,27 @@ if ($g_response == 1) {
         }
     }
 
+    if (isset($_POST['change_username'])) {
+        $username = $_POST['username'];
+
+        $query = "SELECT * FROM users WHERE username = ? AND id != ?";
+        $result = $conn->execute_query($query, [$username, $_SESSION['id']]);
+
+        if ($result && $result->num_rows == 0) {
+            $query = "UPDATE `users` SET `username` = ? WHERE `id` = ?";
+            $result = $conn->execute_query($query, [$username, $_SESSION['id']]);
+            $response = [
+                'status' => 'success',
+                'message' => 'Username updated.'
+            ];
+        } else {
+            $response = [
+                'status' => 'warning',
+                'message' => 'Username already exist.'
+            ];
+        }
+    }
+
     if (isset($_POST['change_password'])) {
         $password = $_POST['password'];
         $new_password = $_POST['new_password'];
@@ -198,8 +219,7 @@ if ($g_response == 1) {
                     $result = $conn->execute_query($query, [$hashed_password, $_SESSION['id']]);
                     $response = [
                         'status' => 'success',
-                        'message' => 'Password updated.',
-                        'redirect' => 'dashboard.php'
+                        'message' => 'Password updated.'
                     ];
                 } else {
                     $response = [
@@ -246,7 +266,7 @@ if ($g_response == 1) {
         if (!$result->num_rows) {
             $query = "SELECT * 
             FROM users 
-            WHERE email = ? AND id != ?";
+            WHERE email = ? AND id <> ?";
 
             $result = $conn->execute_query($query, [$email, $_SESSION['id']]);
 
@@ -266,7 +286,6 @@ if ($g_response == 1) {
         }
     }
 
-    /* employees process */
     if (isset($_POST['add_helpdesks'])) {
         switch ($_SESSION['role']) {
             case 'employee':
@@ -422,6 +441,36 @@ if ($g_response == 1) {
                     ];
                 }
                 break;
+            case 'admin':
+                $requested_by = !empty($_POST['requested_by']) ? $_POST['requested_by'] : $_SESSION['id'];
+                $date_requested = $_POST['date_requested'];
+                $topic = $_POST['topic'];
+                $date_scheduled = $_POST['date_scheduled'];
+                $time_start = $_POST['time_start'];
+                $time_end = $_POST['time_end'];
+                $hosts_id = !empty($_POST['hosts_id']) ? $_POST['hosts_id'] : NULL;
+                $m_statuses_id = !empty($_POST['m_statuses_id']) ? $_POST['m_statuses_id'] : 1;
+                $meeting_details = $_POST['meeting_details'];
+
+                $query = "SELECT * FROM meetings WHERE date_scheduled = ? AND ( ( time_start < ? AND time_end > ? ) OR ( time_start < ? AND time_end > ? ) OR ( time_start >= ? AND time_end <= ? ))";
+
+                $result = $conn->execute_query($query, [$date_scheduled, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end]);
+                if ($result->num_rows == 0) {
+                    $query = "INSERT INTO meetings(`requested_by`,`topic`,`date_requested`,`date_scheduled`,`time_start`,`time_end`,`hosts_id`,`m_statuses_id`,`meeting_details`) VALUE (?,?,?,?,?,?,?,?,?)";
+                    $result = $conn->execute_query($query, [$requested_by, $topic, $date_requested, $date_scheduled, $time_start, $time_end, $hosts_id, $m_statuses_id, $meeting_details]);
+
+                    $response = [
+                        'status' => 'success',
+                        'message' => 'Request submitted.',
+                        'redirect' => '../admin/meetings.php'
+                    ];
+                } else {
+                    $response = [
+                        'status' => 'warning',
+                        'message' => 'Conflict meeting.'
+                    ];
+                }
+                break;
         }
     }
 
@@ -466,6 +515,149 @@ if ($g_response == 1) {
             'redirect' => '../employee/meetings.php'
         ];
     }
+
+    if (isset($_POST['add_users'])) {
+        $id_number = $_POST['id_number'];
+        $first_name = $_POST['first_name'];
+        $middle_name = $_POST['middle_name'];
+        $last_name = $_POST['last_name'];
+        $date_birth = $_POST['date_birth'];
+        $sex = $_POST['sex'];
+        $is_pwd = $_POST['is_pwd'] ?? null;
+        $phone = $_POST['phone'];
+        $email = $_POST['email'];
+        $address = $_POST['address'];
+        $designation = $_POST['designation'];
+        $offices_id = $_POST['offices_id'];
+        $divisions_id = $_POST['divisions_id'];
+        $client_types_id = $_POST['client_types_id'];
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $password_hashed = password_hash($_POST['password'], PASSWORD_ARGON2I);
+
+        $roles_id = $_POST['roles_id'];
+
+        $query = "SELECT * FROM users WHERE username = ? OR  email = ?";
+        $result = $conn->execute_query($query, [$username, $username]);
+
+        if ($result && $result->num_rows < 1) {
+            $query = "INSERT INTO `users` (`id_number`,`first_name`,`middle_name`,`last_name`,`designation`,`offices_id`,`divisions_id`,`client_types_id`,`date_birth`,`sex`,`is_pwd`,`phone`,`email`,`address`,`username`,`password`,`roles_id`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            $result = $conn->execute_query($query, [$id_number, $first_name, $middle_name, $last_name, $designation, $offices_id, $divisions_id, $client_types_id, $date_birth, $sex, $is_pwd, $phone, $email, $address, $username, $password_hashed, $roles_id]);
+
+            $response = [
+                'status' => 'success',
+                'message' => 'Register successful.',
+                'redirect' => 'users.php'
+            ];
+        } else {
+            $response = [
+                'status' => 'warning',
+                'message' => 'Username or Email already exist.'
+            ];
+        }
+    }
+
+    if (isset($_POST['upd_users'])) {
+        $upd_users_id = $_POST['upd_users_id'];
+        $id_number = $_POST['id_number'];
+        $first_name = $_POST['first_name'];
+        $middle_name = $_POST['middle_name'];
+        $last_name = $_POST['last_name'];
+        $date_birth = $_POST['date_birth'];
+        $sex = $_POST['sex'];
+        $is_pwd = $_POST['is_pwd'] ?? null;
+        $phone = $_POST['phone'];
+        $email = $_POST['email'];
+        $address = $_POST['address'];
+        $designation = $_POST['designation'];
+        $offices_id = $_POST['offices_id'];
+        $divisions_id = $_POST['divisions_id'];
+        $client_types_id = $_POST['client_types_id'];
+        $roles_id = $_POST['roles_id'];
+
+        // Check for existing username or email to avoid duplication
+        $query = "SELECT * FROM users WHERE email = ? AND id <> ?";
+        $result = $conn->execute_query($query, [$email, $upd_users_id]);
+
+        if ($result && $result->num_rows < 1) {
+            $query = "UPDATE `users` SET `id_number` = ?, `first_name` = ?, `middle_name` = ?, `last_name` = ?, `designation` = ?, `offices_id` = ?, `divisions_id` = ?, `client_types_id` = ?, `date_birth` = ?, `sex` = ?, `is_pwd` = ?, `phone` = ?, `email` = ?, `address` = ?, `roles_id` = ? WHERE `id` = ?";
+            $result = $conn->execute_query($query, [$id_number, $first_name, $middle_name, $last_name, $designation, $offices_id, $divisions_id, $client_types_id, $date_birth, $sex, $is_pwd, $phone, $email, $address, $roles_id, $users_id]);
+
+            if ($result) {
+                $response = [
+                    'status' => 'success',
+                    'message' => 'Update successful.',
+                    'redirect' => 'users.php'
+                ];
+            } else {
+                $response = [
+                    'status' => 'error',
+                    'message' => 'Update failed. Please try again.'
+                ];
+            }
+        } else {
+            $response = [
+                'status' => 'warning',
+                'message' => 'Email already exists.'
+            ];
+        }
+    }
+
+    if (isset($_POST['reset_password'])) {
+        $users_id = $_POST['users_id'];
+
+        $query = "SELECT * FROM `users` WHERE `id` = ?";
+        $result = $conn->execute_query($query, [$users_id]);
+
+        if ($result->num_rows) {
+            $password = generatePassword();
+            $password_hashed = password_hash($password, PASSWORD_ARGON2I);
+            $password_exp = date("Y-m-d H:i:s", strtotime("+2 minutes"));
+
+            $query2 = "UPDATE `users` SET `password` = ?, `password_exp` = ? WHERE `id` = ?";
+            $result2 = $conn->execute_query($query2, [$password_hashed, $password_exp, $users_id]);
+
+            $query3 = $conn->execute_query($query, [$users_id]);
+
+            while ($acc = $query3->fetch_object()) {
+                $Subject = "DTI6 MIS | Reset Password";
+
+                $Message = "";
+                $Message .= "<p><img src='https://upload.wikimedia.org/wikipedia/commons/1/14/DTI_Logo_2019.png' alt='' width='58' height='55'></p>";
+                $Message .= "<hr>";
+                $Message .= "<div>";
+                $Message .= "<div>Good day!,</div>";
+                $Message .= "<br>";
+                $Message .= "<div>You have requested a reset password. Please use the temporary password below to login:</div>";
+                $Message .= "<br><br>";
+                $Message .= "<div>username: " . $acc->username . "</div>";
+                $Message .= "<div>Password: " . $password . "</div>";
+                $Message .= "<br><br>";
+                $Message .= "<div>For security reasons, we recommend that you change your password after your first login.</div>";
+                $Message .= "<div><a href='http://r6itbpm.site/DTI6-MIS/index.php'>Click here</a> to login. Thank you.</div>";
+                $Message .= "<br><br>";
+                $Message .= "<div>Best Regards,</div>";
+                $Message .= "<br>";
+                $Message .= "<div>DTI6 MIS Administrator</div>";
+                $Message .= "<div>IT Support Staff</div>";
+                $Message .= "<div>DTI Region VI</div>";
+                $Message .= "<br><hr>";
+                $Message .= "<div>&copy; Copyright&nbsp;<strong>DTI6 MIS&nbsp;</strong>2024. All Rights Reserved</div>";
+                $Message .= "</div>";
+
+                sendEmail($acc->email, $Subject, $Message);
+            }
+
+            $response['status'] = 'success';
+            $response['message'] = 'Reset password sent!';
+        } else {
+            $response = [
+                'status' => 'warning',
+                'message' => 'Email not found!'
+            ];
+        }
+    }
+
 } else {
     $response = [
         'status' => 'warning',

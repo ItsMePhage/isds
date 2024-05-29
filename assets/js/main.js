@@ -497,17 +497,7 @@ $(function () {
       success: function (response) {
         console.log(response);
 
-        let fh_date_requested = new Date(response.date_requested);
-
-        function pad(n) {
-          return n < 10 ? '0' + n : n;
-        }
-
-        let h_date_requested = fh_date_requested.getFullYear() + '-' +
-          pad(fh_date_requested.getMonth() + 1) + '-' +
-          pad(fh_date_requested.getDate());
-
-        $('#upd_date_requested').val(h_date_requested);
+        $('#upd_date_requested').val(response.date_requested);
         $('#upd_requested_by').val(response.requested_by);
         $('#upd_request_types_id').val(response.request_types_id);
 
@@ -686,18 +676,9 @@ $(function () {
       dataType: "json",
       success: function (response) {
         console.log(response);
-
-        let fm_date_requested = new Date(response.date_requested);
-
-        function pad(n) {
-          return n < 10 ? '0' + n : n;
-        }
-
-        let m_date_requested = fm_date_requested.getFullYear() + '-' +
-          pad(fm_date_requested.getMonth() + 1) + '-' +
-          pad(fm_date_requested.getDate());
-
-        $('#upd_date_requested').val(m_date_requested);
+        
+        $('#upd_date_requested').val(response.date_requested);
+        $('#upd_requested_by').val(response.requested_by);
         $('#upd_topic').val(response.topic);
         $('#upd_date_schedule').val(response.date_schedule);
         $('#upd_time_start').val(response.time_start);
@@ -707,6 +688,98 @@ $(function () {
 
     $('#updmeetingsmodal').modal('toggle');
     $('#updmeetingsmodal').modal('show');
+  }
+
+  window.updusersbtn = function (id) {
+    console.log('user ID: ' + id);
+
+    $.ajax({
+      url: "/isds/includes/fetch.php",
+      type: "GET",
+      data: {
+        upd_users: true,
+        users_id: id
+      },
+      dataType: "json",
+      success: function (response) {
+        console.log(response);
+        
+        $('#upd_id_number').val(response.id_number);
+        $('#upd_first_name').val(response.first_name);
+        $('#upd_middle_name').val(response.middle_name);
+        $('#upd_last_name').val(response.last_name);
+        $('#upd_date_birth').val(response.date_birth);
+        $('#upd_sex').val(response.sex);
+        $('#upd_is_pwd').prop('checked', response.is_pwd == 1);
+        $('#upd_phone').val(response.phone);
+        $('#upd_email').val(response.email);
+        $('#upd_address').val(response.address);
+        $('#upd_designation').val(response.designation);
+        $('#upd_offices_id').val(response.offices_id);
+        $('#upd_divisions_id').val(response.divisions_id);
+        $('#upd_client_types_id').val(response.client_types_id);
+        $('#upd_roles_id').val(response.roles_id);
+      }
+    });
+
+    $('#updusersmodal').modal('toggle');
+    $('#updusersmodal').modal('show');
+  }
+
+  window.rstusersbtn = function (id) {
+    console.log('meeting ID: ' + id);
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You are trying to reset the password of this user.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, reset",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Loading",
+          html: "Please wait...",
+          allowOutsideClick: false,
+          didOpen: function () {
+            Swal.showLoading();
+          }
+        });
+
+        $.ajax({
+          type: "POST",
+          url: "/isds/includes/process.php",
+          data: { 'reset_password': true, 'users_id': id, 'captcha-token': captchaToken },
+          dataType: "json",
+          success: function (response) {
+            setTimeout(function () {
+              Swal.fire({
+                icon: response.status,
+                title: response.message,
+                showConfirmButton: false,
+                timer: 1000
+              }).then(function () {
+                if (response.redirect) {
+                  window.location.href = response.redirect;
+                }
+                if (response.reload) {
+                  window.reload();
+                }
+              });
+            }, 1000);
+
+            grecaptcha.ready(function () {
+              grecaptcha.execute(window.sitekey).then(function (token) {
+                $(".captcha-token").val(token);
+              });
+            });
+          }
+        });
+      }
+    });
+
   }
 
   function chart_month() {
