@@ -246,18 +246,18 @@ if (isset($_GET["chart_division"])) {
     $query .= "SELECT d.division,IFNULL(hd.count_per_division, 0) AS count_per_division ";
     $query .= "FROM divisions d ";
     $query .= "LEFT JOIN (SELECT  u.divisions_id, COUNT(h.id) AS count_per_division FROM  helpdesks h INNER JOIN  users u ON h.requested_by = u.id WHERE  YEAR(h.date_requested) = YEAR(CURRENT_DATE) GROUP BY  u.divisions_id) hd ON d.id = hd.divisions_id ";
-    $query .= "ORDER BY hd.count_per_division DESC";
+    // $query .= "ORDER BY hd.count_per_division DESC";
 
     $result = $conn->execute_query($query);
 
     $response = [
         'series' => [],
-        'labels' => []
+        'labels' => ['ORD','CPD','FAD','BDD','COA','IDD','DTI AKL','DTI ANT','DTI CAP','DTI GUI','DTI ILO','DTI NEG']
     ];
 
     while ($row = $result->fetch_object()) {
         $response['series'][] = $row->count_per_division;
-        $response['labels'][] = $row->division;
+        // $response['labels'][] = $row->division;
     }
 }
 
