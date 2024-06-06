@@ -3,7 +3,7 @@
 
     <div class="d-flex align-items-center justify-content-between">
       <span class="logo d-flex align-items-center">
-        <!-- <img src="/<?= root ?>/assets/img/logo.png" alt=""> -->
+        <img src="/<?= root ?>/assets/img/logo.png" alt="">
         <span class="d-none d-lg-block"><?= website ?></span>
       </span>
       <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -15,7 +15,7 @@
         <li class="nav-item dropdown pe-3">
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            <span class="d-none d-md-block dropdown-toggle ps-2"><?= $acc->first_name[0] ?>. <?= $acc->last_name ?></span>
+            <span class="d-block dropdown-toggle ps-2"><?= $acc->first_name[0] ?>. <?= $acc->last_name ?></span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">

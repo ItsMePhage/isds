@@ -283,7 +283,7 @@ if (isset($_GET["chart_sex"])) {
 if (isset($_GET["chart_month"])) {
     $query = "";
     $query .= "SELECT months.month_name, IFNULL(counts.count_per_month, 0) AS count_per_month ";
-    $query .= "FROM ( SELECT 1 AS month_num, 'January' AS month_name UNION ALL SELECT 2, 'February' UNION ALL SELECT 3, 'March' UNION ALL SELECT 4, 'April' UNION ALL SELECT 5, 'May' UNION ALL SELECT 6, 'June' UNION ALL SELECT 7, 'July' UNION ALL SELECT 8, 'August' UNION ALL SELECT 9, 'September' UNION ALL SELECT 10, 'October' UNION ALL SELECT 11, 'November' UNION ALL SELECT 12, 'December') AS months ";
+    $query .= "FROM ( SELECT 1 AS month_num, 'JAN' AS month_name UNION ALL SELECT 2, 'FEB' UNION ALL SELECT 3, 'MAR' UNION ALL SELECT 4, 'APR' UNION ALL SELECT 5, 'MAY' UNION ALL SELECT 6, 'JUN' UNION ALL SELECT 7, 'JUL' UNION ALL SELECT 8, 'AUG' UNION ALL SELECT 9, 'SEP' UNION ALL SELECT 10, 'OCT' UNION ALL SELECT 11, 'NOV' UNION ALL SELECT 12, 'DEC') AS months ";
     $query .= "LEFT JOIN ( SELECT MONTH(date_requested) AS month_num, COUNT(id) AS count_per_month FROM helpdesks WHERE YEAR(CURRENT_DATE) = YEAR(date_requested) GROUP BY MONTH(date_requested)) AS counts ON months.month_num = counts.month_num ";
     $query .= "ORDER BY months.month_num ";
 
