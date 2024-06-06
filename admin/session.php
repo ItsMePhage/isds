@@ -6,6 +6,7 @@ session_start();
 
 if ($is_protected == true) {
     if (isset($_SESSION['id'])) {
+        
         // if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 1800)) {
         //     session_unset();
         //     session_destroy();
