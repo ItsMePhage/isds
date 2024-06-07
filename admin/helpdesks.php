@@ -88,7 +88,7 @@ require_once "../partials/aside.php";
 
       <div class="col-lg-12">
 
-        <div class="card">
+        <div class="card" id="helpdesks_list">
           <div class="card-body">
             <h5 class="card-title">
               Helpdesks

@@ -208,7 +208,7 @@ CREATE TABLE `helpdesks` (
   CONSTRAINT `fk_helpdesks_users1` FOREIGN KEY (`requested_by`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_helpdesks_users2` FOREIGN KEY (`serviced_by`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `fk_helpdesks_users3` FOREIGN KEY (`approved_by`) REFERENCES `users` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -217,6 +217,7 @@ CREATE TABLE `helpdesks` (
 
 LOCK TABLES `helpdesks` WRITE;
 /*!40000 ALTER TABLE `helpdesks` DISABLE KEYS */;
+INSERT INTO `helpdesks` VALUES (1,'REQ-2024-01-001',4,'2024-01-08',1,1,1,'Reformat the PC for the new chief of BDD','2024-06-03 08:00:00',5,'',2,2,4,1,NULL,NULL,'2024-01-08 08:00:00','2024-01-08T08:00',1,1,'N/A','Reformat and optimize PC','N/A','2024-06-03 02:25:50',NULL);
 /*!40000 ALTER TABLE `helpdesks` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -780,7 +781,7 @@ CREATE TABLE `users` (
   CONSTRAINT `fk_users_divisions1` FOREIGN KEY (`divisions_id`) REFERENCES `divisions` (`id`),
   CONSTRAINT `fk_users_offices` FOREIGN KEY (`offices_id`) REFERENCES `offices` (`id`),
   CONSTRAINT `fk_users_roles1` FOREIGN KEY (`roles_id`) REFERENCES `roles` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -789,7 +790,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'MIS_Fuerte','Dan Alfrei','','Fuerte','2000-09-29','Male',NULL,'','dace.phage@gmail.com','','',1,1,3,'MIS_Fuerte','$argon2i$v=19$m=65536,t=4,p=1$YlovNGFVWkNLaWY3dnlnNQ$fO1ykADY0XG5CG0bRNnyGvbwJQ0Df8HCvS8TzvQXIhM',NULL,1,1,'2024-05-29 06:50:49','2024-05-29 06:54:07'),(2,'MIS_Patrimonio','Angelo','','Patrimonio','0001-01-01','Male',NULL,'','angelopatrimonio@dti.gov.ph','','',1,1,3,'MIS_Patrimonio','$argon2i$v=19$m=65536,t=4,p=1$WW11cmZxbFZlbDBETkxXbQ$g3Uhaz0GIvMJtIe8syH6lkkJ2Ca5N9N7S6ot808SRSs',NULL,3,1,'2024-05-29 06:52:47','2024-05-29 06:52:47'),(3,'MIS_Collado','Bemy John','','Collado','0001-01-01','Male',NULL,'','bemyjohncollado@dti.gov.ph','','',1,1,3,'MIS_Collado','$argon2i$v=19$m=65536,t=4,p=1$Z0tyd1dQTWxGNVVYQlc3Mw$3sokqlFFEwh/LGCQDhOd4zU1zpyRxRZ3NUKIg3xk8ag',NULL,1,1,'2024-05-29 07:49:10','2024-05-29 07:49:10');
+INSERT INTO `users` VALUES (1,'MIS_Fuerte','Dan Alfrei','','Fuerte','2000-09-29','Male',NULL,'','dace.phage@gmail.com','','',1,1,3,'MIS_Fuerte','$argon2i$v=19$m=65536,t=4,p=1$a3RuNktPZ003WW1obkJERw$UH68X3h23PAQ453RcdTr6Jaz6JVqYFWQKooZOTbmZco',NULL,1,1,'2024-05-29 06:50:49','2024-06-06 02:02:06'),(2,'MIS_Patrimonio','Angelo','','Patrimonio','0001-01-01','Male',NULL,'','angelopatrimonio@dti.gov.ph','','',1,1,3,'MIS_Patrimonio','$argon2i$v=19$m=65536,t=4,p=1$WW11cmZxbFZlbDBETkxXbQ$g3Uhaz0GIvMJtIe8syH6lkkJ2Ca5N9N7S6ot808SRSs',NULL,1,1,'2024-05-29 06:52:47','2024-06-03 00:30:29'),(3,'MIS_Collado','Bemy John','','Collado','0001-01-01','Male',NULL,'','bemyjohncollado@dti.gov.ph','','',1,1,3,'MIS_Collado','$argon2i$v=19$m=65536,t=4,p=1$Z0tyd1dQTWxGNVVYQlc3Mw$3sokqlFFEwh/LGCQDhOd4zU1zpyRxRZ3NUKIg3xk8ag',NULL,1,1,'2024-05-29 07:49:10','2024-05-29 07:49:10'),(4,'','May Ann','','Arca','0001-11-11','Female',NULL,'','mayannarca560@gmail.com','','',1,4,3,'BDD_Arca','$argon2i$v=19$m=65536,t=4,p=1$WXpaY2hob1ZTdFFBSW1jUw$0+U4Lh7AUvrkeN/Db+088X8Vc4C+8VuVO7zbURkj/K0',NULL,3,1,'2024-06-03 02:16:00','2024-06-03 02:16:00');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -810,4 +811,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-29 17:12:58
+-- Dump completed on 2024-06-07 17:40:43
