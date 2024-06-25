@@ -16,6 +16,7 @@ require_once "partials/head.php";
                                 <br>
                                 <span>
                                     <img src="assets/img/logo.png" class="fs-2" alt="">
+                                    <img src="assets/img/logo-gptw.png" class="fs-2" alt="">
                                     <img src="assets/img/logo-bp.png" class="fs-2" alt="">
                                     <br>
                                     <?= website_name ?>

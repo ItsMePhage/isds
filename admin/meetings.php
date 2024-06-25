@@ -98,7 +98,7 @@ require_once "../partials/aside.php";
                 onclick="tbl_meetings_card.style.display = 'none';cal_meetings_card.style.visibility = 'visible'">calendar
                 view</button>
             </h5>
-            <table id="tbl_allmeetings" style="width:100%">
+            <table id="tbl_meetings_a" style="width:100%">
               <thead>
                 <tr>
                   <th scope="col" class="text-nowrap">Date Requested</th>
@@ -127,7 +127,7 @@ require_once "../partials/aside.php";
                 onclick="tbl_meetings_card.style.display = '';cal_meetings_card.style.visibility = 'hidden'">table
                 view</button>
             </h5>
-            <div id='cal_allmeetings'></div>
+            <div id='cal_meetings_a'></div>
           </div>
         </div>
 
@@ -136,7 +136,7 @@ require_once "../partials/aside.php";
   </section>
   <!-- Modal -->
   <div class="modal fade" id="add_meetings" tabindex="-1">
-    <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5">Add Zoom Request</h1>
@@ -144,52 +144,54 @@ require_once "../partials/aside.php";
         </div>
         <div class="modal-body">
           <form class="row g-3 form-validation">
-            <div>
-              <label for="date_requested" class="form-label">Date of Request</label>
-              <input type="date" class="form-control" id="date_requested" name="date_requested"
-                value="<?= date('Y-m-d') ?>" required />
+            <div class="col-lg-6">
+              <div>
+                <label for="date_requested" class="form-label">Date of Request</label>
+                <input type="date" class="form-control" id="date_requested" name="date_requested"
+                  value="<?= date('Y-m-d') ?>" required />
+              </div>
+              <div>
+                <label for="requested_by" class="form-label">Requestor</label>
+                <select type="text" class="form-select select-init" id="requested_by" name="requested_by">
+                  <option value="" selected disabled>choose...</option>
+                </select>
+              </div>
+              <div>
+                <label for="topic" class="form-label">Topic or Title of meeting</label>
+                <textarea class="form-control" id="topic" name="topic"></textarea>
+              </div>
+              <div>
+                <label for="date_scheduled" class="form-label">Date of Schedule</label>
+                <input type="date" class="form-control" id="date_scheduled" name="date_scheduled" required />
+              </div>
+              <div>
+                <label for="time_start" class="form-label">Start Time of Schedule</label>
+                <input type="time" class="form-control" id="time_start" name="time_start" required />
+              </div>
+              <div>
+                <label for="time_end" class="form-label">End Time of Schedule</label>
+                <input type="time" class="form-control" id="time_end" name="time_end" required />
+              </div>
             </div>
-            <div>
-              <label for="requested_by" class="form-label">Requestor</label>
-              <select type="text" class="form-select select-init" id="requested_by" name="requested_by">
-                <option value="" selected disabled>choose...</option>
-              </select>
-            </div>
-            <div>
-              <label for="topic" class="form-label">Topic or Title of meeting</label>
-              <textarea class="form-control" id="topic" name="topic"></textarea>
-            </div>
-            <div>
-              <label for="date_scheduled" class="form-label">Date of Schedule</label>
-              <input type="date" class="form-control" id="date_scheduled" name="date_scheduled" required />
-            </div>
-            <div>
-              <label for="time_start" class="form-label">Start Time of Schedule</label>
-              <input type="time" class="form-control" id="time_start" name="time_start" required />
-            </div>
-            <div>
-              <label for="time_end" class="form-label">End Time of Schedule</label>
-              <input type="time" class="form-control" id="time_end" name="time_end" required />
-            </div>
-            <hr>
+            <div class="col-lg-6">
+              <div>
+                <label for="hosts_id" class="form-label">Zoom Host</label>
+                <select type="text" class="form-select select-init" id="hosts_id" name="hosts_id">
+                  <option value="" selected disabled>choose...</option>
+                </select>
+              </div>
 
-            <div>
-              <label for="hosts_id" class="form-label">Zoom Host</label>
-              <select type="text" class="form-select select-init" id="hosts_id" name="hosts_id">
-                <option value="" selected disabled>choose...</option>
-              </select>
-            </div>
+              <div>
+                <label for="m_statuses_id" class="form-label">Status</label>
+                <select type="text" class="form-select select-init" id="m_statuses_id" name="m_statuses_id">
+                  <option value="" selected disabled>choose...</option>
+                </select>
+              </div>
 
-            <div>
-              <label for="m_statuses_id" class="form-label">Status</label>
-              <select type="text" class="form-select select-init" id="m_statuses_id" name="m_statuses_id">
-                <option value="" selected disabled>choose...</option>
-              </select>
-            </div>
-
-            <div>
-              <label for="meeting_details" class="form-label">Zoom meeting details</label>
-              <textarea class="form-control" id="meeting_details" name="meeting_details"></textarea>
+              <div>
+                <label for="meeting_details" class="form-label">Zoom meeting details</label>
+                <textarea class="form-control" id="meeting_details" name="meeting_details"></textarea>
+              </div>
             </div>
 
             <div hidden>

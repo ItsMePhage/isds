@@ -169,7 +169,7 @@ if ($g_response == 1) {
             }
 
             $response['status'] = 'success';
-            $response['message'] = 'Temporary password sent!';
+            $response['message'] = 'Temporary password sent.';
             $response['redirect'] = 'login.php';
         } else {
             $response = [
@@ -275,14 +275,14 @@ if ($g_response == 1) {
 
                 $result = $conn->execute_query($query, [$id_number, $first_name, $middle_name, $last_name, $date_birth, $sex, $is_pwd, $phone, $email, $address, $designation, $offices_id, $divisions_id, $client_types_id, $_SESSION['id']]);
                 $response['status'] = 'success';
-                $response['message'] = 'User updated successful!';
+                $response['message'] = 'User updated successfully.';
             } else {
                 $response['status'] = 'warning';
-                $response['message'] = $email . ' already exist!';
+                $response['message'] = 'Email already exist.';
             }
         } else {
             $response['status'] = 'warning';
-            $response['message'] = $id_number . ' already exist!';
+            $response['message'] = 'ID Number already exist.';
         }
     }
 
@@ -314,12 +314,13 @@ if ($g_response == 1) {
                 $sub_categories_id = $_POST['sub_categories_id'];
                 $complaint = $_POST['complaint'];
                 $datetime_preferred = !empty($_POST['datetime_preferred']) ? $_POST['datetime_preferred'] : date('Y-m-d H:i:s');
-                $h_statuses_id = !empty($_POST['h_statuses_id']) ? $_POST['h_statuses_id'] : 1;
+                $h_statuses_id = !empty($_POST['h_statuses_id']) ? $_POST['h_statuses_id'] : 3;
                 $property_number = $_POST['property_number'];
                 $priority_levels_id = !empty($_POST['priority_levels_id']) ? $_POST['priority_levels_id'] : NULL;
                 $repair_types_id = !empty($_POST['repair_types_id']) ? $_POST['repair_types_id'] : NULL;
                 $repair_classes_id = !empty($_POST['repair_classes_id']) ? $_POST['repair_classes_id'] : NULL;
                 $mediums_id = !empty($_POST['mediums_id']) ? $_POST['mediums_id'] : NULL;
+                $serviced_by = !empty($_SESSION['id']) ? $_SESSION['id'] : NULL;
                 $datetime_start = !empty($_POST['datetime_start']) ? $_POST['datetime_start'] : NULL;
                 $is_pullout = isset($_POST['is_pullout']) ? 1 : NULL;
                 $datetime_end = !empty($_POST['datetime_end']) ? $_POST['datetime_end'] : NULL;
@@ -328,8 +329,8 @@ if ($g_response == 1) {
                 $action_taken = $_POST['action_taken'];
                 $remarks = $_POST['remarks'];
 
-                $query = "INSERT INTO helpdesks(`requested_by`,`date_requested`,`request_types_id`,`categories_id`,`sub_categories_id`,`complaint`,`datetime_preferred`,`h_statuses_id`,`property_number`,`priority_levels_id`,`repair_types_id`,`repair_classes_id`,`mediums_id`,`datetime_start`,`is_pullout`,`datetime_end`,`is_turnover`,`diagnosis`,`action_taken`,`remarks`) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-                $result = $conn->execute_query($query, [$requested_by, $date_requested, $request_types_id, $categories_id, $sub_categories_id, $complaint, $datetime_preferred, $h_statuses_id, $property_number, $priority_levels_id, $repair_types_id, $repair_classes_id, $mediums_id, $datetime_start, $is_pullout, $datetime_end, $is_turnover, $diagnosis, $action_taken, $remarks]);
+                $query = "INSERT INTO helpdesks(`requested_by`,`date_requested`,`request_types_id`,`categories_id`,`sub_categories_id`,`complaint`,`datetime_preferred`,`h_statuses_id`,`property_number`,`priority_levels_id`,`repair_types_id`,`repair_classes_id`,`mediums_id`,`serviced_by`,`datetime_start`,`is_pullout`,`datetime_end`,`is_turnover`,`diagnosis`,`action_taken`,`remarks`) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                $result = $conn->execute_query($query, [$requested_by, $date_requested, $request_types_id, $categories_id, $sub_categories_id, $complaint, $datetime_preferred, $h_statuses_id, $property_number, $priority_levels_id, $repair_types_id, $repair_classes_id, $mediums_id, $serviced_by, $datetime_start, $is_pullout, $datetime_end, $is_turnover, $diagnosis, $action_taken, $remarks]);
 
                 $response = [
                     'status' => 'success',
@@ -649,11 +650,11 @@ if ($g_response == 1) {
             }
 
             $response['status'] = 'success';
-            $response['message'] = 'Reset password sent!';
+            $response['message'] = 'Reset password sent.';
         } else {
             $response = [
                 'status' => 'warning',
-                'message' => 'Email not found!'
+                'message' => 'Email not found.'
             ];
         }
     }
@@ -661,7 +662,7 @@ if ($g_response == 1) {
 } else {
     $response = [
         'status' => 'warning',
-        'message' => 'robot verification failed.',
+        'message' => 'something wen\'t wrong, please try again.',
         'reload' => true
     ];
 }

@@ -4,6 +4,8 @@
     <div class="d-flex align-items-center justify-content-between">
       <span class="logo d-flex align-items-center">
         <img src="/<?= root ?>/assets/img/logo.png" alt="">
+        <img src="/<?= root ?>/assets/img/logo-gptw.png" alt="">
+        <img src="/<?= root ?>/assets/img/logo-bp.png" alt="">
         <span class="d-none d-lg-block"><?= website ?></span>
       </span>
       <i class="bi bi-list toggle-sidebar-btn"></i>

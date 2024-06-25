@@ -164,7 +164,7 @@ if (isset($_GET['tbl_meetings'])) {
     );
 }
 
-if (isset($_GET['tbl_allhelpdesks'])) {
+if (isset($_GET['tbl_helpdesks_a'])) {
     $table = "(SELECT 
         h.id, 
         h.request_number, 
@@ -193,7 +193,9 @@ if (isset($_GET['tbl_allhelpdesks'])) {
     LEFT JOIN 
         sub_categories sc ON h.sub_categories_id = sc.id
     LEFT JOIN 
-        h_statuses hs ON h.h_statuses_id = hs.id) AS tbl_helpdesks";
+        h_statuses hs ON h.h_statuses_id = hs.id
+     WHERE 
+        h.serviced_by = " . $_SESSION['id'] . " OR h.serviced_by IS NULL) AS tbl_helpdesks";
 
     $columns = array(
         array(
@@ -228,7 +230,7 @@ if (isset($_GET['tbl_allhelpdesks'])) {
     );
 }
 
-if (isset($_GET['tbl_allmeetings'])) {
+if (isset($_GET['tbl_meetings_a'])) {
     $table = "(SELECT 
         m.id, 
         m.request_number, 
