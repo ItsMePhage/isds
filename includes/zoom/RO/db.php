@@ -1,10 +1,10 @@
 <?php
 class DB {
     // Database credentials
-    private $dbHost     = "127.0.0.1";
-    private $dbUsername = "root";
-    private $dbPassword = "1925";
-    private $dbName     = "zoomdemo";
+    private $dbHost     = "localhost";
+    private $dbUsername = "zoomrequestadmin";
+    private $dbPassword = "!r7TG4WuxCRJUgoo";
+    private $dbName     = "zoom_tokens";
  
     public function __construct(){
         if(!isset($this->db)){
@@ -20,7 +20,7 @@ class DB {
   
     // Check is table empty
     public function is_table_empty() {
-        $result = $this->db->query("SELECT id FROM token");
+        $result = $this->db->query("SELECT id FROM `RO`");
         if($result->num_rows) {
             return false;
         }
@@ -30,7 +30,7 @@ class DB {
   
     // Get access token
     public function get_access_token() {
-        $sql = $this->db->query("SELECT access_token FROM token");
+        $sql = $this->db->query("SELECT access_token FROM `RO`");
         $result = $sql->fetch_assoc();
         return json_decode($result['access_token']);
     }
@@ -46,7 +46,7 @@ class DB {
         if($this->is_table_empty()) {
             $this->db->query("INSERT INTO token(access_token) VALUES('$token')");
         } else {
-            $this->db->query("UPDATE token SET access_token = '$token' WHERE id = (SELECT id FROM token)");
+            $this->db->query("UPDATE token SET access_token = '$token' WHERE id = (SELECT id FROM `RO`)");
         }
     }
 }
