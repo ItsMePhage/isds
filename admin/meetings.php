@@ -192,6 +192,11 @@ require_once "../partials/aside.php";
                 <label for="meeting_details" class="form-label">Zoom meeting details</label>
                 <textarea class="form-control" id="meeting_details" name="meeting_details"></textarea>
               </div>
+              <hr>
+              <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" value="1" id="send_email" name="send_email" />
+                <label class="form-check-label" for="send_email">Send email</label>
+              </div>
             </div>
 
             <div hidden>

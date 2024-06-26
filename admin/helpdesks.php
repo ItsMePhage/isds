@@ -244,6 +244,11 @@ require_once "../partials/aside.php";
                 <label for="remarks" class="form-label">Remarks</label>
                 <textarea class="form-control" id="remarks" name="remarks"></textarea>
               </div>
+              <hr>
+              <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" value="1" id="send_email" name="send_email" />
+                <label class="form-check-label" for="send_email">Send email</label>
+              </div>
             </div>
 
             <div hidden>
