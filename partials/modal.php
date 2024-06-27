@@ -271,8 +271,8 @@ switch ($page) {
                                         </div>
 
                                         <div>
-                                            <label for="meeting_details" class="form-label">Zoom meeting details</label>
-                                            <textarea class="form-control" id="meeting_details" name="meeting_details"  cols='60' rows='8'></textarea>
+                                            <label for="upd_meeting_details" class="form-label">Zoom meeting details</label>
+                                            <textarea class="form-control" id="upd_meeting_details" name="meeting_details"  cols='60' rows='8'></textarea>
                                         </div>
 
                                         <div class="mt-3">
