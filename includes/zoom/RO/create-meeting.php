@@ -28,7 +28,7 @@ function create_meeting()
         $data = json_decode($response->getBody());
 
         $response = [
-            'zoom_details' => "DTI VI is inviting you to a scheduled Zoom meeting.<br><br>Topic: $data->topic<br>Time: $data->start_time<br><br>Join Zoom Meeting<br><a href='$data->join_url'>$data->join_url</a><br><br>Meeting ID: $data->id<br>Passcode: $data->password<br>",
+            'zoom_details' => "DTI VI is inviting you to a scheduled Zoom meeting.&#13;&#10;&#13;&#10;Topic: $data->topic&#13;&#10;Time: $data->start_time&#13;&#10;&#13;&#10;Join Zoom Meeting&#13;&#10;<a href='$data->join_url'>$data->join_url</a>&#13;&#10;&#13;&#10;Meeting ID: $data->id&#13;&#10;Passcode: $data->password&#13;&#10;",
             'message' => 'meeting scheduled',
             'status' => 'success'
         ];

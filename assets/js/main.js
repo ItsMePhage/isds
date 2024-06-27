@@ -319,10 +319,12 @@ $(function () {
       },
     });
 
+    var topic = $("#upd_topic").val();
+
     $.ajax({
       type: "POST",
       url: "/isds/includes/zoom/RO/create-meeting.php",
-      data: { topic: "Sample meeting" },
+      data: { topic: topic },
       dataType: "json",
       success: function (response) {
         setTimeout(function () {
@@ -332,12 +334,7 @@ $(function () {
             showConfirmButton: false,
             timer: 1000,
           }).then(function () {
-            if (response.redirect) {
-              window.location.href = response.redirect;
-            }
-            if (response.reload) {
-              window.reload();
-            }
+            $("#txt_name").val(response.zoom_details);
           });
         }, 1000);
       },
