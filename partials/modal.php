@@ -274,6 +274,11 @@ switch ($page) {
                                             <label for="meeting_details" class="form-label">Zoom meeting details</label>
                                             <textarea class="form-control" id="meeting_details" name="meeting_details"></textarea>
                                         </div>
+
+                                        <div class="mt-3">
+                                            <button type="button"
+                                                class="btn btn-secondary float-end small btn-sm generate-zoom">Generate</button>
+                                        </div>
                                     </div>
 
                                     <div hidden>

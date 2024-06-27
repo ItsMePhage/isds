@@ -1,62 +1,36 @@
 <?php
 require_once 'config.php';
 
-function create_meeting()
-{
-    $client = new GuzzleHttp\Client(['base_uri' => 'https://api.zoom.us']);
+session_start();
 
-    $db = new DB();
-    $arr_token = $db->get_access_token();
-    $accessToken = $arr_token->access_token;
+$response = array();
 
-    try {
-        // if you have userid of user than change it with me in url
-        $response = $client->request('POST', '/v2/users/me/meetings', [
-            "headers" => [
-                "Authorization" => "Bearer $accessToken"
-            ],
-            'json' => [
-                "topic" => "Sample meeting",
-                "type" => 2,
-                "start_time" => "2020-06-24T20:30:00",    // meeting start time
-                "duration" => "30"                       // 30 minutes
-            ],
-        ]);
+$client = new GuzzleHttp\Client(['base_uri' => 'https://api.zoom.us']);
 
-        $data = json_decode($response->getBody());
+$db = new DB();
+$arr_token = $db->get_access_token();
+$accessToken = $arr_token->access_token;
 
-        echo "DTI VI is inviting you to a scheduled Zoom meeting.<br>";
-        echo "<br>";
-        echo "Topic: $data->topic<br>";
-        echo "Time: $data->start_time<br>";
-        echo "<br>";
-        echo "Join Zoom Meeting<br>";
-        echo "<a href='$data->join_url'>$data->join_url</a><br>";
-        echo "<br>";
-        echo "Meeting ID: $data->id<br>";
-        echo "Passcode: $data->password<br>";
+$response = $client->request('POST', '/v2/users/me/meetings', [
+    "headers" => [
+        "Authorization" => "Bearer $accessToken"
+    ],
+    'json' => [
+        "topic" => $_POST['topic'],
+        "type" => 2,
+        "start_time" => "2020-06-24T20:30:00",
+        "duration" => "30"
+    ],
+]);
 
-    } catch (Exception $e) {
-        if (401 == $e->getCode()) {
-            $refresh_token = $db->get_refersh_token();
+$data = json_decode($response->getBody());
 
-            $client = new GuzzleHttp\Client(['base_uri' => 'https://zoom.us']);
-            $response = $client->request('POST', '/oauth/token', [
-                "headers" => [
-                    "Authorization" => "Basic " . base64_encode(CLIENT_ID . ':' . CLIENT_SECRET)
-                ],
-                'form_params' => [
-                    "grant_type" => "refresh_token",
-                    "refresh_token" => $refresh_token
-                ],
-            ]);
-            $db->update_access_token($response->getBody());
+$response = [
+    'zoom_details' => "DTI VI is inviting you to a scheduled Zoom meeting.<br><br>Topic: $data->topic<br>Time: $data->start_time<br><br>Join Zoom Meeting<br><a href='$data->join_url'>$data->join_url</a><br><br>Meeting ID: $data->id<br>Passcode: $data->password<br>",
+    'message' => 'meeting scheduled',
+    'status' => 'success'
+];
 
-            create_meeting();
-        } else {
-            echo $e->getMessage();
-        }
-    }
-}
+$responseJSON = json_encode($response);
 
-create_meeting();
+echo $responseJSON;
