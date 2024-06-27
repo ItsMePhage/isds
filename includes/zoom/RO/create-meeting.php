@@ -17,7 +17,7 @@ function create_meeting()
                 "Authorization" => "Bearer $accessToken"
             ],
             'json' => [
-                "topic" => "Integrate zoom APIs",
+                "topic" => $_POST['topic'],
                 "type" => 2,
                 "start_time" => "2020-06-24T20:30:00",    // meeting start time
                 "duration" => "30",                       // 30 minutes
