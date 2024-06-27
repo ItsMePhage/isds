@@ -16,7 +16,7 @@ function create_meeting()
                 "Authorization" => "Bearer $accessToken"
             ],
             'json' => [
-                "topic" => "Integrate zoom APIs",
+                "topic" => "Sample meeting",
                 "type" => 2,
                 "start_time" => "2020-06-24T20:30:00",    // meeting start time
                 "duration" => "30"                       // 30 minutes
@@ -24,7 +24,17 @@ function create_meeting()
         ]);
 
         $data = json_decode($response->getBody());
-        echo "Zoom Details:<br><pre>" . print_r($data);
+
+        echo "DTI VI is inviting you to a scheduled Zoom meeting.<br>";
+        echo "<br>";
+        echo "Topic: $data->topic<br>";
+        echo "Time: $data->start_time<br>";
+        echo "<br>";
+        echo "Join Zoom Meeting<br>";
+        echo "<a href='$data->join_url'>$data->join_url</a><br>";
+        echo "<br>";
+        echo "Meeting ID: $data->id<br>";
+        echo "Passcode: $data->password<br>";
 
     } catch (Exception $e) {
         if (401 == $e->getCode()) {
