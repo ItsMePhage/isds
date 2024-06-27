@@ -334,7 +334,7 @@ $(function () {
             showConfirmButton: false,
             timer: 1000,
           }).then(function () {
-            $("#txt_name").val(response.zoom_details);
+            $("#meeting_details").val(response.zoom_details);
           });
         }, 1000);
       },
