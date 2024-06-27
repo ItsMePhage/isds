@@ -24,7 +24,9 @@ function create_meeting() {
         ]);
  
         $data = json_decode($response->getBody());
-        echo "Join URL: <pre>". print_r($data);
+        echo "Join URL: ". $data->join_url;
+        echo "<br>";
+        echo "Meeting Password: ". $data->password;
  
     } catch(Exception $e) {
         if( 401 == $e->getCode() ) {
