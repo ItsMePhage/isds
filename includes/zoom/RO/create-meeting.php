@@ -24,7 +24,7 @@ function create_meeting()
         ]);
 
         $data = json_decode($response->getBody());
-        echo "Zoom Details:<br><pre>" . $data->join_url;
+        echo "Zoom Details:<br><pre>" . print_r($data);
 
     } catch (Exception $e) {
         if (401 == $e->getCode()) {
