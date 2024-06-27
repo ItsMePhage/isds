@@ -18,8 +18,7 @@ function create_meeting() {
                 "topic" => "Integrate zoom APIs",
                 "type" => 2,                              
                 "start_time" => "2020-06-24T20:30:00",    // meeting start time
-                "duration" => "30",                       // 30 minutes
-                "password" => "123456"                    // meeting password
+                "duration" => "30"                       // 30 minutes
             ],
         ]);
  
