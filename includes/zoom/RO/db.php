@@ -52,8 +52,8 @@ class DB
         if ($this->is_table_empty()) {
             $this->db->query("INSERT INTO `RO`(access_token) VALUES('$token')");
         } else {
-            $sql = "UPDATE `RO` SET access_token = '$token' WHERE id = (SELECT id FROM `RO`)";
-            echo $sql;
+            $sql = "UPDATE `RO` SET access_token = '$token' WHERE id = 1";
+           // echo $sql;
             if ($this->db->query($sql) === TRUE) {
                 echo "Record updated successfully";
             } else {
