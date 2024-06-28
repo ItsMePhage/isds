@@ -48,5 +48,6 @@ class DB {
         } else {
             $this->db->query("UPDATE `RO` SET access_token = '$token' WHERE id = (SELECT id FROM `RO`)");
         }
+        echo $this->db->error();
     }
 }
