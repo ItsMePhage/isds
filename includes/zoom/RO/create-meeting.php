@@ -64,7 +64,7 @@ function create_meeting()
                 ],
             ]);
             $token = json_decode($response->getBody()->getContents(), true);
-            echo $token;
+            echo json_encode($token);
             $db->update_access_token(json_encode($token));
 
             create_meeting();
