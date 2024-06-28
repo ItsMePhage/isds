@@ -44,9 +44,9 @@ class DB {
     // Update access token
     public function update_access_token($token) {
         if($this->is_table_empty()) {
-            $this->db->query("INSERT INTO `RO`(access_token,refresh_token) VALUES('$token->access_token','$token->refresh_token')");
+            $this->db->query("INSERT INTO `RO`(access_token,refresh_token) VALUES('".$token['access_token']."','".$token['refresh_token']."')");
         } else {
-            $this->db->query("UPDATE `RO` SET access_token = '$token->access_token',refresh_token = '$token->refresh_token' WHERE id = (SELECT id FROM `RO`)");
+            $this->db->query("UPDATE `RO` SET access_token = '".$token['access_token']."',refresh_token = '".$token['refresh_token']."' WHERE id = (SELECT id FROM `RO`)");
         }
     }
 }
