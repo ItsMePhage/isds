@@ -66,7 +66,7 @@ function create_meeting()
             
             $responseArray = json_decode($response->getBody()->getContents());
             echo "<pre>";
-            echo $responseArray;
+            echo print_r($responseArray);
             echo "</pre>";
 
             $db->update_access_token($response->getBody()->getContents());
