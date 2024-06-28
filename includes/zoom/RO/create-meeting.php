@@ -64,10 +64,10 @@ function create_meeting()
                 ],
             ]);
             echo "<pre>";
-            echo print_r($response->getBody()->getContents());
+            echo print_r($response->getBody()->getContents()->access_token);
             echo "</pre>";
 
-            $db->update_access_token($response->getBody());
+            $db->update_access_token($response->getBody()->getContents()->access_token);
 
             create_meeting();
         } else {
