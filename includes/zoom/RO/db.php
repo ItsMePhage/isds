@@ -46,6 +46,7 @@ class DB {
         if($this->is_table_empty()) {
             $this->db->query("INSERT INTO `RO`(access_token) VALUES('$token')");
         } else {
+            echo "Update RO";
             $this->db->query("UPDATE `RO` SET access_token = '$token' WHERE id = (SELECT id FROM `RO`)");
         }
         echo $this->db->error();
