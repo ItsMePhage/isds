@@ -63,13 +63,9 @@ function create_meeting()
                     "refresh_token" => $refresh_token
                 ],
             ]);
-            
-            $responseArray = json_decode($response->getBody()->getContents());
-            echo "<pre>";
-            echo print_r($responseArray);
-            echo "</pre>";
+            $token = json_decode($response->getBody()->getContents(), true);
 
-            $db->update_access_token($response->getBody()->getContents());
+            $db->update_access_token(json_encode($token));
 
             create_meeting();
         } else {
