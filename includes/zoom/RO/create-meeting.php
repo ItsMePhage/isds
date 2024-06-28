@@ -66,6 +66,8 @@ function create_meeting()
 
             $db->update_access_token($response->getBody());
 
+            print_r($response->getBody());
+
             create_meeting();
         } else {
             echo $e->getMessage();
