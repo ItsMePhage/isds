@@ -52,7 +52,7 @@ function create_meeting()
         if ('401' == $e->getCode()) {
             echo $e->getCode()."HOHO";
             $refresh_token = $db->get_refersh_token();
-
+            echo $refresh_token;
             $client = new GuzzleHttp\Client(['base_uri' => 'https://zoom.us']);
             $response = $client->request('POST', '/oauth/token', [
                 "headers" => [
@@ -66,7 +66,7 @@ function create_meeting()
 
             $db->update_access_token($response->getBody());
 
-            print_r($response->getBody());
+            print_r($response);
 
             create_meeting();
         } else {
