@@ -320,11 +320,19 @@ $(function () {
     });
 
     var topic = $("#upd_topic").val();
+    var date_scheduled = $("#upd_date_scheduled").val();
+    var time_start = $("#upd_time_start").val();
+    var time_end = $("#upd_time_end").val();
 
     $.ajax({
       type: "POST",
       url: "/isds/includes/zoom/RO/create-meeting.php",
-      data: { topic: topic },
+      data: {
+        topic: topic,
+        date_scheduled: date_scheduled,
+        time_start: time_start,
+        time_end: time_end,
+      },
       dataType: "json",
       success: function (response) {
         setTimeout(function () {

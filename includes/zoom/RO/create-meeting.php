@@ -10,6 +10,17 @@ function create_meeting()
     $arr_token = $db->get_access_token();
     $accessToken = $arr_token->access_token;
 
+    $topic = $_POST['topic'];
+    $date_scheduled = $_POST['date_scheduled'];
+    $start_time = $date_scheduled . " " . $_POST['time_start'];
+    $end_time = $date_scheduled . " " . $_POST['time_end'];
+
+    $start = new DateTime($start_time);
+    $end = new DateTime($end_time);
+
+    $interval = $start->diff($end);
+    $minutes = ($interval->h * 60) + $interval->i;
+
     try {
         // if you have userid of user than change it with me in url
         $response = $client->request('POST', '/v2/users/me/meetings', [
@@ -17,18 +28,17 @@ function create_meeting()
                 "Authorization" => "Bearer $accessToken"
             ],
             'json' => [
-                "topic" => $_POST['topic'],
+                "topic" => $topic,
                 "type" => 2,
-                "start_time" => "2020-06-24T20:30:00",    // meeting start time
-                "duration" => "30",                       // 30 minutes
-                "password" => "123456"                    // meeting password
+                "start_time" => $date_scheduled . "T" . $start_time,
+                "duration" => $minutes,
             ],
         ]);
 
         $data = json_decode($response->getBody());
 
         $response = [
-            'zoom_details' => "DTI VI is inviting you to a scheduled Zoom meeting.&#13;&#10;&#13;&#10;Topic: $data->topic&#13;&#10;Time: $data->start_time&#13;&#10;&#13;&#10;Join Zoom Meeting&#13;&#10;<a href='$data->join_url'>$data->join_url</a>&#13;&#10;&#13;&#10;Meeting ID: $data->id&#13;&#10;Passcode: $data->password&#13;&#10;",
+            'zoom_details' => "DTI VI is inviting you to a scheduled Zoom meeting.&#13;&#10;&#13;&#10;Topic: $data->topic&#13;&#10;Time: $data->start_time&#13;&#10;&#13;&#10;Join Zoom Meeting&#13;&#10;$data->join_url&#13;&#10;&#13;&#10;Meeting ID: $data->id&#13;&#10;Passcode: $data->password&#13;&#10;",
             'message' => 'meeting scheduled',
             'status' => 'success'
         ];
@@ -38,6 +48,7 @@ function create_meeting()
         echo $responseJSON;
 
     } catch (Exception $e) {
+        echo $e->getCode();
         if (401 == $e->getCode()) {
             $refresh_token = $db->get_refersh_token();
 
