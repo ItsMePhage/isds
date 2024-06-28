@@ -53,7 +53,7 @@ class DB
             $this->db->query("INSERT INTO `RO`(access_token) VALUES('$token')");
         } else {
             $sql = "UPDATE `RO` SET access_token = '$token' WHERE id = 1";
-           // echo $sql;
+            // echo $sql;
             if ($this->db->query($sql) === TRUE) {
                 echo "Record updated successfully";
             } else {
