@@ -49,7 +49,7 @@ function create_meeting()
 
     } catch (Exception $e) {
         echo $e->getCode();
-        if (401 == $e->getCode()) {
+        if ('401' == $e->getCode()) {
             $refresh_token = $db->get_refersh_token();
 
             $client = new GuzzleHttp\Client(['base_uri' => 'https://zoom.us']);
