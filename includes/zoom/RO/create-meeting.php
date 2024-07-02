@@ -37,16 +37,6 @@ function create_meeting()
 
         $data = json_decode($response->getBody());
 
-        $response = [
-            'zoom_details' => "DTI VI is inviting you to a scheduled Zoom meeting.&#13;&#10;&#13;&#10;Topic: $data->topic&#13;&#10;Time: $data->start_time&#13;&#10;&#13;&#10;Join Zoom Meeting&#13;&#10;$data->join_url&#13;&#10;&#13;&#10;Meeting ID: $data->id&#13;&#10;Passcode: $data->password&#13;&#10;",
-            'message' => 'meeting scheduled',
-            'status' => 'success'
-        ];
-
-        $responseJSON = json_encode($response);
-
-        echo $responseJSON;
-
     } catch (Exception $e) {
         if ('401' == $e->getCode()) {
             $refresh_token = $db->get_refersh_token();
@@ -68,7 +58,18 @@ function create_meeting()
         } else {
             echo $e->getMessage();
         }
+
     }
+
+    $response = [
+        'zoom_details' => "DTI VI is inviting you to a scheduled Zoom meeting.&#13;&#10;&#13;&#10;Topic: $data->topic&#13;&#10;Time: $data->start_time&#13;&#10;&#13;&#10;Join Zoom Meeting&#13;&#10;$data->join_url&#13;&#10;&#13;&#10;Meeting ID: $data->id&#13;&#10;Passcode: $data->password&#13;&#10;",
+        'message' => 'meeting scheduled',
+        'status' => 'success'
+    ];
+
+    $responseJSON = json_encode($response);
+
+    echo $responseJSON;
 }
 
 create_meeting();
