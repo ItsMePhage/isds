@@ -13,8 +13,7 @@ require_once "partials/head.php";
             <span class="logo d-flex align-items-center w-auto text-center">
               <br>
               <span>
-                <img src="assets/img/logo.png" class="fs-2" alt="">
-                <img src="assets/img/logo-bp.png" class="fs-2" alt="">
+                <img src="assets/img/logo-new.png" alt="">
                 <br>
                 <?= website_name ?>
               </span>
