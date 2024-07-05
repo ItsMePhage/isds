@@ -104,6 +104,7 @@ require_once "../partials/aside.php";
                   <th scope="col" class="text-nowrap">Category</th>
                   <th scope="col" class="text-nowrap">Sub Category</th>
                   <th scope="col" class="text-nowrap">Status</th>
+                  <th scope="col" class="text-nowrap">CSF</th>
                   <th scope="col" class="text-nowrap"></th>
                 </tr>
               </thead>
@@ -178,13 +179,13 @@ require_once "../partials/aside.php";
               </div>
 
               <div>
-                <label for="priority_levels_id" class="form-label">Priority Level</label>
+                <label for="priority_levels_id" class="form-label">Urgency</label>
                 <select type="text" class="form-select select-init" id="priority_levels_id" name="priority_levels_id">
                   <option value="" selected disabled>choose...</option>
                 </select>
               </div>
 
-              <div>
+              <!-- <div>
                 <label for="repair_types_id" class="form-label">Repair Type</label>
                 <select type="text" class="form-select select-init" id="repair_types_id" name="repair_types_id">
                   <option value="" selected disabled>choose...</option>
@@ -192,22 +193,11 @@ require_once "../partials/aside.php";
               </div>
 
               <div>
-                <label for="repair_classes_id" class="form-label">
-                  Repair Classification
-                  <button type="button" class="btn btn-link" data-bs-toggle="tooltip" data-bs-placement="bottom"
-                    data-bs-html="true"
-                    title="<b>Simple:</b> Basic repairs requiring minimal effort, such as replacing peripherals or fixing minor issues.<br>
-               <b>Medium:</b> Moderately challenging repairs involving troubleshooting and basic technical knowledge.<br>
-               <b>Complex:</b> More involved repairs demanding significant troubleshooting and expertise.<br>
-               <b>Technical:</b> Repairs requiring a high level of technical knowledge and specialized skills.<br>
-               <b>Highly Technical:</b> The most challenging repairs demanding expert-level knowledge and advanced problem-solving skills.">
-                    <i class="bi bi-info-circle"></i>
-                  </button>
-                </label>
+                <label for="repair_classes_id" class="form-label">Repair Classification</label>
                 <select type="text" class="form-select select-init" id="repair_classes_id" name="repair_classes_id">
                   <option value="" selected disabled>choose...</option>
                 </select>
-              </div>
+              </div> -->
 
               <div>
                 <label for="mediums_id" class="form-label">Mode of Request</label>

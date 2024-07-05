@@ -181,8 +181,8 @@ $(function () {
     scrollX: true,
   });
 
-  var tbl_allusers = new DataTable("#tbl_allusers", {
-    ajax: "/isds/includes/datatables.php?tbl_allusers",
+  var tbl_users_a = new DataTable("#tbl_users_a", {
+    ajax: "/isds/includes/datatables.php?tbl_users_a",
     processing: true,
     serverSide: true,
     scrollX: true,
@@ -196,9 +196,9 @@ $(function () {
   }
 
   // Bind filter buttons for Helpdesks
-  bindFilterButton("#u_admin", tbl_allusers, 5, "Admin");
-  bindFilterButton("#u_staff", tbl_allusers, 5, "Staff");
-  bindFilterButton("#u_employee", tbl_allusers, 5, "Employee");
+  bindFilterButton("#u_admin", tbl_users_a, 5, "Admin");
+  bindFilterButton("#u_vip", tbl_users_a, 5, "VIP");
+  bindFilterButton("#u_employee", tbl_users_a, 5, "Employee");
 
   // Bind filter buttons for Helpdesks
   bindFilterButton("#h_open", tbl_helpdesks, 4, "Open");

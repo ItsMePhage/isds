@@ -64,5 +64,5 @@ $m_unavailable = $conn->query("SELECT COUNT(*) as m_unavailable FROM meetings WH
 $m_cancelled = $conn->query("SELECT COUNT(*) as m_cancelled FROM meetings WHERE m_statuses_id = 4")->fetch_object()->m_cancelled;
 
 $u_admin = $conn->query("SELECT COUNT(*) as u_admin FROM users WHERE roles_id = 1")->fetch_object()->u_admin;
-$u_staff = $conn->query("SELECT COUNT(*) as u_staff FROM users WHERE roles_id = 2")->fetch_object()->u_staff;
+$u_vip = $conn->query("SELECT COUNT(*) as u_vip FROM users WHERE roles_id = 2")->fetch_object()->u_vip;
 $u_employee = $conn->query("SELECT COUNT(*) as u_employee FROM users WHERE roles_id = 3")->fetch_object()->u_employee;

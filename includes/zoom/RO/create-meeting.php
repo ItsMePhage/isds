@@ -21,45 +21,35 @@ function create_meeting()
     $interval = $start->diff($end);
     $minutes = ($interval->h * 60) + $interval->i;
 
-    try {
-        // if you have userid of user than change it with me in url
-        $response = $client->request('POST', '/v2/users/me/meetings', [
-            "headers" => [
-                "Authorization" => "Bearer $accessToken"
-            ],
-            'json' => [
-                "topic" => $topic,
-                "type" => 2,
-                "start_time" => $date_scheduled . "T" . $start_time,
-                "duration" => $minutes,
-            ],
-        ]);
+    $refresh_token = $db->get_refersh_token();
+    $client = new GuzzleHttp\Client(['base_uri' => 'https://zoom.us']);
+    $response = $client->request('POST', '/oauth/token', [
+        "headers" => [
+            "Authorization" => "Basic " . base64_encode(CLIENT_ID . ':' . CLIENT_SECRET)
+        ],
+        'form_params' => [
+            "grant_type" => "refresh_token",
+            "refresh_token" => $refresh_token
+        ],
+    ]);
+    $token = json_decode($response->getBody()->getContents(), true);
+    // echo json_encode($token);
+    $db->update_access_token(json_encode($token));
 
-        $data = json_decode($response->getBody());
+    // if you have userid of user than change it with me in url
+    $response = $client->request('POST', '/v2/users/me/meetings', [
+        "headers" => [
+            "Authorization" => "Bearer $accessToken"
+        ],
+        'json' => [
+            "topic" => $topic,
+            "type" => 2,
+            "start_time" => $date_scheduled . "T" . $start_time,
+            "duration" => $minutes,
+        ],
+    ]);
 
-    } catch (Exception $e) {
-        if ('401' == $e->getCode()) {
-            $refresh_token = $db->get_refersh_token();
-            $client = new GuzzleHttp\Client(['base_uri' => 'https://zoom.us']);
-            $response = $client->request('POST', '/oauth/token', [
-                "headers" => [
-                    "Authorization" => "Basic " . base64_encode(CLIENT_ID . ':' . CLIENT_SECRET)
-                ],
-                'form_params' => [
-                    "grant_type" => "refresh_token",
-                    "refresh_token" => $refresh_token
-                ],
-            ]);
-            $token = json_decode($response->getBody()->getContents(), true);
-            // echo json_encode($token);
-            $db->update_access_token(json_encode($token));
-
-            create_meeting();
-        } else {
-            echo $e->getMessage();
-        }
-
-    }
+    $data = json_decode($response->getBody());
 
     $response = [
         'zoom_details' => "DTI VI is inviting you to a scheduled Zoom meeting.&#13;&#10;&#13;&#10;Topic: $data->topic&#13;&#10;Time: $data->start_time&#13;&#10;&#13;&#10;Join Zoom Meeting&#13;&#10;$data->join_url&#13;&#10;&#13;&#10;Meeting ID: $data->id&#13;&#10;Passcode: $data->password&#13;&#10;",
@@ -70,6 +60,7 @@ function create_meeting()
     $responseJSON = json_encode($response);
 
     echo $responseJSON;
+
 }
 
 create_meeting();

@@ -10,12 +10,12 @@
       </a>
     </li>
 
-    <li class="nav-heading">Forms</li>
-
     <?php
     switch ($_SESSION['role']) {
       case 'admin':
         ?>
+        <li class="nav-heading">Forms</li>
+
         <li class="nav-item">
           <a class="nav-link collapsed" href="users.php">
             <i class="bi bi-person-gear"></i>
@@ -35,10 +35,35 @@
             <span>Meetings</span>
           </a>
         </li>
+
+        <li class="nav-heading">Reports</li>
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="accomplishment.php">
+            <i class="bi bi-person-video2"></i>
+            <span>Accomplishment</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="reports.php">
+            <i class="bi bi-person-video2"></i>
+            <span>Reports</span>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="csf.php">
+            <i class="bi bi-person-video2"></i>
+            <span>CSF</span>
+          </a>
+        </li>
         <?php
         break;
       case 'employee':
         ?>
+        <li class="nav-heading">Forms</li>
+
         <li class="nav-item">
           <a class="nav-link collapsed" href="helpdesks.php">
             <i class="bi bi-people-fill"></i>

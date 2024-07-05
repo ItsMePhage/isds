@@ -74,28 +74,28 @@ switch ($page) {
                                         </div>
 
                                         <div>
-                                            <label for="upd_priority_levels_id" class="form-label">Priority Level</label>
+                                            <label for="upd_priority_levels_id" class="form-label">Urgency</label>
                                             <select type="text" class="form-select select-init" id="upd_priority_levels_id"
                                                 name="priority_levels_id">
                                                 <option value="" selected disabled>choose...</option>
                                             </select>
                                         </div>
 
-                                        <div>
+                                        <!-- <div>
                                             <label for="upd_repair_types_id" class="form-label">Repair Type</label>
                                             <select type="text" class="form-select select-init" id="upd_repair_types_id"
                                                 name="repair_types_id">
                                                 <option value="" selected disabled>choose...</option>
                                             </select>
                                         </div>
-
+                                        
                                         <div>
                                             <label for="upd_repair_classes_id" class="form-label">Repair Classification</label>
                                             <select type="text" class="form-select select-init" id="upd_repair_classes_id"
                                                 name="repair_classes_id">
                                                 <option value="" selected disabled>choose...</option>
                                             </select>
-                                        </div>
+                                        </div> -->
 
                                         <div>
                                             <label for="upd_mediums_id" class="form-label">Mode of Request</label>
@@ -133,6 +133,12 @@ switch ($page) {
                                         <div>
                                             <label for="upd_remarks" class="form-label">Remarks</label>
                                             <textarea class="form-control" id="upd_remarks" name="remarks"></textarea>
+                                        </div>
+                                        <hr>
+                                        <div class="mb-3 form-check">
+                                            <input type="checkbox" class="form-check-input" value="1" id="upd_send_email"
+                                                name="send_email" />
+                                            <label class="form-check-label" for="upd_send_email">Send email</label>
                                         </div>
                                     </div>
                                     <div hidden>
@@ -272,12 +278,20 @@ switch ($page) {
 
                                         <div>
                                             <label for="upd_meeting_details" class="form-label">Zoom meeting details</label>
-                                            <textarea class="form-control" id="upd_meeting_details" name="meeting_details"  cols='60' rows='8'></textarea>
+                                            <textarea class="form-control" id="upd_meeting_details" name="meeting_details" cols='60'
+                                                rows='8'></textarea>
                                         </div>
 
                                         <div class="mt-3">
                                             <button type="button"
                                                 class="btn btn-secondary float-end small btn-sm generate-zoom">Generate</button>
+                                        </div>
+                                        <br>
+                                        <hr>
+                                        <div class="mb-3 form-check">
+                                            <input type="checkbox" class="form-check-input" value="1" id="upd_send_email"
+                                                name="send_email" />
+                                            <label class="form-check-label" for="upd_send_email">Send email</label>
                                         </div>
                                     </div>
 
@@ -435,6 +449,12 @@ switch ($page) {
                                 <select class="form-select select-init" id="upd_roles_id" name="roles_id" required>
                                     <option value="" selected disabled>choose...</option>
                                 </select>
+                            </div>
+                            <hr>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" value="1" id="upd_send_email"
+                                    name="send_email" />
+                                <label class="form-check-label" for="upd_send_email">Send email</label>
                             </div>
                             <div hidden>
                                 <input class="captcha-token" name="captcha-token" />

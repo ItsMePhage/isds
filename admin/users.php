@@ -40,14 +40,14 @@ require_once "../partials/aside.php";
 
       <div class="col-lg-4">
         <div class="card info-card count-card">
-          <div class="card-body" id="u_staff">
-            <h5 class="card-title">Staff</h5>
+          <div class="card-body" id="u_vip">
+            <h5 class="card-title">VIP</h5>
             <div class="d-flex align-items-center">
               <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-primary">
                 <i class="bi bi-people-fill"></i>
               </div>
               <div class="ps-3">
-                <h6 id="meetings_count"><?= $u_staff ?></h6>
+                <h6 id="meetings_count"><?= $u_vip ?></h6>
               </div>
             </div>
           </div>
@@ -79,7 +79,7 @@ require_once "../partials/aside.php";
               <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#add_helpdesks">Add
                 User</button>
             </h5>
-            <table id="tbl_allusers" style="width:100%">
+            <table id="tbl_users_a" style="width:100%">
               <thead>
                 <tr>
                   <th scope="col" class="text-nowrap">ID Number</th>

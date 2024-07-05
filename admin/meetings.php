@@ -190,8 +190,14 @@ require_once "../partials/aside.php";
 
               <div>
                 <label for="meeting_details" class="form-label">Zoom meeting details</label>
-                <textarea class="form-control" id="meeting_details" name="meeting_details"></textarea>
+                <textarea class="form-control" id="meeting_details" name="meeting_details" cols='60'
+                  rows='8'></textarea>
               </div>
+
+              <div class="mt-3">
+                <button type="button" class="btn btn-secondary float-end small btn-sm generate-zoom">Generate</button>
+              </div>
+              <br>
               <hr>
               <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" value="1" id="send_email" name="send_email" />

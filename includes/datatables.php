@@ -19,14 +19,14 @@ if (isset($_GET['MOCK_DATAs'])) {
     );
 }
 
-if (isset($_GET['tbl_allusers'])) {
+if (isset($_GET['tbl_users_a'])) {
     $table = "";
     $table .= "(SELECT u.*, o.office_code, o.office, d.division, c.client_type, r.role ";
     $table .= "FROM users u ";
     $table .= "LEFT JOIN offices o ON u.offices_id = o.id ";
     $table .= "LEFT JOIN divisions d ON u.divisions_id = d.id ";
     $table .= "LEFT JOIN client_types c ON u.client_types_id = c.id ";
-    $table .= "LEFT JOIN roles r ON u.roles_id = r.id) AS tbl_allusers ";
+    $table .= "LEFT JOIN roles r ON u.roles_id = r.id) AS tbl_users_a ";
 
     $columns = array(
         array('db' => 'id_number', 'dt' => 0),
@@ -181,7 +181,8 @@ if (isset($_GET['tbl_helpdesks_a'])) {
         c.category, 
         sc.sub_category, 
         hs.status, 
-        hs.status_color
+        hs.status_color,
+        CASE WHEN csf.id IS NOT NULL THEN 1 ELSE 0 END AS csf_status
     FROM 
         helpdesks h
     LEFT JOIN 
@@ -194,6 +195,8 @@ if (isset($_GET['tbl_helpdesks_a'])) {
         sub_categories sc ON h.sub_categories_id = sc.id
     LEFT JOIN 
         h_statuses hs ON h.h_statuses_id = hs.id
+    LEFT JOIN 
+        csf ON h.id = csf.helpdesks_id
      WHERE 
         h.serviced_by = " . $_SESSION['id'] . " OR h.serviced_by IS NULL) AS tbl_helpdesks";
 
@@ -218,8 +221,15 @@ if (isset($_GET['tbl_helpdesks_a'])) {
             }
         ),
         array(
-            'db' => 'id',
+            'db' => 'csf_status',
             'dt' => 6,
+            'formatter' => function ($d, $row) {
+                return '<center><span class="badge text-bg-' . ($d == 1 ? 'success' : 'warning') . '">' . ($d == 1 ? 'Completed' : 'Pending') . '</span></center>';
+            }
+        ),
+        array(
+            'db' => 'id',
+            'dt' => 7,
             'formatter' => function ($d, $row) {
                 $html = '<small class="text-nowrap small"><button type="button" class="btn btn-primary mx-1 my-0 small" onclick="updhelpdesksbtn(' . $row['id'] . ')"><i class="bi bi-pencil-square small"></i></button>';
                 $html .= '<button type="button" class="btn btn-danger mx-1 my-0 small" onclick="delhelpdesksbtn(' . $row['id'] . ')"><i class="bi bi-trash3-fill small"></i></button></small>';

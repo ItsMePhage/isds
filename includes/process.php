@@ -48,7 +48,7 @@ if ($g_response == 1) {
                             $response = [
                                 'status' => 'success',
                                 'message' => 'Login successful.',
-                                'redirect' => $row->role . '/dashboard.php'
+                                'redirect' => ($row->roles_id == 1 ? 'admin' : 'user') . '/dashboard.php'
                             ];
                         }
                     } else {
@@ -58,7 +58,7 @@ if ($g_response == 1) {
                         $response = [
                             'status' => 'success',
                             'message' => 'Login successful.',
-                            'redirect' => $row->role . '/dashboard.php'
+                            'redirect' => ($row->roles_id == 1 ? 'admin' : 'user') . '/dashboard.php'
                         ];
                     }
 
@@ -113,7 +113,7 @@ if ($g_response == 1) {
             $response = [
                 'status' => 'success',
                 'message' => 'Register successful.',
-                'redirect' => 'employee/dashboard.php'
+                'redirect' => 'user/dashboard.php'
             ];
         } else {
             $response = [
@@ -159,7 +159,7 @@ if ($g_response == 1) {
                 $Message .= "<div>Best Regards,</div>";
                 $Message .= "<br>";
                 $Message .= "<div>DTI6 MIS Administrator</div>";
-                $Message .= "<div>IT Support Staff</div>";
+                $Message .= "<div>IT Support VIP</div>";
                 $Message .= "<div>DTI Region VI</div>";
                 $Message .= "<br><hr>";
                 $Message .= "<div>&copy; Copyright&nbsp;<strong>DTI6 MIS&nbsp;</strong>2024. All Rights Reserved</div>";
@@ -303,7 +303,7 @@ if ($g_response == 1) {
                 $response = [
                     'status' => 'success',
                     'message' => 'Request submitted.',
-                    'redirect' => '../employee/helpdesks.php'
+                    'redirect' => '../user/helpdesks.php'
                 ];
                 break;
             case 'admin':
@@ -359,7 +359,7 @@ if ($g_response == 1) {
                 $response = [
                     'status' => 'success',
                     'message' => 'Request updated.',
-                    'redirect' => '../employee/helpdesks.php'
+                    'redirect' => '../user/helpdesks.php'
                 ];
                 break;
             case 'admin':
@@ -409,7 +409,7 @@ if ($g_response == 1) {
         $response = [
             'status' => 'success',
             'message' => 'Request deleted.',
-            'redirect' => '../employee/helpdesks.php'
+            'redirect' => '../user/helpdesks.php'
         ];
     }
 
@@ -433,7 +433,7 @@ if ($g_response == 1) {
                     $response = [
                         'status' => 'success',
                         'message' => 'Request submitted.',
-                        'redirect' => '../employee/meetings.php'
+                        'redirect' => '../user/meetings.php'
                     ];
                 } else {
                     $response = [
@@ -492,7 +492,7 @@ if ($g_response == 1) {
             $response = [
                 'status' => 'success',
                 'message' => 'Request updated.',
-                'redirect' => '../employee/meetings.php'
+                'redirect' => '../user/meetings.php'
             ];
         } else {
             $response = [
@@ -513,7 +513,7 @@ if ($g_response == 1) {
         $response = [
             'status' => 'success',
             'message' => 'Request deleted.',
-            'redirect' => '../employee/meetings.php'
+            'redirect' => '../user/meetings.php'
         ];
     }
 
@@ -640,7 +640,7 @@ if ($g_response == 1) {
                 $Message .= "<div>Best Regards,</div>";
                 $Message .= "<br>";
                 $Message .= "<div>DTI6 MIS Administrator</div>";
-                $Message .= "<div>IT Support Staff</div>";
+                $Message .= "<div>IT Support VIP</div>";
                 $Message .= "<div>DTI Region VI</div>";
                 $Message .= "<br><hr>";
                 $Message .= "<div>&copy; Copyright&nbsp;<strong>DTI6 MIS&nbsp;</strong>2024. All Rights Reserved</div>";
