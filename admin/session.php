@@ -6,7 +6,7 @@ session_start();
 
 if ($is_protected == true) {
     if (isset($_SESSION['id'])) {
-        
+
         // if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 1800)) {
         //     session_unset();
         //     session_destroy();
@@ -25,6 +25,7 @@ if ($is_protected == true) {
         if ($result && $result->num_rows > 0) {
             $acc = $result->fetch_object();
             $_SESSION['role'] = $acc->role;
+            $_SESSION['offices_id'] = $acc->offices_id;
             if ($acc->role != 'admin') {
                 ?>
                 <script>
@@ -66,3 +67,7 @@ $m_cancelled = $conn->query("SELECT COUNT(*) as m_cancelled FROM meetings WHERE 
 $u_admin = $conn->query("SELECT COUNT(*) as u_admin FROM users WHERE roles_id = 1")->fetch_object()->u_admin;
 $u_vip = $conn->query("SELECT COUNT(*) as u_vip FROM users WHERE roles_id = 2")->fetch_object()->u_vip;
 $u_employee = $conn->query("SELECT COUNT(*) as u_employee FROM users WHERE roles_id = 3")->fetch_object()->u_employee;
+
+$completed_tasks = $conn->query("SELECT COUNT(*) as h_completed FROM helpdesks WHERE h_statuses_id = 5")->fetch_object()->h_completed;
+$pending_csf = $conn->query("SELECT COUNT(*) as h_completed FROM helpdesks h LEFT JOIN csf ON h.id = csf.helpdesks_id WHERE h.h_statuses_id = 5 AND csf.id IS NULL")->fetch_object()->h_completed;
+$submitted_csf = $conn->query("SELECT COUNT(*) as h_completed FROM helpdesks h LEFT JOIN csf ON h.id = csf.helpdesks_id WHERE h.h_statuses_id = 5 AND csf.id IS NOT NULL")->fetch_object()->h_completed;

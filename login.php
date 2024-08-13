@@ -51,7 +51,7 @@ require_once "partials/head.php";
                                         <input class="captcha-token" name="captcha-token" />
                                         <input name="login" />
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" class="btn btn-primary"><i class="bi bi-box-arrow-in-right"></i> Login</button>
                                 </form>
                                 <br>
                                 <p class="small mb-0">

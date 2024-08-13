@@ -150,7 +150,7 @@ require_once "../partials/aside.php";
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Meetings <button class="btn btn-link float-end" onclick="tbl_meetings_card.style.display = '';cal_meetings_card.style.visibility = 'hidden'">table view</button></h5>
-            <div id='calendar'></div>
+            <div id='cal_meetings_a'></div>
           </div>
         </div>
 

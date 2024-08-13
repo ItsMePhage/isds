@@ -188,6 +188,33 @@ $(function () {
     scrollX: true,
   });
 
+  var tbl_request_types = new DataTable("#tbl_request_types", {
+    ajax: "/isds/includes/datatables.php?tbl_request_types",
+    processing: true,
+    serverSide: true,
+    scrollX: true,
+    pageLength: 5,
+    lengthChange: false,
+  });
+
+  var tbl_categories = new DataTable("#tbl_categories", {
+    ajax: "/isds/includes/datatables.php?tbl_categories",
+    processing: true,
+    serverSide: true,
+    scrollX: true,
+    pageLength: 5,
+    lengthChange: false,
+  });
+
+  var tbl_sub_categories = new DataTable("#tbl_sub_categories", {
+    ajax: "/isds/includes/datatables.php?tbl_sub_categories",
+    processing: true,
+    serverSide: true,
+    scrollX: true,
+    pageLength: 5,
+    lengthChange: false,
+  });
+
   // Function to bind click events for filtering
   function bindFilterButton(buttonId, table, columnIdx, filterValue) {
     $(buttonId).on("click", function () {

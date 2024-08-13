@@ -104,7 +104,7 @@ require_once "../partials/aside.php";
                   <th scope="col" class="text-nowrap">Category</th>
                   <th scope="col" class="text-nowrap">Sub Category</th>
                   <th scope="col" class="text-nowrap">Status</th>
-                  <th scope="col" class="text-nowrap">CSF</th>
+                  <!-- <th scope="col" class="text-nowrap">CSF</th> -->
                   <th scope="col" class="text-nowrap"></th>
                 </tr>
               </thead>
