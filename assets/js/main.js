@@ -153,8 +153,8 @@ $(function () {
   });
 
   // Initialize DataTables
-  var tbl_helpdesks = new DataTable("#tbl_helpdesks", {
-    ajax: "/isds/includes/datatables.php?tbl_helpdesks",
+  var helpdesks_table = new DataTable("#helpdesks_table", {
+    ajax: "/isds/includes/datatables.php?helpdesks_table",
     processing: true,
     serverSide: true,
     scrollX: true,
@@ -167,8 +167,8 @@ $(function () {
     scrollX: true,
   });
 
-  var tbl_helpdesks_a = new DataTable("#tbl_helpdesks_a", {
-    ajax: "/isds/includes/datatables.php?tbl_helpdesks_a",
+  var admin_helpdesks_table = new DataTable("#admin_helpdesks_table", {
+    ajax: "/isds/includes/datatables.php?admin_helpdesks_table",
     processing: true,
     serverSide: true,
     scrollX: true,
@@ -181,8 +181,8 @@ $(function () {
     scrollX: true,
   });
 
-  var tbl_users_a = new DataTable("#tbl_users_a", {
-    ajax: "/isds/includes/datatables.php?tbl_users_a",
+  var users_table = new DataTable("#users_table", {
+    ajax: "/isds/includes/datatables.php?users_table",
     processing: true,
     serverSide: true,
     scrollX: true,
@@ -215,6 +215,68 @@ $(function () {
     lengthChange: false,
   });
 
+  var csf_report_table = new DataTable("#csf_report_table", {
+    layout: {
+      topStart: {
+        buttons: ['colvis', 'excel']
+      }
+    },
+    ajax: "/isds/includes/datatables.php?csf_report_table",
+    processing: true,
+    serverSide: true,
+    scrollX: true,
+
+  });
+
+  var helpdesks_report_table = new DataTable("#helpdesks_report_table", {
+    layout: {
+      topStart: {
+        buttons: ['colvis', 'excel']
+      }
+    },
+    ajax: "/isds/includes/datatables.php?helpdesks_report_table",
+    processing: true,
+    serverSide: true,
+    scrollX: true,
+
+  });
+
+  var accomplishment_report_table = new DataTable("#accomplishment_report_table", {
+    layout: {
+      topStart: {
+        buttons: [
+          'colvis',
+          'excel',
+          {
+            extend: 'pdfHtml5',
+            text: 'PDF',
+            orientation: 'landscape',
+            pageSize: 'A4',
+            title: 'ACCOMPLISHMENT REPORT AS OF _____________',
+            exportOptions: {
+              columns: ':visible' // Export only visible columns
+            },
+            customize: function (doc) {
+              // Add custom quote after the table
+              doc.content.push({
+                text: "Prepared by:\n\n_________________________\n\n\nApproved by:\n\n_________________________",
+                alignment: 'left',
+                fontSize: 12,
+                italics: true,
+                margin: [0, 20, 0, 0] // Adds spacing before text
+              });
+            }
+          }
+        ]
+      }
+    },
+    ajax: "/isds/includes/datatables.php?accomplishment_report_table",
+    processing: true,
+    serverSide: true,
+    scrollX: true,
+
+  });
+
   // Function to bind click events for filtering
   function bindFilterButton(buttonId, table, columnIdx, filterValue) {
     $(buttonId).on("click", function () {
@@ -223,27 +285,21 @@ $(function () {
   }
 
   // Bind filter buttons for Helpdesks
-  bindFilterButton("#u_admin", tbl_users_a, 5, "Admin");
-  bindFilterButton("#u_vip", tbl_users_a, 5, "VIP");
-  bindFilterButton("#u_employee", tbl_users_a, 5, "Employee");
+  bindFilterButton("#u_admin", users_table, 5, "Admin");
+  bindFilterButton("#u_vip", users_table, 5, "VIP");
+  bindFilterButton("#u_employee", users_table, 5, "Employee");
 
   // Bind filter buttons for Helpdesks
-  bindFilterButton("#h_open", tbl_helpdesks, 4, "Open");
-  bindFilterButton("#h_pending", tbl_helpdesks, 4, "Pending");
-  bindFilterButton("#h_completed", tbl_helpdesks, 4, "Completed");
-  bindFilterButton("#h_prerepair", tbl_helpdesks, 4, "Pre-repair");
+  bindFilterButton("#h_open", helpdesks_table, 4, "Open");
+  bindFilterButton("#h_pending", helpdesks_table, 4, "Pending");
+  bindFilterButton("#h_completed", helpdesks_table, 4, "Completed");
+  bindFilterButton("#h_prerepair", helpdesks_table, 4, "Pre-repair");
 
   // Bind filter buttons for Meetings
   bindFilterButton("#m_pending", tbl_meetings, 4, "Pending");
   bindFilterButton("#m_scheduled", tbl_meetings, 4, "Scheduled");
   bindFilterButton("#m_unavailable", tbl_meetings, 4, "Unavailable");
   bindFilterButton("#m_cancelled", tbl_meetings, 4, "Cancelled");
-
-  // Bind filter buttons for Helpdesks
-  bindFilterButton("#h_open", tbl_helpdesks_a, 5, "Open");
-  bindFilterButton("#h_pending", tbl_helpdesks_a, 5, "Pending");
-  bindFilterButton("#h_completed", tbl_helpdesks_a, 5, "Completed");
-  bindFilterButton("#h_prerepair", tbl_helpdesks_a, 5, "Pre-repair");
 
   // Bind filter buttons for Meetings
   bindFilterButton("#m_pending", tbl_meetings_a, 5, "Pending");
@@ -331,50 +387,48 @@ $(function () {
     });
   });
 
-  /**
-   * Logout button
-   */
-  $(".generate-zoom").on("click", function (e) {
-    e.preventDefault();
 
-    Swal.fire({
-      title: "Loading",
-      html: "Please wait...",
-      allowOutsideClick: false,
-      didOpen: function () {
-        Swal.showLoading();
-      },
-    });
+  // $(".generate-zoom").on("click", function (e) {
+  //   e.preventDefault();
 
-    var topic = $("#upd_topic").val();
-    var date_scheduled = $("#upd_date_scheduled").val();
-    var time_start = $("#upd_time_start").val();
-    var time_end = $("#upd_time_end").val();
+  //   Swal.fire({
+  //     title: "Loading",
+  //     html: "Please wait...",
+  //     allowOutsideClick: false,
+  //     didOpen: function () {
+  //       Swal.showLoading();
+  //     },
+  //   });
 
-    $.ajax({
-      type: "POST",
-      url: "/isds/includes/zoom/RO/create-meeting.php",
-      data: {
-        topic: topic,
-        date_scheduled: date_scheduled,
-        time_start: time_start,
-        time_end: time_end,
-      },
-      dataType: "json",
-      success: function (response) {
-        setTimeout(function () {
-          Swal.fire({
-            icon: response.status,
-            title: response.message,
-            showConfirmButton: false,
-            timer: 1000,
-          }).then(function () {
-            $("#upd_meeting_details").html(response.zoom_details);
-          });
-        }, 1000);
-      },
-    });
-  });
+  //   var topic = $("#upd_topic").val();
+  //   var date_scheduled = $("#upd_date_scheduled").val();
+  //   var time_start = $("#upd_time_start").val();
+  //   var time_end = $("#upd_time_end").val();
+
+  //   $.ajax({
+  //     type: "POST",
+  //     url: "/isds/includes/zoom/RO/create-meeting.php",
+  //     data: {
+  //       topic: topic,
+  //       date_scheduled: date_scheduled,
+  //       time_start: time_start,
+  //       time_end: time_end,
+  //     },
+  //     dataType: "json",
+  //     success: function (response) {
+  //       setTimeout(function () {
+  //         Swal.fire({
+  //           icon: response.status,
+  //           title: response.message,
+  //           showConfirmButton: false,
+  //           timer: 1000,
+  //         }).then(function () {
+  //           $("#upd_meeting_details").html(response.zoom_details);
+  //         });
+  //       }, 1000);
+  //     },
+  //   });
+  // });
 
   /**
    * Initiate select
@@ -397,12 +451,12 @@ $(function () {
             var name = response[i]["name"];
             $("#" + select_data).append(
               "<option value='" +
-                id +
-                "' " +
-                (id == select_data_val[index] ? "selected" : "") +
-                ">" +
-                name +
-                "</option>"
+              id +
+              "' " +
+              (id == select_data_val[index] ? "selected" : "") +
+              ">" +
+              name +
+              "</option>"
             );
           }
         } else {
@@ -425,23 +479,30 @@ $(function () {
       data: data,
       dataType: "json",
       success: function (response) {
-        var len = response.length;
-        $(categorySelector)
-          .empty()
-          .append("<option value='' selected disabled>choose...</option>");
-        $(subCategorySelector)
-          .empty()
-          .append("<option value='' selected disabled>choose...</option>");
-
-        for (var i = 0; i < len; i++) {
-          var id = response[i]["id"];
-          var name = response[i]["name"];
-          $(categorySelector).append(
-            "<option value='" + id + "'>" + name + "</option>"
-          );
-        }
+        populateOptions(response, categorySelector, subCategorySelector);
+      },
+      error: function (xhr, status, error) {
+        console.error(`Error: ${status} - ${error}`);
+        alert("An error occurred while fetching data. Please try again.");
       },
     });
+  }
+
+  function populateOptions(response, categorySelector, subCategorySelector) {
+    const len = response.length;
+    $(categorySelector)
+      .empty()
+      .append("<option value='' selected disabled>choose...</option>");
+    $(subCategorySelector)
+      .empty()
+      .append("<option value='' selected disabled>choose...</option>");
+
+    for (let i = 0; i < len; i++) {
+      const { id, name } = response[i];
+      $(categorySelector).append(
+        `<option value='${id}'>${name}</option>`
+      );
+    }
   }
 
   $("#request_types_id").on("change", function () {
@@ -459,6 +520,24 @@ $(function () {
       { select_data: "sub_categories_id", categories_id: $(this).val() },
       "#sub_categories_id",
       "#sub_categories_id"
+    );
+  });
+
+  $("#upd_request_types_id").on("change", function () {
+    updateOptions(
+      "/isds/includes/fetch.php",
+      { select_data: "categories_id", request_types_id: $(this).val() },
+      "#upd_categories_id",
+      "#upd_sub_categories_id"
+    );
+  });
+
+  $("#upd_categories_id").on("change", function () {
+    updateOptions(
+      "/isds/includes/fetch.php",
+      { select_data: "sub_categories_id", categories_id: $(this).val() },
+      "#upd_sub_categories_id",
+      "#upd_sub_categories_id"
     );
   });
 
@@ -521,64 +600,196 @@ $(function () {
     }
   });
 
-  window.delhelpdesksbtn = function (id) {
+  // window.delhelpdesksbtn = function (id) {
+  //   console.log("Helpdesk ID: " + id);
+
+  //   Swal.fire({
+  //     title: "Are you sure?",
+  //     text: "You are trying to delete this item.",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#3085d6",
+  //     cancelButtonColor: "#d33",
+  //     confirmButtonText: "Yes, delete",
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       Swal.fire({
+  //         title: "Loading",
+  //         html: "Please wait...",
+  //         allowOutsideClick: false,
+  //         didOpen: function () {
+  //           Swal.showLoading();
+  //         },
+  //       });
+
+  //       $.ajax({
+  //         type: "POST",
+  //         url: "/isds/includes/process.php",
+  //         data: {
+  //           del_helpdesks: true,
+  //           helpdesks_id: id,
+  //           "captcha-token": captchaToken,
+  //         },
+  //         dataType: "json",
+  //         success: function (response) {
+  //           setTimeout(function () {
+  //             Swal.fire({
+  //               icon: response.status,
+  //               title: response.message,
+  //               showConfirmButton: false,
+  //               timer: 1000,
+  //             }).then(function () {
+  //               if (response.redirect) {
+  //                 window.location.href = response.redirect;
+  //               }
+  //               if (response.reload) {
+  //                 window.reload();
+  //               }
+  //             });
+  //           }, 1000);
+
+  //           grecaptcha.ready(function () {
+  //             grecaptcha.execute(window.sitekey).then(function (token) {
+  //               $(".captcha-token").val(token);
+  //             });
+  //           });
+  //         },
+  //       });
+  //     }
+  //   });
+  // };
+
+  window.delhelpdesksbtn = function (id, requestNumber) {
     console.log("Helpdesk ID: " + id);
 
     Swal.fire({
       title: "Are you sure?",
-      text: "You are trying to delete this item.",
-      icon: "warning",
+      html: `<p class="swal-text">You are trying to delete this item.<br>Please type \"<b>${requestNumber}</b>\" to confirm deletion.</p>`,
+      input: "text",
+      inputPlaceholder: `Type '${requestNumber}' to confirm`,
       showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete",
+      confirmButtonText: "I understand, delete",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#6c757d",
+      icon: "warning",
+      inputValidator: (inputValue) => {
+        if (inputValue.trim() !== requestNumber) {
+          return "The request number does not match.";
+        }
+      }
     }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Loading",
-          html: "Please wait...",
-          allowOutsideClick: false,
-          didOpen: function () {
-            Swal.showLoading();
-          },
-        });
+      if (!result.isConfirmed) return;
 
-        $.ajax({
-          type: "POST",
-          url: "/isds/includes/process.php",
-          data: {
-            del_helpdesks: true,
-            helpdesks_id: id,
-            "captcha-token": captchaToken,
-          },
-          dataType: "json",
-          success: function (response) {
-            setTimeout(function () {
+      Swal.fire({
+        title: "Processing...",
+        html: "Please wait...",
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading(),
+      });
+
+      grecaptcha.ready(() => {
+        grecaptcha.execute(window.sitekey).then((captchaToken) => {
+          $.ajax({
+            type: "POST",
+            url: "/isds/includes/process.php",
+            data: {
+              del_helpdesks: true,
+              helpdesks_id: id,
+              request_number: requestNumber,
+              "captcha-token": captchaToken,
+            },
+            dataType: "json",
+            success: function (response) {
               Swal.fire({
                 icon: response.status,
                 title: response.message,
                 showConfirmButton: false,
-                timer: 1000,
-              }).then(function () {
+                timer: 1500,
+              }).then(() => {
                 if (response.redirect) {
                   window.location.href = response.redirect;
-                }
-                if (response.reload) {
-                  window.reload();
+                } else if (response.reload) {
+                  window.location.reload();
                 }
               });
-            }, 1000);
-
-            grecaptcha.ready(function () {
-              grecaptcha.execute(window.sitekey).then(function (token) {
-                $(".captcha-token").val(token);
+            },
+            error: function () {
+              Swal.fire({
+                title: "Error",
+                text: "Failed to process request. Please try again.",
+                icon: "error",
               });
-            });
-          },
+            }
+          });
         });
-      }
+      });
     });
   };
+
+  function printForm(formType, jsonData) {
+    var encodedData = encodeURIComponent(JSON.stringify(jsonData));
+    var printWindow = window.open(`../forms/${formType}-form.php?data=${encodedData}`, "_blank");
+
+    printWindow.onload = function () {
+      printWindow.print();
+      printWindow.onafterprint = function () {
+        printWindow.close();
+      };
+    };
+  }
+
+  // Specific functions calling the generic one
+  window.printoisbtn = function (jsonData) {
+    printForm("ois", jsonData);
+  };
+
+  window.printmjrbtn = function (jsonData) {
+    printForm("mjr", jsonData);
+  };
+
+  window.printpribtn = function (jsonData) {
+    printForm("pri", jsonData);
+  };
+
+
+  window.viewhelpdesksbtn = function (id) {
+    console.log("Helpdesk ID: " + id);
+
+    $.ajax({
+      url: "/isds/includes/fetch.php",
+      type: "GET",
+      data: {
+        view_helpdesks: true,
+        helpdesks_id: id,
+      },
+      dataType: "json",
+      success: function (response) {
+        console.log(response);
+        $("#view_date_requested").val(response.date_requested);
+        $("#view_requested_by_name").val(response.requested_by_name);
+        $("#view_request_type").val(response.request_type);
+        $("#view_category").val(response.category);
+        $("#view_sub_category").val(response.sub_category);
+        $("#view_complaint").val(response.complaint);
+        $("#view_datetime_preferred").val(response.datetime_preferred);
+        $("#view_status").val(response.status);
+        $("#view_property_number").val(response.property_number);
+        $("#view_priority_level").val(response.priority_level);
+        $("#view_medium").val(response.medium);
+        $("#view_datetime_start").val(response.datetime_start);
+        $("#view_is_pullout").prop('checked', response.is_pullout);
+        $("#view_datetime_end").val(response.datetime_end);
+        $("#view_is_turnover").prop('checked', response.is_turnover);
+        $("#view_diagnosis").val(response.diagnosis);
+        $("#view_action_taken").val(response.action_taken);
+        $("#view_remarks").val(response.remarks);
+      },
+    });
+
+    $("#viewhelpdesksmodal").modal("toggle");
+    $("#viewhelpdesksmodal").modal("show");
+  };
+
 
   window.updhelpdesksbtn = function (id) {
     console.log("Helpdesk ID: " + id);
@@ -842,6 +1053,7 @@ $(function () {
         $("#upd_divisions_id").val(response.divisions_id);
         $("#upd_client_types_id").val(response.client_types_id);
         $("#upd_roles_id").val(response.roles_id);
+        $("#upd_id").val(response.id);
       },
     });
 

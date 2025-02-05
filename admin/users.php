@@ -78,7 +78,7 @@ require_once "../partials/aside.php";
               <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#add_helpdesks">Add
                 User</button>
             </h5>
-            <table id="tbl_users_a" style="width:100%">
+            <table id="users_table" style="width:100%">
               <thead>
                 <tr>
                   <th scope="col" class="text-nowrap">ID Number</th>

@@ -2,8 +2,8 @@
 
 // Database configuration
 define('servername', 'localhost');
-define('username', 'root');
-define('password', 'Password@123!');
+define('username', 'dti6user');
+define('password', 'dti6secret');
 define('dbname', 'dti6db');
 define('website', 'DTI6 ISDS');
 define('website_name', 'DTI6 ICT Service Desk System (ISDS)');

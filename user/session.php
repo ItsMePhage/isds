@@ -6,30 +6,27 @@ session_start();
 
 if ($is_protected == true) {
     if (isset($_SESSION['id'])) {
-        // if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 1800)) {
-        //     session_unset();
-        //     session_destroy();
-        //     header('Location: ../includes/logout.php');
-        //     exit();
-        // }
 
         $_SESSION['last_activity'] = time();
 
-        $query = "SELECT u.*, r.role FROM users u";
-        $query .= " LEFT JOIN roles r ON u.roles_id = r.id";
-        $query .= " WHERE u.id = ? AND u.is_active = 1";
+        $query = "SELECT * FROM users_info";
+        $query .= " WHERE id = ? AND is_active = 1";
 
         $result = $conn->execute_query($query, [$_SESSION['id']]);
 
         if ($result && $result->num_rows > 0) {
             $acc = $result->fetch_object();
             $_SESSION['role'] = $acc->role;
-            if ($acc->role != 'employee') {
-?>
-                <script>
-                    history.back();
-                </script>
-<?php
+            $_SESSION['offices_id'] = $acc->offices_id;
+
+            // Check if the user's role is neither 'employee' nor 'VIP'
+            if (!in_array($acc->role, ['employee', 'VIP'])) {
+                // Redirect to an appropriate page or display an error message
+                echo "<script>
+            alert('Access denied. You do not have the required permissions.');
+            window.location.href = '/home'; // Replace '/home' with the desired fallback URL
+          </script>";
+                exit; // Ensure script execution stops here
             }
         } else {
             header('Location: ../includes/logout.php');

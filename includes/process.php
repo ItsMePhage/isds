@@ -16,10 +16,10 @@ if ($g_response == 1) {
     /* general process */
     if (isset($_POST['login'])) {
 
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+        $username = trim($_POST['username']);
+        $password = trim($_POST['password']);
 
-        $query = "SELECT u.*, r.role FROM users u LEFT JOIN roles r ON u.roles_id = r.id WHERE u.username = ? OR u.id_number = ? OR u.email = ?";
+        $query = "SELECT * FROM `users_info` WHERE `username` = ? OR `id_number` = ? OR `email` = ?";
         $result = $conn->execute_query($query, [$username, $username, $username]);
 
         if ($result && $result->num_rows === 1) {
@@ -101,7 +101,7 @@ if ($g_response == 1) {
         $username = $_POST['username'];
         $password = password_hash($_POST['password'], PASSWORD_ARGON2I);
 
-        $query = "SELECT * FROM users WHERE username = ? OR  email = ?";
+        $query = "SELECT * FROM `users_info` WHERE `username` = ? OR `email` = ?";
         $result = $conn->execute_query($query, [$username, $username]);
 
         if ($result && $result->num_rows < 1) {
@@ -126,7 +126,7 @@ if ($g_response == 1) {
     if (isset($_POST['forgot_password'])) {
         $username = $_POST['username'];
 
-        $query = "SELECT * FROM `users` WHERE `username` = ? OR `email` = ?";
+        $query = "SELECT * FROM `users_info` WHERE `username` = ? OR `email` = ?";
         $result = $conn->execute_query($query, [$username, $username]);
 
         if ($result->num_rows) {
@@ -182,7 +182,7 @@ if ($g_response == 1) {
     if (isset($_POST['change_username'])) {
         $username = $_POST['username'];
 
-        $query = "SELECT * FROM users WHERE username = ? AND id != ?";
+        $query = "SELECT * FROM `users_info` WHERE userna`me = ? AND `id` != ?";
         $result = $conn->execute_query($query, [$username, $_SESSION['id']]);
 
         if ($result && $result->num_rows == 0) {
@@ -208,7 +208,7 @@ if ($g_response == 1) {
 
         if ($new_password != $password) {
             if ($ver_password == $new_password) {
-                $query = "SELECT * FROM `users` WHERE `id` = ?";
+                $query = "SELECT * FROM `users_info` WHERE `id` = ?";
                 $result = $conn->execute_query($query, [$_SESSION['id']]);
 
                 $row = $result->fetch_object();
@@ -257,16 +257,12 @@ if ($g_response == 1) {
         $divisions_id = $_POST['divisions_id'];
         $client_types_id = $_POST['client_types_id'];
 
-        $query = "SELECT * 
-        FROM users 
-        WHERE id_number = ? AND id != ?";
+        $query = "SELECT * FROM `users_info` WHERE `id_number` = ? AND `id` != ?";
 
         $result = $conn->execute_query($query, [$id_number, $_SESSION['id']]);
 
         if (!$result->num_rows) {
-            $query = "SELECT * 
-            FROM users 
-            WHERE email = ? AND id <> ?";
+            $query = "SELECT * FROM `users_info` WHERE `email` = ? AND `id` <> ?";
 
             $result = $conn->execute_query($query, [$email, $_SESSION['id']]);
 
@@ -289,7 +285,9 @@ if ($g_response == 1) {
     if (isset($_POST['add_helpdesks'])) {
         switch ($_SESSION['role']) {
             case 'employee':
+            case 'VIP':
                 $requested_by = $_SESSION['id'];
+                $offices_id = $_SESSION['offices_id'];
                 $date_requested = $_POST['date_requested'];
                 $request_types_id = $_POST['request_types_id'];
                 $categories_id = $_POST['categories_id'];
@@ -297,8 +295,45 @@ if ($g_response == 1) {
                 $complaint = $_POST['complaint'];
                 $datetime_preferred = !empty($_POST['datetime_preferred']) ? $_POST['datetime_preferred'] : date('Y-m-d H:i:s');
 
-                $query = "INSERT INTO helpdesks(`requested_by`,`date_requested`,`request_types_id`,`categories_id`,`sub_categories_id`,`complaint`,`datetime_preferred`) VALUE (?,?,?,?,?,?,?)";
-                $result = $conn->execute_query($query, [$requested_by, $date_requested, $request_types_id, $categories_id, $sub_categories_id, $complaint, $datetime_preferred]);
+                $query = "INSERT INTO helpdesks(`requested_by`,`date_requested`,`request_types_id`,`categories_id`,`sub_categories_id`,`complaint`,`datetime_preferred`,`offices_id`) VALUE (?,?,?,?,?,?,?,?)";
+                $result = $conn->execute_query($query, [$requested_by, $date_requested, $request_types_id, $categories_id, $sub_categories_id, $complaint, $datetime_preferred, $offices_id]);
+
+                $helpdesks_id = $conn->insert_id;
+
+                $query = "SELECT * FROM `helpdesks_info` WHERE `id` = ?";
+                $result = $conn->execute_query($query, [$helpdesks_id]);
+
+                $row = $result->fetch_object();
+
+                $row->date_requested = new DateTime($row->date_requested);
+                $row->datetime_preferred = new DateTime($row->datetime_preferred);
+
+                $Subject = "[$row->status] DTI6 ISDS REQUEST: " . $row->request_number;
+
+                $Message = "";
+                $Message .= "<p><img src='https://upload.wikimedia.org/wikipedia/commons/1/14/DTI_Logo_2019.png' alt='' width='58' height='55'></p>";
+                $Message .= "<hr>";
+                $Message .= "<div>";
+                $Message .= "<p>Good day $row->requested_by_name,</p>";
+                $Message .= "<p>Thank you for your request. Below are the details:</p>";
+                $Message .= "<h3><strong>Request Details</strong></h3>";
+                $Message .= "<ul>";
+                $Message .= "<li><strong>Date of Request:</strong> " . $row->date_requested->format('d/m/Y') . "</li>";
+                $Message .= "<li><strong>Type of Request:</strong> " . $row->request_type . "</li>";
+                $Message .= "<li><strong>Category of Request:</strong> " . $row->category . "</li>";
+                $Message .= "<li><strong>Sub-Category of Request:</strong> " . $row->sub_category . "</li>";
+                $Message .= "<li><strong>Description:</strong> " . $row->complaint . "</li>";
+                $Message .= "<li><strong>Preferred Date and Time:</strong> " . $row->datetime_preferred->format('d/m/Y h:i A') . "</li>";
+                $Message .= "</ul>";
+                $Message .= "<p>We will process your request and get back to you as soon as possible.</p>";
+                $Message .= "<p>Best Regards,</p>";
+                $Message .= "<div>DTI6 MIS Administrator</div>";
+                $Message .= "<div>DTI Region VI</div>";
+                $Message .= "<hr>";
+                $Message .= "<div>&copy; Copyright&nbsp;<strong>DTI6 MIS&nbsp;</strong>2024. All Rights Reserved</div>";
+                $Message .= "</div>";
+
+                sendEmail('dti6.mis@gmail.com', $Subject, $Message);
 
                 $response = [
                     'status' => 'success',
@@ -308,19 +343,24 @@ if ($g_response == 1) {
                 break;
             case 'admin':
                 $requested_by = !empty($_POST['requested_by']) ? $_POST['requested_by'] : $_SESSION['id'];
+
+                $query = "SELECT * FROM `users_info` WHERE `id` = ?";
+                $result = $conn->execute_query($query, [$requested_by]);
+
+                $offices_id = $result->fetch_object()->offices_id;
                 $date_requested = $_POST['date_requested'];
                 $request_types_id = $_POST['request_types_id'];
                 $categories_id = $_POST['categories_id'];
                 $sub_categories_id = $_POST['sub_categories_id'];
                 $complaint = $_POST['complaint'];
                 $datetime_preferred = !empty($_POST['datetime_preferred']) ? $_POST['datetime_preferred'] : date('Y-m-d H:i:s');
-                $h_statuses_id = !empty($_POST['h_statuses_id']) ? $_POST['h_statuses_id'] : 3;
+                $h_statuses_id = !empty($_POST['h_statuses_id']) ? $_POST['h_statuses_id'] : 1;
                 $property_number = $_POST['property_number'];
                 $priority_levels_id = !empty($_POST['priority_levels_id']) ? $_POST['priority_levels_id'] : NULL;
                 $repair_types_id = !empty($_POST['repair_types_id']) ? $_POST['repair_types_id'] : NULL;
                 $repair_classes_id = !empty($_POST['repair_classes_id']) ? $_POST['repair_classes_id'] : NULL;
                 $mediums_id = !empty($_POST['mediums_id']) ? $_POST['mediums_id'] : NULL;
-                $serviced_by = !empty($_SESSION['id']) ? $_SESSION['id'] : NULL;
+                $serviced_by = (empty($h_statuses_id) || $h_statuses_id == 1) ? null : $_SESSION['id'];
                 $datetime_start = !empty($_POST['datetime_start']) ? $_POST['datetime_start'] : NULL;
                 $is_pullout = isset($_POST['is_pullout']) ? 1 : NULL;
                 $datetime_end = !empty($_POST['datetime_end']) ? $_POST['datetime_end'] : NULL;
@@ -329,8 +369,8 @@ if ($g_response == 1) {
                 $action_taken = $_POST['action_taken'];
                 $remarks = $_POST['remarks'];
 
-                $query = "INSERT INTO helpdesks(`requested_by`,`date_requested`,`request_types_id`,`categories_id`,`sub_categories_id`,`complaint`,`datetime_preferred`,`h_statuses_id`,`property_number`,`priority_levels_id`,`repair_types_id`,`repair_classes_id`,`mediums_id`,`serviced_by`,`datetime_start`,`is_pullout`,`datetime_end`,`is_turnover`,`diagnosis`,`action_taken`,`remarks`) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-                $result = $conn->execute_query($query, [$requested_by, $date_requested, $request_types_id, $categories_id, $sub_categories_id, $complaint, $datetime_preferred, $h_statuses_id, $property_number, $priority_levels_id, $repair_types_id, $repair_classes_id, $mediums_id, $serviced_by, $datetime_start, $is_pullout, $datetime_end, $is_turnover, $diagnosis, $action_taken, $remarks]);
+                $query = "INSERT INTO helpdesks(`requested_by`,`date_requested`,`request_types_id`,`categories_id`,`sub_categories_id`,`complaint`,`datetime_preferred`,`h_statuses_id`,`property_number`,`priority_levels_id`,`repair_types_id`,`repair_classes_id`,`mediums_id`,`serviced_by`,`datetime_start`,`is_pullout`,`datetime_end`,`is_turnover`,`diagnosis`,`action_taken`,`remarks`, `offices_id`) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                $result = $conn->execute_query($query, [$requested_by, $date_requested, $request_types_id, $categories_id, $sub_categories_id, $complaint, $datetime_preferred, $h_statuses_id, $property_number, $priority_levels_id, $repair_types_id, $repair_classes_id, $mediums_id, $serviced_by, $datetime_start, $is_pullout, $datetime_end, $is_turnover, $diagnosis, $action_taken, $remarks, $offices_id]);
 
                 $response = [
                     'status' => 'success',
@@ -345,6 +385,7 @@ if ($g_response == 1) {
 
         switch ($_SESSION['role']) {
             case 'employee':
+            case 'VIP':
                 $upd_helpdesks_id = $_POST['upd_helpdesks_id'];
                 $date_requested = $_POST['date_requested'];
                 $request_types_id = $_POST['request_types_id'];
@@ -377,6 +418,7 @@ if ($g_response == 1) {
                 $repair_types_id = !empty($_POST['repair_types_id']) ? $_POST['repair_types_id'] : NULL;
                 $repair_classes_id = !empty($_POST['repair_classes_id']) ? $_POST['repair_classes_id'] : NULL;
                 $mediums_id = !empty($_POST['mediums_id']) ? $_POST['mediums_id'] : NULL;
+                $serviced_by = ($h_statuses_id == 1) ? null : $_SESSION['id'];
                 $datetime_start = !empty($_POST['datetime_start']) ? $_POST['datetime_start'] : NULL;
                 $is_pullout = isset($_POST['is_pullout']) ? 1 : NULL;
                 $datetime_end = !empty($_POST['datetime_end']) ? $_POST['datetime_end'] : NULL;
@@ -386,8 +428,71 @@ if ($g_response == 1) {
                 $remarks = $_POST['remarks'];
 
 
-                $query = "UPDATE `helpdesks` SET `requested_by` = ?, `date_requested` = ?, `request_types_id` = ?, `categories_id` = ?, `sub_categories_id` = ?, `complaint` = ?, `datetime_preferred` = ?, `h_statuses_id` = ?, `property_number` = ?, `priority_levels_id` = ?, `repair_types_id` = ?, `repair_classes_id` = ?, `mediums_id` = ?, `datetime_start` = ?, `is_pullout` = ?, `datetime_end` = ?, `is_turnover` = ?, `diagnosis` = ?, `action_taken` = ?, `remarks` = ? WHERE `id` = ?";
-                $result = $conn->execute_query($query, [$requested_by, $date_requested, $request_types_id, $categories_id, $sub_categories_id, $complaint, $datetime_preferred, $h_statuses_id, $property_number, $priority_levels_id, $repair_types_id, $repair_classes_id, $mediums_id, $datetime_start, $is_pullout, $datetime_end, $is_turnover, $diagnosis, $action_taken, $remarks, $helpdesks_id]);
+                $query = "UPDATE `helpdesks` SET `requested_by` = ?, `date_requested` = ?, `request_types_id` = ?, `categories_id` = ?, `sub_categories_id` = ?, `complaint` = ?, `datetime_preferred` = ?, `h_statuses_id` = ?, `property_number` = ?, `priority_levels_id` = ?, `repair_types_id` = ?, `repair_classes_id` = ?, `mediums_id` = ?, `datetime_start` = ?, `is_pullout` = ?, `datetime_end` = ?, `is_turnover` = ?, `diagnosis` = ?, `action_taken` = ?, `serviced_by` = ?, `remarks` = ? WHERE `id` = ?";
+                $result = $conn->execute_query($query, [$requested_by, $date_requested, $request_types_id, $categories_id, $sub_categories_id, $complaint, $datetime_preferred, $h_statuses_id, $property_number, $priority_levels_id, $repair_types_id, $repair_classes_id, $mediums_id, $datetime_start, $is_pullout, $datetime_end, $is_turnover, $diagnosis, $action_taken, $serviced_by, $remarks, $helpdesks_id]);
+
+                if (isset($_POST['send_email'])) {
+                    $query = "SELECT * FROM `helpdesks_info` WHERE `id` = ?";
+                    $result = $conn->execute_query($query, [$helpdesks_id]);
+
+                    $row = $result->fetch_object();
+
+                    $row->date_requested = new DateTime($row->date_requested);
+                    $row->datetime_preferred = new DateTime($row->datetime_preferred);
+                    $row->datetime_start = new DateTime($row->datetime_start);
+                    $row->datetime_end = new DateTime($row->datetime_end);
+
+                    $Subject = "[$row->status] DTI6 ISDS REQUEST: " . $row->request_number;
+
+                    $Message = "";
+                    $Message .= "<p><img src='https://upload.wikimedia.org/wikipedia/commons/1/14/DTI_Logo_2019.png' alt='' width='58' height='55'></p>";
+                    $Message .= "<hr>";
+                    $Message .= "<div>";
+                    $Message .= "<p>Good day $row->requested_by_name,</p>";
+                    $Message .= "<br>";
+                    if ($row->status == "Completed") {
+                        $Message .= "<br>";
+                        $Message .= "<div>Kindly spare a moment to complete our <strong>Customer Satisfaction Form</strong> to provide feedback.</div>";
+                        $Message .= "<div style='font-size: 24pt;'><a href='http://localhost/isds/csf.php?reqno=" . $row->id . "' style='font-size: 24pt;'>ONLINE CSF FORM</a></div>";
+                        $Message .= "<br><br>";
+                    }
+                    $Message .= "<p>Here is the update on your request:</p>";
+                    $Message .= "<h3><strong>Request Details</strong></h3>";
+                    $Message .= "<ul>";
+                    $Message .= "<li><strong>Date of Request:</strong> " . $row->date_requested->format('d/m/Y') . "</li>";
+                    $Message .= "<li><strong>Type of Request:</strong> " . $row->request_type . "</li>";
+                    $Message .= "<li><strong>Category of Request:</strong> " . $row->category . "</li>";
+                    $Message .= "<li><strong>Sub-Category of Request:</strong> " . $row->sub_category . "</li>";
+                    $Message .= "<li><strong>Description:</strong> " . $row->complaint . "</li>";
+                    $Message .= "<li><strong>Preferred Date and Time:</strong> " . $row->datetime_preferred->format('d/m/Y h:i A') . "</li>";
+                    $Message .= "</ul>";
+                    $Message .= "<h3><strong>Action Details</strong></h3>";
+                    $Message .= "<ul>";
+                    $Message .= "<li><strong>Status:</strong> <span style='color: " . $row->status_hex . "'>" . $row->status . "</span></li>";
+                    $Message .= "<li><strong>Property Number:</strong> " . $row->property_number . "</li>";
+                    $Message .= "<li><strong>Urgency:</strong> " . $row->priority_level . "</li>";
+                    $Message .= "<li><strong>Mode of Request:</strong> " . $row->medium . "</li>";
+                    $Message .= "<li><strong>Date & Time Started:</strong> " . $row->datetime_start->format('d/m/Y h:i A') . "</li>";
+                    $Message .= "<li><strong>Pulled Out:</strong> " . ($row->is_pullout != null ? 'Yes' : 'No') . "</li>";
+                    $Message .= "<li><strong>Date & Time Finished:</strong> " . $row->datetime_end->format('d/m/Y h:i A') . "</li>";
+                    $Message .= "<li><strong>Turned Over:</strong> " . ($row->is_turnover != null ? 'Yes' : 'No') . "</li>";
+                    $Message .= "<li><strong>Diagnosis:</strong> " . $row->diagnosis . "</li>";
+                    $Message .= "<li><strong>Action Taken:</strong> " . $row->action_taken . "</li>";
+                    $Message .= "<li><strong>Remarks:</strong> " . $row->remarks . "</li>";
+                    $Message .= "<li><strong>Serviced by:</strong> " . $row->serviced_by_name . "</li>";
+                    $Message .= "</ul>";
+                    $Message .= "<p>To access your account, please click the button below:</p>";
+                    $Message .= "<a href='http://localhost/isds/'><u>Click Here to Login</u></a>";
+                    $Message .= "<br><br>";
+                    $Message .= "<p>Best Regards,</p>";
+                    $Message .= "<div>DTI6 MIS Administrator</div>";
+                    $Message .= "<div>DTI Region VI</div>";
+                    $Message .= "<hr>";
+                    $Message .= "<div>&copy; Copyright&nbsp;<strong>DTI6 MIS&nbsp;</strong>2024. All Rights Reserved</div>";
+                    $Message .= "</div>";
+
+                    sendEmail($row->requested_by_email, $Subject, $Message);
+                }
 
                 $response = [
                     'status' => 'success',
@@ -409,21 +514,23 @@ if ($g_response == 1) {
         $response = [
             'status' => 'success',
             'message' => 'Request deleted.',
-            'redirect' => '../user/helpdesks.php'
+            'redirect' => '../' . ($_SESSION['role'] == 'admin' ? 'admin' : 'user') . '/helpdesks.php'
         ];
     }
 
     if (isset($_POST['add_meetings'])) {
         switch ($_SESSION['role']) {
             case 'employee':
+            case 'VIP':
                 $requested_by = $_SESSION['id'];
                 $date_requested = $_POST['date_requested'];
                 $topic = $_POST['topic'];
                 $date_scheduled = $_POST['date_scheduled'];
+
                 $time_start = $_POST['time_start'];
                 $time_end = $_POST['time_end'];
 
-                $query = "SELECT * FROM meetings WHERE date_scheduled = ? AND ( ( time_start < ? AND time_end > ? ) OR ( time_start < ? AND time_end > ? ) OR ( time_start >= ? AND time_end <= ? ))";
+                $query = "SELECT * FROM `meetings_info` WHERE `date_scheduled` = ? AND ( ( `time_start` < ? AND `time_end` > ? ) OR ( `time_start` < ? AND `time_end` > ? ) OR ( `time_start` >= ? AND `time_end` <= ? ))";
 
                 $result = $conn->execute_query($query, [$date_scheduled, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end]);
                 if ($result->num_rows == 0) {
@@ -453,7 +560,7 @@ if ($g_response == 1) {
                 $m_statuses_id = !empty($_POST['m_statuses_id']) ? $_POST['m_statuses_id'] : 1;
                 $meeting_details = $_POST['meeting_details'];
 
-                $query = "SELECT * FROM meetings WHERE date_scheduled = ? AND ( ( time_start < ? AND time_end > ? ) OR ( time_start < ? AND time_end > ? ) OR ( time_start >= ? AND time_end <= ? ))";
+                $query = "SELECT * FROM `meetings_info` WHERE `date_scheduled` = ? AND ( ( `time_start` < ? AND `time_end` > ? ) OR ( `time_start` < ? AND `time_end` > ? ) OR ( `time_start` >= ? AND `time_end` <= ? ))";
 
                 $result = $conn->execute_query($query, [$date_scheduled, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end]);
                 if ($result->num_rows == 0) {
@@ -482,7 +589,7 @@ if ($g_response == 1) {
         $date_scheduled = $_POST['date_scheduled'];
         $time_start = $_POST['time_start'];
         $time_end = $_POST['time_end'];
-        $query = "SELECT * FROM meetings WHERE date_scheduled = ? AND ( ( time_start < ? AND time_end > ? ) OR ( time_start < ? AND time_end > ? ) OR ( time_start >= ? AND time_end <= ? ))";
+        $query = "SELECT * FROM `meetings_info` WHERE `date_scheduled` = ? AND ( ( `time_start` < ? AND `time_end` > ? ) OR ( `time_start` < ? AND `time_end` > ? ) OR ( `time_start` >= ? AND `time_end` <= ? ))";
 
         $result = $conn->execute_query($query, [$date_scheduled, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end]);
         if ($result->num_rows == 0) {
@@ -538,7 +645,7 @@ if ($g_response == 1) {
 
         $roles_id = $_POST['roles_id'];
 
-        $query = "SELECT * FROM users WHERE username = ? OR  email = ?";
+        $query = "SELECT * FROM `users_info` WHERE `username` = ? OR  `email` = ?";
         $result = $conn->execute_query($query, [$username, $username]);
 
         if ($result && $result->num_rows < 1) {
@@ -559,14 +666,14 @@ if ($g_response == 1) {
     }
 
     if (isset($_POST['upd_users'])) {
-        $upd_users_id = $_POST['upd_users_id'];
+        $id = $_POST['id'];
         $id_number = $_POST['id_number'];
         $first_name = $_POST['first_name'];
         $middle_name = $_POST['middle_name'];
         $last_name = $_POST['last_name'];
         $date_birth = $_POST['date_birth'];
         $sex = $_POST['sex'];
-        $is_pwd = $_POST['is_pwd'] ?? null;
+        $is_pwd = $_POST['is_pwd'] ?? 0;
         $phone = $_POST['phone'];
         $email = $_POST['email'];
         $address = $_POST['address'];
@@ -577,12 +684,12 @@ if ($g_response == 1) {
         $roles_id = $_POST['roles_id'];
 
         // Check for existing username or email to avoid duplication
-        $query = "SELECT * FROM users WHERE email = ? AND id <> ?";
-        $result = $conn->execute_query($query, [$email, $upd_users_id]);
+        $query = "SELECT * FROM `users_info` WHERE `email` = ? AND `id` != ?";
+        $result = $conn->execute_query($query, [$email, $id]);
 
         if ($result && $result->num_rows < 1) {
             $query = "UPDATE `users` SET `id_number` = ?, `first_name` = ?, `middle_name` = ?, `last_name` = ?, `designation` = ?, `offices_id` = ?, `divisions_id` = ?, `client_types_id` = ?, `date_birth` = ?, `sex` = ?, `is_pwd` = ?, `phone` = ?, `email` = ?, `address` = ?, `roles_id` = ? WHERE `id` = ?";
-            $result = $conn->execute_query($query, [$id_number, $first_name, $middle_name, $last_name, $designation, $offices_id, $divisions_id, $client_types_id, $date_birth, $sex, $is_pwd, $phone, $email, $address, $roles_id, $users_id]);
+            $result = $conn->execute_query($query, [$id_number, $first_name, $middle_name, $last_name, $designation, $offices_id, $divisions_id, $client_types_id, $date_birth, $sex, $is_pwd, $phone, $email, $address, $roles_id, $id]);
 
             if ($result) {
                 $response = [
@@ -607,7 +714,7 @@ if ($g_response == 1) {
     if (isset($_POST['reset_password'])) {
         $users_id = $_POST['users_id'];
 
-        $query = "SELECT * FROM `users` WHERE `id` = ?";
+        $query = "SELECT * FROM `users_info` WHERE `id` = ?";
         $result = $conn->execute_query($query, [$users_id]);
 
         if ($result->num_rows) {
@@ -657,6 +764,27 @@ if ($g_response == 1) {
                 'message' => 'Email not found.'
             ];
         }
+    }
+
+    if (isset($_POST['quick_csf'])) {
+        $helpdesks_id = $_POST['helpdesks_id'];
+        $crit1 = $_POST['crit1'];
+        $crit2 = $_POST['crit2'];
+        $crit3 = $_POST['crit3'];
+        $crit4 = $_POST['crit4'];
+        $overall = $_POST['overall'];
+        $reasons = $_POST['reasons'];
+        $comments = $_POST['comments'];
+
+        $query = "INSERT 
+        INTO csf(`helpdesks_id`,`criteria_a`,`criteria_b`,`criteria_c`,`criteria_d`,`overall`,`reasons`,`comments`) 
+    VALUES(?,?,?,?,?,?,?,?)";
+
+        $result = $conn->execute_query($query, [$helpdesks_id, $crit1, $crit2, $crit3, $crit4, $overall, $reasons, $comments]);
+
+        $response['status'] = 'success';
+        $response['message'] = 'CSF submit successfully, Thank You!';
+        $response['redirect'] = 'quick_csf.php?reqno=' . $helpdesks_id;
     }
 
 } else {

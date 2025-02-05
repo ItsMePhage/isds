@@ -7,18 +7,10 @@ session_start();
 if ($is_protected == true) {
     if (isset($_SESSION['id'])) {
 
-        // if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 1800)) {
-        //     session_unset();
-        //     session_destroy();
-        //     header('Location: ../includes/logout.php');
-        //     exit();
-        // }
-
         $_SESSION['last_activity'] = time();
 
-        $query = "SELECT u.*, r.role FROM users u";
-        $query .= " LEFT JOIN roles r ON u.roles_id = r.id";
-        $query .= " WHERE u.id = ? AND u.is_active = 1";
+        $query = "SELECT * FROM users_info";
+        $query .= " WHERE id = ? AND is_active = 1";
 
         $result = $conn->execute_query($query, [$_SESSION['id']]);
 
@@ -26,12 +18,13 @@ if ($is_protected == true) {
             $acc = $result->fetch_object();
             $_SESSION['role'] = $acc->role;
             $_SESSION['offices_id'] = $acc->offices_id;
-            if ($acc->role != 'admin') {
-                ?>
-                <script>
-                    history.back();
-                </script>
-                <?php
+            if (!in_array($acc->role, ['admin'])) {
+                // Redirect to an appropriate page or display an error message
+                echo "<script>
+            alert('Access denied. You do not have the required permissions.');
+            window.location.href = '/home'; // Replace '/home' with the desired fallback URL
+          </script>";
+                exit; // Ensure script execution stops here
             }
         } else {
             header('Location: ../includes/logout.php');
@@ -46,28 +39,77 @@ if ($is_protected == true) {
 if ($is_protected == false) {
 }
 
-$count_day_helpdesks = $conn->query("SELECT COUNT(*) as count_day FROM helpdesks WHERE DATE(date_requested) = CURDATE()")->fetch_object()->count_day;
-$count_month_helpdesks = $conn->query("SELECT COUNT(*) as count_month FROM helpdesks WHERE YEAR(date_requested) = YEAR(CURDATE()) AND MONTH(date_requested) = MONTH(CURDATE())")->fetch_object()->count_month;
-$count_year_helpdesks = $conn->query("SELECT COUNT(*) as count_year FROM helpdesks WHERE YEAR(date_requested) = YEAR(CURDATE())")->fetch_object()->count_year;
+// Prepare the session variable
+$offices_id = intval($_SESSION['offices_id']);
+$offices_condition = ($offices_id == 1) ? "" : "AND offices_id = $offices_id";
 
-$count_day_meetings = $conn->query("SELECT COUNT(*) as count_day FROM meetings WHERE DATE(date_requested) = CURDATE()")->fetch_object()->count_day;
-$count_month_meetings = $conn->query("SELECT COUNT(*) as count_month FROM meetings WHERE YEAR(date_requested) = YEAR(CURDATE()) AND MONTH(date_requested) = MONTH(CURDATE())")->fetch_object()->count_month;
-$count_year_meetings = $conn->query("SELECT COUNT(*) as count_year FROM meetings WHERE YEAR(date_requested) = YEAR(CURDATE())")->fetch_object()->count_year;
+// Helper function to execute queries
+function fetch_count($conn, $query)
+{
+    return $conn->query($query)->fetch_object()->count;
+}
 
-$h_open = $conn->query("SELECT COUNT(*) as h_open FROM helpdesks WHERE h_statuses_id = 1")->fetch_object()->h_open;
-$h_pending = $conn->query("SELECT COUNT(*) as h_pending FROM helpdesks WHERE h_statuses_id = 3")->fetch_object()->h_pending;
-$h_completed = $conn->query("SELECT COUNT(*) as h_completed FROM helpdesks WHERE h_statuses_id = 5")->fetch_object()->h_completed;
-$h_prerepair = $conn->query("SELECT COUNT(*) as h_prerepair FROM helpdesks WHERE h_statuses_id = 4")->fetch_object()->h_prerepair;
+// Queries for helpdesks
+$helpdesk_counts = $conn->query("
+    SELECT 
+        COUNT(*) as count_day,
+        SUM(DATE(date_requested) = CURDATE()) as count_day,
+        SUM(YEAR(date_requested) = YEAR(CURDATE()) AND MONTH(date_requested) = MONTH(CURDATE())) as count_month,
+        SUM(YEAR(date_requested) = YEAR(CURDATE())) as count_year,
+        SUM(h_statuses_id = 1) as h_open,
+        SUM(h_statuses_id = 3) as h_pending,
+        SUM(h_statuses_id = 5) as h_completed,
+        SUM(h_statuses_id = 4) as h_prerepair
+    FROM helpdesks_info 
+    WHERE offices_id = $offices_id OR $offices_id = 1
+")->fetch_object();
 
-$m_pending = $conn->query("SELECT COUNT(*) as m_pending FROM meetings WHERE m_statuses_id = 1")->fetch_object()->m_pending;
-$m_scheduled = $conn->query("SELECT COUNT(*) as m_scheduled FROM meetings WHERE m_statuses_id = 2")->fetch_object()->m_scheduled;
-$m_unavailable = $conn->query("SELECT COUNT(*) as m_unavailable FROM meetings WHERE m_statuses_id = 3")->fetch_object()->m_unavailable;
-$m_cancelled = $conn->query("SELECT COUNT(*) as m_cancelled FROM meetings WHERE m_statuses_id = 4")->fetch_object()->m_cancelled;
+$count_day_helpdesks = $helpdesk_counts->count_day;
+$count_month_helpdesks = $helpdesk_counts->count_month;
+$count_year_helpdesks = $helpdesk_counts->count_year;
+$h_open = $helpdesk_counts->h_open;
+$h_pending = $helpdesk_counts->h_pending;
+$h_completed = $helpdesk_counts->h_completed;
+$h_prerepair = $helpdesk_counts->h_prerepair;
 
-$u_admin = $conn->query("SELECT COUNT(*) as u_admin FROM users WHERE roles_id = 1")->fetch_object()->u_admin;
-$u_vip = $conn->query("SELECT COUNT(*) as u_vip FROM users WHERE roles_id = 2")->fetch_object()->u_vip;
-$u_employee = $conn->query("SELECT COUNT(*) as u_employee FROM users WHERE roles_id = 3")->fetch_object()->u_employee;
+// Queries for meetings
+$meeting_counts = $conn->query("
+    SELECT 
+        COUNT(*) as count_day,
+        SUM(DATE(date_requested) = CURDATE()) as count_day,
+        SUM(YEAR(date_requested) = YEAR(CURDATE()) AND MONTH(date_requested) = MONTH(CURDATE())) as count_month,
+        SUM(YEAR(date_requested) = YEAR(CURDATE())) as count_year,
+        SUM(m_statuses_id = 1) as m_pending,
+        SUM(m_statuses_id = 2) as m_scheduled,
+        SUM(m_statuses_id = 3) as m_unavailable,
+        SUM(m_statuses_id = 4) as m_cancelled
+    FROM meetings_info
+    WHERE offices_id = $offices_id OR $offices_id = 1
+")->fetch_object();
 
-$completed_tasks = $conn->query("SELECT COUNT(*) as h_completed FROM helpdesks WHERE h_statuses_id = 5")->fetch_object()->h_completed;
-$pending_csf = $conn->query("SELECT COUNT(*) as h_completed FROM helpdesks h LEFT JOIN csf ON h.id = csf.helpdesks_id WHERE h.h_statuses_id = 5 AND csf.id IS NULL")->fetch_object()->h_completed;
-$submitted_csf = $conn->query("SELECT COUNT(*) as h_completed FROM helpdesks h LEFT JOIN csf ON h.id = csf.helpdesks_id WHERE h.h_statuses_id = 5 AND csf.id IS NOT NULL")->fetch_object()->h_completed;
+$count_day_meetings = $meeting_counts->count_day;
+$count_month_meetings = $meeting_counts->count_month;
+$count_year_meetings = $meeting_counts->count_year;
+$m_pending = $meeting_counts->m_pending;
+$m_scheduled = $meeting_counts->m_scheduled;
+$m_unavailable = $meeting_counts->m_unavailable;
+$m_cancelled = $meeting_counts->m_cancelled;
+
+// Queries for users
+$user_counts = $conn->query("
+    SELECT
+        SUM(roles_id = 1) as u_admin,
+        SUM(roles_id = 2) as u_vip,
+        SUM(roles_id = 3) as u_employee
+    FROM users_info
+    WHERE offices_id = $offices_id OR $offices_id = 1
+")->fetch_object();
+
+$u_admin = $user_counts->u_admin;
+$u_vip = $user_counts->u_vip;
+$u_employee = $user_counts->u_employee;
+
+// Queries for completed tasks and CSF
+$completed_tasks = fetch_count($conn, "SELECT COUNT(*) as count FROM helpdesks WHERE h_statuses_id = 5");
+$pending_csf = fetch_count($conn, "SELECT COUNT(*) as count FROM helpdesks h LEFT JOIN csf ON h.id = csf.helpdesks_id WHERE h.h_statuses_id = 5 AND csf.id IS NULL");
+$submitted_csf = fetch_count($conn, "SELECT COUNT(*) as count FROM helpdesks h LEFT JOIN csf ON h.id = csf.helpdesks_id WHERE h.h_statuses_id = 5 AND csf.id IS NOT NULL");

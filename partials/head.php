@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="\<?= root ?>\node_modules\quill\dist\quill.snow.css">
   <link rel="stylesheet" href="\<?= root ?>\node_modules\quill\dist\quill.bubble.css">
   <link rel="stylesheet" href="\<?= root ?>\node_modules\remixicon\fonts\remixicon.css">
-  <link rel="stylesheet" href="\<?= root ?>\assets\css\datatables.min.css">
+  <link rel="stylesheet" href="\<?= root ?>\assets\DataTables\datatables.min.css">
   <link rel="stylesheet" href="\<?= root ?>\node_modules\sweetalert2\dist\sweetalert2.min.css">
 
   <!-- Template Main CSS File -->
@@ -41,6 +41,8 @@
     window.sitekey = "<?= sitekey ?>";
     const select_data_val = [];
   </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.min.js"></script>
 
 </head>
 

@@ -140,7 +140,7 @@ require_once "../partials/aside.php";
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Helpdesks</h5>
-            <table id="tbl_helpdesks" style="width:100%">
+            <table id="helpdesks_table" style="width:100%">
               <thead>
                 <tr>
                   <th scope="col" class="text-nowrap">Date Requested</th>
@@ -148,6 +148,7 @@ require_once "../partials/aside.php";
                   <th scope="col" class="text-nowrap">Category</th>
                   <th scope="col" class="text-nowrap">Sub Category</th>
                   <th scope="col" class="text-nowrap">Status</th>
+                  <th scope="col" class="text-nowrap">CSF</th>
                   <th scope="col" class="text-nowrap">Action</th>
                 </tr>
               </thead>

@@ -152,9 +152,105 @@ switch ($page) {
                         </div>
                     </div>
                 </div>
+                <!-- Modal -->
+                <div class="modal fade" id="viewhelpdesksmodal" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5">Request Overview</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-3">
+                                    <div class="col-lg-6">
+                                        <div>
+                                            <label for="view_date_requested" class="form-label">Date of Request</label>
+                                            <input type="text" class="form-control" id="view_date_requested" disabled />
+                                        </div>
+                                        <div>
+                                            <label for="view_requested_by_name" class="form-label">Requestor</label>
+                                            <input type="text" class="form-control" id="view_requested_by_name" disabled />
+                                        </div>
+
+                                        <div>
+                                            <label for="view_request_type" class="form-label">Type of Request</label>
+                                            <input type="text" class="form-control" id="view_request_type" disabled />
+                                        </div>
+                                        <div>
+                                            <label for="view_category" class="form-label">Category of Request</label>
+                                            <input type="text" class="form-control" id="view_category" disabled />
+                                        </div>
+                                        <div>
+                                            <label for="view_sub_category" class="form-label">Sub-Category of Request</label>
+                                            <input type="text" class="form-control" id="view_sub_category" disabled />
+                                        </div>
+                                        <div>
+                                            <label for="view_complaint" class="form-label">Defect, Complaint, or Request</label>
+                                            <textarea class="form-control" id="view_complaint" disabled></textarea>
+                                        </div>
+                                        <div>
+                                            <label for="view_datetime_preferred" class="form-label">Preferred date and time</label>
+                                            <input type="text" class="form-control" id="view_datetime_preferred" disabled />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div>
+                                            <label for="view_status" class="form-label">Status</label>
+                                            <input type="text" class="form-control" id="view_status" disabled />
+                                        </div>
+                                        <div>
+                                            <label for="view_property_number" class="form-label">Property Number</label>
+                                            <input type="text" class="form-control" id="view_property_number" disabled />
+                                        </div>
+
+                                        <div>
+                                            <label for="view_priority_level" class="form-label">Urgency</label>
+                                            <input type="text" class="form-control" id="view_priority_level" disabled />
+                                        </div>
+                                        <div>
+                                            <label for="view_medium" class="form-label">Mode of Request</label>
+                                            <input type="text" class="form-control" id="view_medium" disabled />
+                                        </div>
+
+                                        <div>
+                                            <label for="view_datetime_start" class="form-label">Date & Time Started</label>
+                                            <input type="text" class="form-control" id="view_datetime_start" disabled />
+                                        </div>
+                                        <div class="mb-3 form-check">
+                                            <input type="checkbox" class="form-check-input" id="view_is_pullout" disabled />
+                                            <label class="form-check-label" for="view_is_pullout">Pulled out</label>
+                                        </div>
+                                        <div>
+                                            <label for="view_datetime_end" class="form-label">Date & Time Finished</label>
+                                            <input type="text" class="form-control" id="view_datetime_end" disabled />
+                                        </div>
+                                        <div class="mb-3 form-check">
+                                            <input type="checkbox" class="form-check-input" id="view_is_turnover" disabled />
+                                            <label class="form-check-label" for="view_is_turnover">Turned Over</label>
+                                        </div>
+                                        <div>
+                                            <label for="view_diagnosis" class="form-label">Diagnosis</label>
+                                            <textarea class="form-control" id="view_diagnosis" disabled></textarea>
+                                        </div>
+                                        <div>
+                                            <label for="view_action_taken" class="form-label">Action Taken</label>
+                                            <textarea class="form-control" id="view_action_taken" disabled></textarea>
+                                        </div>
+                                        <div>
+                                            <label for="view_remarks" class="form-label">Remarks</label>
+                                            <textarea class="form-control" id="view_remarks" disabled></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <?php
                 break;
             case 'employee':
+            case 'VIP':
                 ?>
                 <!-- Modal -->
                 <div class="modal fade" id="updhelpdesksmodal" tabindex="-1">
@@ -207,6 +303,101 @@ switch ($page) {
                                     </div>
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="viewhelpdesksmodal" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5">Request Overview</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row g-3">
+                                    <div class="col-lg-6">
+                                        <div>
+                                            <label for="view_date_requested" class="form-label">Date of Request</label>
+                                            <input type="text" class="form-control" id="view_date_requested" disabled />
+                                        </div>
+                                        <div>
+                                            <label for="view_requested_by_name" class="form-label">Requestor</label>
+                                            <input type="text" class="form-control" id="view_requested_by_name" disabled />
+                                        </div>
+
+                                        <div>
+                                            <label for="view_request_type" class="form-label">Type of Request</label>
+                                            <input type="text" class="form-control" id="view_request_type" disabled />
+                                        </div>
+                                        <div>
+                                            <label for="view_category" class="form-label">Category of Request</label>
+                                            <input type="text" class="form-control" id="view_category" disabled />
+                                        </div>
+                                        <div>
+                                            <label for="view_sub_category" class="form-label">Sub-Category of Request</label>
+                                            <input type="text" class="form-control" id="view_sub_category" disabled />
+                                        </div>
+                                        <div>
+                                            <label for="view_complaint" class="form-label">Defect, Complaint, or Request</label>
+                                            <textarea class="form-control" id="view_complaint" disabled></textarea>
+                                        </div>
+                                        <div>
+                                            <label for="view_datetime_preferred" class="form-label">Preferred date and time</label>
+                                            <input type="text" class="form-control" id="view_datetime_preferred" disabled />
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6">
+                                        <div>
+                                            <label for="view_status" class="form-label">Status</label>
+                                            <input type="text" class="form-control" id="view_status" disabled />
+                                        </div>
+                                        <div>
+                                            <label for="view_property_number" class="form-label">Property Number</label>
+                                            <input type="text" class="form-control" id="view_property_number" disabled />
+                                        </div>
+
+                                        <div>
+                                            <label for="view_priority_level" class="form-label">Urgency</label>
+                                            <input type="text" class="form-control" id="view_priority_level" disabled />
+                                        </div>
+                                        <div>
+                                            <label for="view_medium" class="form-label">Mode of Request</label>
+                                            <input type="text" class="form-control" id="view_medium" disabled />
+                                        </div>
+
+                                        <div>
+                                            <label for="view_datetime_start" class="form-label">Date & Time Started</label>
+                                            <input type="text" class="form-control" id="view_datetime_start" disabled />
+                                        </div>
+                                        <div class="mb-3 form-check">
+                                            <input type="checkbox" class="form-check-input" id="view_is_pullout" disabled />
+                                            <label class="form-check-label" for="view_is_pullout">Pulled out</label>
+                                        </div>
+                                        <div>
+                                            <label for="view_datetime_end" class="form-label">Date & Time Finished</label>
+                                            <input type="text" class="form-control" id="view_datetime_end" disabled />
+                                        </div>
+                                        <div class="mb-3 form-check">
+                                            <input type="checkbox" class="form-check-input" id="view_is_turnover" disabled />
+                                            <label class="form-check-label" for="view_is_turnover">Turned Over</label>
+                                        </div>
+                                        <div>
+                                            <label for="view_diagnosis" class="form-label">Diagnosis</label>
+                                            <textarea class="form-control" id="view_diagnosis" disabled></textarea>
+                                        </div>
+                                        <div>
+                                            <label for="view_action_taken" class="form-label">Action Taken</label>
+                                            <textarea class="form-control" id="view_action_taken" disabled></textarea>
+                                        </div>
+                                        <div>
+                                            <label for="view_remarks" class="form-label">Remarks</label>
+                                            <textarea class="form-control" id="view_remarks" disabled></textarea>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -282,11 +473,11 @@ switch ($page) {
                                                 rows='8'></textarea>
                                         </div>
 
-                                        <div class="mt-3">
+                                        <!-- <div class="mt-3">
                                             <button type="button"
                                                 class="btn btn-secondary float-end small btn-sm generate-zoom">Generate</button>
                                         </div>
-                                        <br>
+                                        <br> -->
                                         <hr>
                                         <div class="mb-3 form-check">
                                             <input type="checkbox" class="form-check-input" value="1" id="upd_send_email"
@@ -309,6 +500,7 @@ switch ($page) {
                 <?php
                 break;
             case 'employee':
+            case 'VIP':
                 ?>
                 <!-- Modal -->
                 <div class="modal fade" id="updmeetingsmodal" tabindex="-1">
@@ -450,16 +642,15 @@ switch ($page) {
                                     <option value="" selected disabled>choose...</option>
                                 </select>
                             </div>
-                            <hr>
-                            <div class="mb-3 form-check">
+                            <!-- <div class="mb-3 form-check">
                                 <input type="checkbox" class="form-check-input" value="1" id="upd_send_email"
                                     name="send_email" />
                                 <label class="form-check-label" for="upd_send_email">Send email</label>
-                            </div>
+                            </div> -->
                             <div hidden>
+                                <input name="id" id="upd_id" />
                                 <input class="captcha-token" name="captcha-token" />
                                 <input name="upd_users" />
-                                <input name="upd_users_id" />
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>

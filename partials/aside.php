@@ -30,12 +30,12 @@
           </a>
         </li>
 
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link collapsed" href="meetings.php">
             <i class="bi bi-person-video2"></i>
             <span>Meetings</span>
           </a>
-        </li>
+        </li> -->
 
         <li class="nav-heading">Reports</li>
 
@@ -62,6 +62,7 @@
         <?php
         break;
       case 'employee':
+      case 'VIP':
         ?>
         <li class="nav-heading">Forms</li>
 
@@ -72,12 +73,12 @@
           </a>
         </li>
 
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link collapsed" href="meetings.php">
             <i class="bi bi-person-video2"></i>
             <span>Meetings</span>
           </a>
-        </li>
+        </li> -->
         <?php
         break;
     }

@@ -15,16 +15,15 @@ if ($protected == true) {
 
         $_SESSION['last_activity'] = time();
 
-        $query = "SELECT * FROM users u";
-        $query .= "LEFT JOIN divisions d ON u.division_id = d.id";
-        $query .= "LEFT JOIN client_types ct ON u.client_type_id = ct.id";
-        $query .= "LEFT JOIN roles r ON u.role_id = r.id";
-        $query .= "WHERE u.id = ? AND u.active = 1";
+        $query = "SELECT * FROM users_info";
+        $query .= " WHERE id = ? AND is_active = 1";
 
         $result = $conn->execute_query($query, [$_SESSION['id']]);
 
         if ($result && $result->num_rows > 0) {
             $acc = $result->fetch_object();
+            $_SESSION['role'] = $acc->role;
+            $_SESSION['offices_id'] = $acc->offices_id;
         } else {
             header('Location: assets/components/includes/logout.php');
             exit();
