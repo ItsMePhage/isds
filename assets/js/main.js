@@ -1192,13 +1192,6 @@ $(function () {
 
   function chart_category() {
     $.ajax({
-      title: {
-        text: 'Helpdesks Per Category',
-        align: 'left'
-      },
-      dataLabels: {
-        enabled: true,
-      },
       url: "/isds/includes/fetch.php",
       type: "GET",
       data: {
@@ -1210,6 +1203,13 @@ $(function () {
         var labelsData = response.labels;
 
         var options = {
+          title: {
+            text: 'Helpdesks Per Category',
+            align: 'left'
+          },
+          dataLabels: {
+            enabled: true,
+          },
           series: [
             {
               data: seriesData,

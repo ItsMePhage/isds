@@ -126,6 +126,7 @@ require_once "../partials/aside.php";
         <div class="card">
           <div class="card-body">
             <!-- <h5 class="card-title">Monthly Helpdesks</h5> -->
+            <br>
             <div id="chart_month"></div>
           </div>
         </div>
@@ -137,6 +138,7 @@ require_once "../partials/aside.php";
         <div class="card">
           <div class="card-body">
             <!-- <h5 class="card-title">Helpdesks per Category</h5> -->
+            <br>
             <div id="chart_category"></div>
           </div>
         </div>
@@ -147,6 +149,7 @@ require_once "../partials/aside.php";
         <div class="card">
           <div class="card-body">
             <!-- <h5 class="card-title">Helpdesks per Division</h5> -->
+            <br>
             <div id="chart_division"></div>
           </div>
         </div>
@@ -157,6 +160,7 @@ require_once "../partials/aside.php";
         <div class="card">
           <div class="card-body">
             <!-- <h5 class="card-title">Helpdesks by Sex</h5> -->
+            <br>
             <div id="chart_sex"></div>
           </div>
         </div>
