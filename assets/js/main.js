@@ -1163,9 +1163,6 @@ $(function () {
               autoSelected: "zoom",
             },
           },
-          dataLabels: {
-            enabled: false,
-          },
           stroke: {
             curve: "straight",
           },
@@ -1190,6 +1187,7 @@ $(function () {
     chart_month();
   }
 
+
   function chart_category() {
     $.ajax({
       url: "/isds/includes/fetch.php",
@@ -1209,6 +1207,11 @@ $(function () {
           },
           dataLabels: {
             enabled: true,
+            textAnchor: "start",
+            formatter: function (val, opt) {
+              return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val;
+            },
+            offsetX: 0,
           },
           series: [
             {
@@ -1238,14 +1241,6 @@ $(function () {
             },
           },
           colors: generateHSLColors(response.series.length),
-          dataLabels: {
-            enabled: true,
-            textAnchor: "start",
-            formatter: function (val, opt) {
-              return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val;
-            },
-            offsetX: 0,
-          },
           xaxis: {
             categories: labelsData,
           },
@@ -1267,7 +1262,6 @@ $(function () {
       },
     });
   }
-
   if ($("#chart_category").length) {
     chart_category();
   }
@@ -1291,6 +1285,9 @@ $(function () {
           },
           dataLabels: {
             enabled: true,
+            formatter: function (val, opt) {
+              return opt.w.globals.labels[opt.dataPointIndex] + ": " + val;
+            },
           },
           series: seriesData,
           chart: {
@@ -1355,6 +1352,9 @@ $(function () {
           },
           dataLabels: {
             enabled: true,
+            formatter: function (val, opt) {
+              return opt.w.globals.labels[opt.dataPointIndex] + ": " + val.toFixed(2) + "%";
+            },
           },
           series: seriesData,
           chart: {
