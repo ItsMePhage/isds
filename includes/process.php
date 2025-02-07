@@ -140,7 +140,7 @@ if ($g_response == 1) {
             $query3 = $conn->execute_query($query, [$username, $username]);
 
             while ($user = $query3->fetch_object()) {
-                $Subject = "DTI6 MIS | Temporary Password";
+                $Subject = "DTI6 ISDS: Temporary Password";
 
                 $Message = "";
                 $Message .= "<p><img src='https://upload.wikimedia.org/wikipedia/commons/1/14/DTI_Logo_2019.png' alt='' width='58' height='55'></p>";
@@ -315,7 +315,11 @@ if ($g_response == 1) {
                 $Message .= "<hr>";
                 $Message .= "<div>";
                 $Message .= "<p>Good day $row->requested_by_name,</p>";
-                $Message .= "<p>Thank you for your request. Below are the details:</p>";
+                $Message .= "<div>Thank you for reaching out to MIS.</div>";
+                $Message .= "<br>";
+                $Message .= "<div>Below are your request.</div>";
+                $Message .= "<br>";
+                $Message .= "<br>";
                 $Message .= "<h3><strong>Request Details</strong></h3>";
                 $Message .= "<ul>";
                 $Message .= "<li><strong>Date of Request:</strong> " . $row->date_requested->format('d/m/Y') . "</li>";
@@ -324,8 +328,13 @@ if ($g_response == 1) {
                 $Message .= "<li><strong>Sub-Category of Request:</strong> " . $row->sub_category . "</li>";
                 $Message .= "<li><strong>Description:</strong> " . $row->complaint . "</li>";
                 $Message .= "<li><strong>Preferred Date and Time:</strong> " . $row->datetime_preferred->format('d/m/Y h:i A') . "</li>";
+                $Message .= "<li><strong>Status:</strong> <span style='color: " . $row->status_hex . "'>" . $row->status . "</span></li>";
+                $Message .= "<li><strong>Serviced by:</strong> " . $row->serviced_by_name . "</li>";
                 $Message .= "</ul>";
                 $Message .= "<p>We will process your request and get back to you as soon as possible.</p>";
+                $Message .= "<p>To access your account, please click the button below:</p>";
+                $Message .= "<a href='http://r6itbpm.site/isds/login.php'><u>Click Here to Login</u></a>";
+                $Message .= "<br><br>";
                 $Message .= "<p>Best Regards,</p>";
                 $Message .= "<div>DTI6 MIS Administrator</div>";
                 $Message .= "<div>DTI Region VI</div>";
@@ -450,10 +459,11 @@ if ($g_response == 1) {
                     $Message .= "<div>";
                     $Message .= "<p>Good day $row->requested_by_name,</p>";
                     $Message .= "<br>";
+                    $Message .= "<div>Thank you for reaching out to MIS.</div>";
                     if ($row->status == "Completed") {
                         $Message .= "<br>";
                         $Message .= "<div>Kindly spare a moment to complete our <strong>Customer Satisfaction Form</strong> to provide feedback.</div>";
-                        $Message .= "<div style='font-size: 24pt;'><a href='http://localhost/isds/csf.php?reqno=" . $row->id . "' style='font-size: 24pt;'>ONLINE CSF FORM</a></div>";
+                        $Message .= "<div style='font-size: 24pt;'><a href='http://r6itbpm.site/isds/csf.php?reqno=" . $row->id . "' style='font-size: 24pt;'>ONLINE CSF FORM</a></div>";
                         $Message .= "<br><br>";
                     }
                     $Message .= "<p>Here is the update on your request:</p>";
@@ -482,7 +492,7 @@ if ($g_response == 1) {
                     $Message .= "<li><strong>Serviced by:</strong> " . $row->serviced_by_name . "</li>";
                     $Message .= "</ul>";
                     $Message .= "<p>To access your account, please click the button below:</p>";
-                    $Message .= "<a href='http://localhost/isds/'><u>Click Here to Login</u></a>";
+                    $Message .= "<a href='http://r6itbpm.site/isds/'><u>Click Here to Login</u></a>";
                     $Message .= "<br><br>";
                     $Message .= "<p>Best Regards,</p>";
                     $Message .= "<div>DTI6 MIS Administrator</div>";
@@ -728,7 +738,7 @@ if ($g_response == 1) {
             $query3 = $conn->execute_query($query, [$users_id]);
 
             while ($acc = $query3->fetch_object()) {
-                $Subject = "DTI6 MIS | Reset Password";
+                $Subject = "DTI6 ISDS: Reset Password";
 
                 $Message = "";
                 $Message .= "<p><img src='https://upload.wikimedia.org/wikipedia/commons/1/14/DTI_Logo_2019.png' alt='' width='58' height='55'></p>";
