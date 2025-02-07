@@ -259,12 +259,12 @@ if (isset($_GET["chart_division"])) {
 
     $response = [
         'series' => [],
-        'labels' => ['ORD', 'CPD', 'FAD', 'BDD', 'COA', 'IDD', 'DTI AKL', 'DTI ANT', 'DTI CAP', 'DTI GUI', 'DTI ILO', 'DTI NEG']
+        'labels' => []
     ];
 
     while ($row = $result->fetch_object()) {
         $response['series'][] = $row->count_per_division;
-        // $response['labels'][] = $row->division;
+        $response['labels'][] = $row->division;
     }
 }
 
