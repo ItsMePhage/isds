@@ -785,6 +785,19 @@ if ($g_response == 1) {
         }
     }
 
+    if (isset($_POST['del_users'])) {
+        $users_id = $_POST['users_id'];
+
+        $query = "DELETE FROM users WHERE id = ?";
+        $result = $conn->execute_query($query, [$users_id]);
+
+        $response = [
+            'status' => 'success',
+            'message' => 'User deleted.',
+            'redirect' => '../' . ($_SESSION['role'] == 'admin' ? 'admin' : 'user') . '/users.php'
+        ];
+    }
+
     if (isset($_POST['reset_password'])) {
         $users_id = $_POST['users_id'];
 

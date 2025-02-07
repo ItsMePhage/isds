@@ -35,7 +35,7 @@ if (isset($_GET['users_table'])) {
             'dt' => 6,
             'formatter' => function ($d, $row) {
                 $html = '<small class="text-nowrap small"><button type="button" class="btn btn-primary mx-1 my-0 small" onclick="updusersbtn(' . $d . ')"><i class="bi bi-pencil-square small"></i></button>';
-                $html .= '<button type="button" class="btn btn-warning mx-1 my-0 small" onclick="rstusersbtn(' . $d . ')"><i class="bi bi-key"></i></button></small>';
+                $html .= '<button type="button" class="btn btn-warning mx-1 my-0 small" onclick="rstusersbtn(' . $d . ')"><i class="bi bi-key"></i></button><button type="button" class="btn btn-danger mx-1 my-0 small" onclick="delusersbtn(' . $d . ')"><i class="bi bi-trash3-fill small"></i></button></small>';
 
                 return $html;
             }

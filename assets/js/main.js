@@ -600,64 +600,7 @@ $(function () {
     }
   });
 
-  // window.delhelpdesksbtn = function (id) {
-
-  //   Swal.fire({
-  //     title: "Are you sure?",
-  //     text: "You are trying to delete this item.",
-  //     icon: "warning",
-  //     showCancelButton: true,
-  //     confirmButtonColor: "#3085d6",
-  //     cancelButtonColor: "#d33",
-  //     confirmButtonText: "Yes, delete",
-  //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       Swal.fire({
-  //         title: "Loading",
-  //         html: "Please wait...",
-  //         allowOutsideClick: false,
-  //         didOpen: function () {
-  //           Swal.showLoading();
-  //         },
-  //       });
-
-  //       $.ajax({
-  //         type: "POST",
-  //         url: "/isds/includes/process.php",
-  //         data: {
-  //           del_helpdesks: true,
-  //           helpdesks_id: id,
-  //           "captcha-token": captchaToken,
-  //         },
-  //         dataType: "json",
-  //         success: function (response) {
-  //           setTimeout(function () {
-  //             Swal.fire({
-  //               icon: response.status,
-  //               title: response.message,
-  //               showConfirmButton: false,
-  //               timer: 1000,
-  //             }).then(function () {
-  //               if (response.redirect) {
-  //                 window.location.href = response.redirect;
-  //               }
-  //               if (response.reload) {
-  //                 window.reload();
-  //               }
-  //             });
-  //           }, 1000);
-
-  //           grecaptcha.ready(function () {
-  //             grecaptcha.execute(window.sitekey).then(function (token) {
-  //               $(".captcha-token").val(token);
-  //             });
-  //           });
-  //         },
-  //       });
-  //     }
-  //   });
-  // };
-
+  
   window.delhelpdesksbtn = function (id, requestNumber) {
 
     Swal.fire({
@@ -1049,6 +992,65 @@ $(function () {
     $("#updusersmodal").modal("toggle");
     $("#updusersmodal").modal("show");
   };
+
+  window.delusersbtn = function (id) {
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You are trying to delete this user.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Loading",
+          html: "Please wait...",
+          allowOutsideClick: false,
+          didOpen: function () {
+            Swal.showLoading();
+          },
+        });
+
+        $.ajax({
+          type: "POST",
+          url: "/isds/includes/process.php",
+          data: {
+            del_users: true,
+            users_id: id,
+            "captcha-token": captchaToken,
+          },
+          dataType: "json",
+          success: function (response) {
+            setTimeout(function () {
+              Swal.fire({
+                icon: response.status,
+                title: response.message,
+                showConfirmButton: false,
+                timer: 1000,
+              }).then(function () {
+                if (response.redirect) {
+                  window.location.href = response.redirect;
+                }
+                if (response.reload) {
+                  window.reload();
+                }
+              });
+            }, 1000);
+
+            grecaptcha.ready(function () {
+              grecaptcha.execute(window.sitekey).then(function (token) {
+                $(".captcha-token").val(token);
+              });
+            });
+          },
+        });
+      }
+    });
+  };
+
 
   window.rstusersbtn = function (id) {
     Swal.fire({
