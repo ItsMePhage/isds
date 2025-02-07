@@ -1353,7 +1353,7 @@ $(function () {
           dataLabels: {
             enabled: true,
             formatter: function (val, opt) {
-              console.log(opt.dataPointIndex);
+              console.log(val);
               return opt.w.globals.labels[opt.dataPointIndex] + ": " + val.toFixed(2) + "%";
             },
           },
