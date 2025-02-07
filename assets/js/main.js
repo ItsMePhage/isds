@@ -434,42 +434,43 @@ $(function () {
    * Initiate select
    */
   $(".select-init").each(function (index, element) {
-    let select_id = $(element).attr("id");
+    let select_data = $(element).attr("id");
 
     $.ajax({
       url: "/isds/includes/fetch.php",
       type: "GET",
-      data: { select_data: select_id },
+      data: {
+        select_data: select_data,
+      },
       dataType: "json",
       success: function (response) {
-        if (!response || !Array.isArray(response)) {
-          console.error("Invalid response:", response);
-          return;
+        var len = response.length;
+        if (select_data_val.length > 0) {
+          for (var i = 0; i < len; i++) {
+            var id = response[i]["id"];
+            var name = response[i]["name"];
+            $("#" + select_data).append(
+              "<option value='" +
+              id +
+              "' " +
+              (id == select_data_val[index] ? "selected" : "") +
+              ">" +
+              name +
+              "</option>"
+            );
+          }
+        } else {
+          for (var i = 0; i < len; i++) {
+            var id = response[i]["id"];
+            var name = response[i]["name"];
+            $("#" + select_data).append(
+              "<option value='" + id + "'>" + name + "</option>"
+            );
+          }
         }
-
-        let $select = $("#" + select_id);
-        $select.empty(); // Clear existing options
-        $select.append('<option value="">Choose...</option>'); // Default option
-
-        let select_data_val = $select.data("selected"); // Get selected value from data attribute if exists
-
-        response.forEach(item => {
-          let selected = select_data_val && item.id == select_data_val ? "selected" : "";
-          $select.append(`<option value="${item.id}" ${selected}>${item.name}</option>`);
-        });
-
-        // Initialize Select2
-        $select.select2({
-          placeholder: "Choose...",
-          allowClear: true
-        });
       },
-      error: function (xhr, status, error) {
-        console.error("AJAX Error:", status, error);
-      }
     });
   });
-
 
   function updateOptions(url, data, categorySelector, subCategorySelector) {
     $.ajax({
