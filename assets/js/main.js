@@ -1139,9 +1139,6 @@ $(function () {
           },
           dataLabels: {
             enabled: true,
-            formatter: function (val, opt) {
-              return opt.w.globals.labels[opt.dataPointIndex] + ": " + val.toFixed(2) + "%";
-            },
           },
           series: [
             {
@@ -1190,6 +1187,7 @@ $(function () {
     chart_month();
   }
 
+
   function chart_category() {
     $.ajax({
       url: "/isds/includes/fetch.php",
@@ -1211,7 +1209,7 @@ $(function () {
             enabled: true,
             textAnchor: "start",
             formatter: function (val, opt) {
-              return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val.toFixed(2);
+              return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val;
             },
             offsetX: 0,
           },
@@ -1288,7 +1286,7 @@ $(function () {
           dataLabels: {
             enabled: true,
             formatter: function (val, opt) {
-              return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val.toFixed(2);
+              return opt.w.globals.labels[opt.dataPointIndex] + ": " + val.toFixed(2) + "%";
             },
           },
           series: seriesData,
@@ -1355,7 +1353,7 @@ $(function () {
           dataLabels: {
             enabled: true,
             formatter: function (val, opt) {
-              return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val.toFixed(2);
+              return opt.w.globals.labels[opt.dataPointIndex] + ": " + val.toFixed(2) + "%";
             },
           },
           series: seriesData,
