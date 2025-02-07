@@ -433,77 +433,48 @@ $(function () {
   /**
    * Initiate select
    */
-  // $(".select-init").each(function (index, element) {
-  //   let select_data = $(element).attr("id");
-
-  //   $.ajax({
-  //     url: "/isds/includes/fetch.php",
-  //     type: "GET",
-  //     data: {
-  //       select_data: select_data,
-  //     },
-  //     dataType: "json",
-  //     success: function (response) {
-  //       var len = response.length;
-  //       if (select_data_val.length > 0) {
-  //         for (var i = 0; i < len; i++) {
-  //           var id = response[i]["id"];
-  //           var name = response[i]["name"];
-  //           $("#" + select_data).append(
-  //             "<option value='" +
-  //             id +
-  //             "' " +
-  //             (id == select_data_val[index] ? "selected" : "") +
-  //             ">" +
-  //             name +
-  //             "</option>"
-  //           );
-  //         }
-  //       } else {
-  //         for (var i = 0; i < len; i++) {
-  //           var id = response[i]["id"];
-  //           var name = response[i]["name"];
-  //           $("#" + select_data).append(
-  //             "<option value='" + id + "'>" + name + "</option>"
-  //           );
-  //         }
-
-  //         // Initialize Select2 after options are populated
-  //         selectElement.select2({
-  //           placeholder: "Choose...",
-  //           allowClear: true
-  //         });
-  //       }
-  //     },
-  //   });
-  // });
-
   $(".select-init").each(function (index, element) {
     let select_data = $(element).attr("id");
 
     $.ajax({
       url: "/isds/includes/fetch.php",
       type: "GET",
-      data: { select_data: select_data },
+      data: {
+        select_data: select_data,
+      },
       dataType: "json",
       success: function (response) {
         var len = response.length;
-        var selectElement = $("#" + select_data);
+        if (select_data_val.length > 0) {
+          for (var i = 0; i < len; i++) {
+            var id = response[i]["id"];
+            var name = response[i]["name"];
+            $("#" + select_data).append(
+              "<option value='" +
+              id +
+              "' " +
+              (id == select_data_val[index] ? "selected" : "") +
+              ">" +
+              name +
+              "</option>"
+            );
+          }
+        } else {
+          for (var i = 0; i < len; i++) {
+            var id = response[i]["id"];
+            var name = response[i]["name"];
+            $("#" + select_data).append(
+              "<option value='" + id + "'>" + name + "</option>"
+            );
+          }
 
-        selectElement.empty().append('<option value="" selected disabled>Choose...</option>');
-
-        for (var i = 0; i < len; i++) {
-          var id = response[i]["id"];
-          var name = response[i]["name"];
-          selectElement.append("<option value='" + id + "'>" + name + "</option>");
+          // Initialize Select2 after options are populated
+          select_data.select2({
+            placeholder: "Choose...",
+            allowClear: true
+          });
         }
-
-        // Initialize Select2 after options are populated
-        selectElement.select2({
-          placeholder: "Choose...",
-          allowClear: true
-        });
-      }
+      },
     });
   });
 
