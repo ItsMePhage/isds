@@ -5,14 +5,14 @@ require_once '../includes/conn.php';
 session_start();
 
 if ($is_protected == true) {
-    if (isset($_SESSION['id'])) {
+    if (isset($_SESSION['isds_id'])) {
 
         $_SESSION['last_activity'] = time();
 
         $query = "SELECT * FROM users_info";
         $query .= " WHERE id = ? AND is_active = 1";
 
-        $result = $conn->execute_query($query, [$_SESSION['id']]);
+        $result = $conn->execute_query($query, [$_SESSION['isds_id']]);
 
         if ($result && $result->num_rows > 0) {
             $acc = $result->fetch_object();

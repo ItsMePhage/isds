@@ -164,7 +164,7 @@ if (isset($_GET['select_data'])) {
 }
 
 if (isset($_GET['meetings'])) {
-    $query = "SELECT * FROM meetings WHERE requested_by = " . $_SESSION['id'];
+    $query = "SELECT * FROM meetings WHERE requested_by = " . $_SESSION['isds_id'];
     $result = $conn->execute_query($query);
 
     while ($row = $result->fetch_object()) {
