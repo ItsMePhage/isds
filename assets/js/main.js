@@ -1133,6 +1133,13 @@ $(function () {
         var labelsData = response.labels;
 
         var options = {
+          title: {
+            text: 'Helpdesks Per Month',
+            align: 'left'
+          },
+          dataLabels: {
+            enabled: true,
+          },
           series: [
             {
               name: "Desktops",
@@ -1185,6 +1192,13 @@ $(function () {
 
   function chart_category() {
     $.ajax({
+      title: {
+        text: 'Helpdesks Per Category',
+        align: 'left'
+      },
+      dataLabels: {
+        enabled: true,
+      },
       url: "/isds/includes/fetch.php",
       type: "GET",
       data: {
@@ -1271,6 +1285,13 @@ $(function () {
         var labelsData = response.labels;
 
         var options = {
+          title: {
+            text: 'Helpdesks Per Division',
+            align: 'left'
+          },
+          dataLabels: {
+            enabled: true,
+          },
           series: seriesData,
           chart: {
             type: "donut",
@@ -1328,6 +1349,13 @@ $(function () {
         var labelsData = response.labels;
 
         var options = {
+          title: {
+            text: 'Helpdesks Per Sex',
+            align: 'left'
+          },
+          dataLabels: {
+            enabled: true,
+          },
           series: seriesData,
           chart: {
             type: "pie",
