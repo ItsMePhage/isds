@@ -467,6 +467,12 @@ $(function () {
               "<option value='" + id + "'>" + name + "</option>"
             );
           }
+
+          // Initialize Select2 after options are populated
+          selectElement.select2({
+            placeholder: "Choose...",
+            allowClear: true
+          });
         }
       },
     });
