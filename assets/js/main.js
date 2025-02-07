@@ -601,7 +601,6 @@ $(function () {
   });
 
   // window.delhelpdesksbtn = function (id) {
-  //   console.log("Helpdesk ID: " + id);
 
   //   Swal.fire({
   //     title: "Are you sure?",
@@ -660,7 +659,6 @@ $(function () {
   // };
 
   window.delhelpdesksbtn = function (id, requestNumber) {
-    console.log("Helpdesk ID: " + id);
 
     Swal.fire({
       title: "Are you sure?",
@@ -753,7 +751,6 @@ $(function () {
 
 
   window.viewhelpdesksbtn = function (id) {
-    console.log("Helpdesk ID: " + id);
 
     $.ajax({
       url: "/isds/includes/fetch.php",
@@ -764,7 +761,6 @@ $(function () {
       },
       dataType: "json",
       success: function (response) {
-        console.log(response);
         $("#view_date_requested").val(response.date_requested);
         $("#view_requested_by_name").val(response.requested_by_name);
         $("#view_request_type").val(response.request_type);
@@ -792,7 +788,6 @@ $(function () {
 
 
   window.updhelpdesksbtn = function (id) {
-    console.log("Helpdesk ID: " + id);
 
     $.ajax({
       url: "/isds/includes/fetch.php",
@@ -803,7 +798,6 @@ $(function () {
       },
       dataType: "json",
       success: function (response) {
-        console.log(response);
 
         $("#upd_date_requested").val(response.date_requested);
         $("#upd_requested_by").val(response.requested_by);
@@ -939,7 +933,6 @@ $(function () {
   };
 
   window.delmeetingsbtn = function (id) {
-    console.log("meeting ID: " + id);
 
     Swal.fire({
       title: "Are you sure?",
@@ -998,7 +991,6 @@ $(function () {
   };
 
   window.updmeetingsbtn = function (id) {
-    console.log("Meeting ID: " + id);
 
     $.ajax({
       url: "/isds/includes/fetch.php",
@@ -1009,7 +1001,6 @@ $(function () {
       },
       dataType: "json",
       success: function (response) {
-        console.log(response);
 
         $("#upd_date_requested").val(response.date_requested);
         $("#upd_requested_by").val(response.requested_by);
@@ -1025,7 +1016,6 @@ $(function () {
   };
 
   window.updusersbtn = function (id) {
-    console.log("user ID: " + id);
 
     $.ajax({
       url: "/isds/includes/fetch.php",
@@ -1036,7 +1026,6 @@ $(function () {
       },
       dataType: "json",
       success: function (response) {
-        console.log(response);
 
         $("#upd_id_number").val(response.id_number);
         $("#upd_first_name").val(response.first_name);
@@ -1062,8 +1051,6 @@ $(function () {
   };
 
   window.rstusersbtn = function (id) {
-    console.log("meeting ID: " + id);
-
     Swal.fire({
       title: "Are you sure?",
       text: "You are trying to reset the password of this user.",
@@ -1353,7 +1340,6 @@ $(function () {
           dataLabels: {
             enabled: true,
             formatter: function (val, opt) {
-              console.log(opt);
               return val.toFixed(2) + "%";
             },
           },
