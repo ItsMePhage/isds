@@ -51,7 +51,7 @@ if (isset($_GET['select_data'])) {
             break;
         case "requested_by":
         case "upd_requested_by":
-            $query = "SELECT `id`, CONCAT(first_name,' ',last_name) as `name` FROM users";
+            $query = "SELECT `id`, CONCAT(first_name,' ',last_name) as `name` FROM users ORDER BY first_name ASC";
             $result = $conn->execute_query($query);
 
             while ($row = $result->fetch_object()) {

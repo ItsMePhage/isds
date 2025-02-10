@@ -352,11 +352,7 @@ if ($g_response == 1) {
                 break;
             case 'admin':
                 $requested_by = !empty($_POST['requested_by']) ? $_POST['requested_by'] : $_SESSION['isds_id'];
-
-                $query = "SELECT * FROM `users_info` WHERE `id` = ?";
-                $result = $conn->execute_query($query, [$requested_by]);
-
-                $offices_id = $result->fetch_object()->offices_id;
+                $offices_id = $_SESSION['offices_id'];
                 $date_requested = $_POST['date_requested'];
                 $request_types_id = $_POST['request_types_id'];
                 $categories_id = $_POST['categories_id'];
@@ -380,6 +376,8 @@ if ($g_response == 1) {
 
                 $query = "INSERT INTO helpdesks(`requested_by`,`date_requested`,`request_types_id`,`categories_id`,`sub_categories_id`,`complaint`,`datetime_preferred`,`h_statuses_id`,`property_number`,`priority_levels_id`,`repair_types_id`,`repair_classes_id`,`mediums_id`,`serviced_by`,`datetime_start`,`is_pullout`,`datetime_end`,`is_turnover`,`diagnosis`,`action_taken`,`remarks`, `offices_id`) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                 $result = $conn->execute_query($query, [$requested_by, $date_requested, $request_types_id, $categories_id, $sub_categories_id, $complaint, $datetime_preferred, $h_statuses_id, $property_number, $priority_levels_id, $repair_types_id, $repair_classes_id, $mediums_id, $serviced_by, $datetime_start, $is_pullout, $datetime_end, $is_turnover, $diagnosis, $action_taken, $remarks, $offices_id]);
+
+                $helpdesks_id = $conn->insert_id;
 
                 if (isset($_POST['send_email'])) {
                     $query = "SELECT * FROM `helpdesks_info` WHERE `id` = ?";

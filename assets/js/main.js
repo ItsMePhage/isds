@@ -600,73 +600,6 @@ $(function () {
     }
   });
 
-  
-  window.delhelpdesksbtn = function (id, requestNumber) {
-
-    Swal.fire({
-      title: "Are you sure?",
-      html: `<p class="swal-text">You are trying to delete this item.<br>Please type \"<b>${requestNumber}</b>\" to confirm deletion.</p>`,
-      input: "text",
-      inputPlaceholder: `Type '${requestNumber}' to confirm`,
-      showCancelButton: true,
-      confirmButtonText: "I understand, delete",
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#6c757d",
-      icon: "warning",
-      inputValidator: (inputValue) => {
-        if (inputValue.trim() !== requestNumber) {
-          return "The request number does not match.";
-        }
-      }
-    }).then((result) => {
-      if (!result.isConfirmed) return;
-
-      Swal.fire({
-        title: "Processing...",
-        html: "Please wait...",
-        allowOutsideClick: false,
-        didOpen: () => Swal.showLoading(),
-      });
-
-      grecaptcha.ready(() => {
-        grecaptcha.execute(window.sitekey).then((captchaToken) => {
-          $.ajax({
-            type: "POST",
-            url: "/isds/includes/process.php",
-            data: {
-              del_helpdesks: true,
-              helpdesks_id: id,
-              request_number: requestNumber,
-              "captcha-token": captchaToken,
-            },
-            dataType: "json",
-            success: function (response) {
-              Swal.fire({
-                icon: response.status,
-                title: response.message,
-                showConfirmButton: false,
-                timer: 1500,
-              }).then(() => {
-                if (response.redirect) {
-                  window.location.href = response.redirect;
-                } else if (response.reload) {
-                  window.location.reload();
-                }
-              });
-            },
-            error: function () {
-              Swal.fire({
-                title: "Error",
-                text: "Failed to process request. Please try again.",
-                icon: "error",
-              });
-            }
-          });
-        });
-      });
-    });
-  };
-
   function printForm(formType, jsonData) {
     var encodedData = encodeURIComponent(JSON.stringify(jsonData));
     var printWindow = window.open(`../forms/${formType}-form.php?data=${encodedData}`, "_blank");
@@ -874,6 +807,130 @@ $(function () {
     $("#updhelpdesksmodal").modal("toggle");
     $("#updhelpdesksmodal").modal("show");
   };
+  
+  window.delhelpdesksbtn = function (id, requestNumber) {
+
+    Swal.fire({
+      title: "Are you sure?",
+      html: `<p class="swal-text">You are trying to delete this item.<br>Please type \"<b>${requestNumber}</b>\" to confirm deletion.</p>`,
+      input: "text",
+      inputPlaceholder: `Type '${requestNumber}' to confirm`,
+      showCancelButton: true,
+      confirmButtonText: "I understand, delete",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#6c757d",
+      icon: "warning",
+      inputValidator: (inputValue) => {
+        if (inputValue.trim() !== requestNumber) {
+          return "The request number does not match.";
+        }
+      }
+    }).then((result) => {
+      if (!result.isConfirmed) return;
+
+      Swal.fire({
+        title: "Processing...",
+        html: "Please wait...",
+        allowOutsideClick: false,
+        didOpen: () => Swal.showLoading(),
+      });
+
+      grecaptcha.ready(() => {
+        grecaptcha.execute(window.sitekey).then((captchaToken) => {
+          $.ajax({
+            type: "POST",
+            url: "/isds/includes/process.php",
+            data: {
+              del_helpdesks: true,
+              helpdesks_id: id,
+              request_number: requestNumber,
+              "captcha-token": captchaToken,
+            },
+            dataType: "json",
+            success: function (response) {
+              Swal.fire({
+                icon: response.status,
+                title: response.message,
+                showConfirmButton: false,
+                timer: 1500,
+              }).then(() => {
+                if (response.redirect) {
+                  window.location.href = response.redirect;
+                } else if (response.reload) {
+                  window.location.reload();
+                }
+              });
+            },
+            error: function () {
+              Swal.fire({
+                title: "Error",
+                text: "Failed to process request. Please try again.",
+                icon: "error",
+              });
+            }
+          });
+        });
+      });
+    });
+  };
+
+  // window.delhelpdesksbtn = function (id, requestNumber) {
+
+  //   Swal.fire({
+  //     title: "Are you sure?",
+  //     text: "You are trying to delete this item.",
+  //     icon: "warning",
+  //     showCancelButton: true,
+  //     confirmButtonColor: "#3085d6",
+  //     cancelButtonColor: "#d33",
+  //     confirmButtonText: "Yes, delete",
+  //   }).then((result) => {
+  //     if (result.isConfirmed) {
+  //       Swal.fire({
+  //         title: "Loading",
+  //         html: "Please wait...",
+  //         allowOutsideClick: false,
+  //         didOpen: function () {
+  //           Swal.showLoading();
+  //         },
+  //       });
+
+  //       $.ajax({
+  //         type: "POST",
+  //         url: "/isds/includes/process.php",
+  //         data: {
+  //           del_helpdesks: true,
+  //           helpdesks_id: id,
+  //           "captcha-token": captchaToken,
+  //         },
+  //         dataType: "json",
+  //         success: function (response) {
+  //           setTimeout(function () {
+  //             Swal.fire({
+  //               icon: response.status,
+  //               title: response.message,
+  //               showConfirmButton: false,
+  //               timer: 1000,
+  //             }).then(function () {
+  //               if (response.redirect) {
+  //                 window.location.href = response.redirect;
+  //               }
+  //               if (response.reload) {
+  //                 window.reload();
+  //               }
+  //             });
+  //           }, 1000);
+
+  //           grecaptcha.ready(function () {
+  //             grecaptcha.execute(window.sitekey).then(function (token) {
+  //               $(".captcha-token").val(token);
+  //             });
+  //           });
+  //         },
+  //       });
+  //     }
+  //   });
+  // };
 
   window.delmeetingsbtn = function (id) {
 
