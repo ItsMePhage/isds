@@ -833,7 +833,6 @@ if ($g_response == 1) {
         }
     }
 
-
     if (isset($_POST['upd_meetings'])) {
         $upd_meetings_id = $_POST['upd_meetings_id'];
         $date_requested = $_POST['date_requested'];

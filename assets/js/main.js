@@ -1212,7 +1212,6 @@ $(function () {
     chart_month();
   }
 
-
   function chart_category() {
     $.ajax({
       url: "/isds/includes/fetch.php",
