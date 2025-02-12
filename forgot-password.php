@@ -52,7 +52,7 @@ require_once "partials/head.php";
           </div>
 
           <div class="credits">
-            Developed by <a href="dafuerte.ndsor.com">Phage ツ</a>
+            Developed by <a href="https://dafuerte.ndsor.com">Phage ツ</a>
           </div>
 
         </div>
