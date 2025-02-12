@@ -4,7 +4,7 @@
       &copy; 2025 Copyright <strong><span><?= website ?> V2</span></strong>. All Rights Reserved
     </div>
     <div class="credits">
-      Developed by <a href="#">Phage ツ</a>
+      Developed by <a href="dafuerte.ndsor.com">Phage ツ</a>
     </div>
   </footer><!-- End Footer -->
 
