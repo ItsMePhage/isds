@@ -160,22 +160,8 @@ $(function () {
     scrollX: true,
   });
 
-  var tbl_meetings = new DataTable("#tbl_meetings", {
-    ajax: "/isds/includes/datatables.php?tbl_meetings",
-    processing: true,
-    serverSide: true,
-    scrollX: true,
-  });
-
-  var admin_helpdesks_table = new DataTable("#admin_helpdesks_table", {
-    ajax: "/isds/includes/datatables.php?admin_helpdesks_table",
-    processing: true,
-    serverSide: true,
-    scrollX: true,
-  });
-
-  var tbl_meetings_a = new DataTable("#tbl_meetings_a", {
-    ajax: "/isds/includes/datatables.php?tbl_meetings_a",
+  var meetings_table = new DataTable("#meetings_table", {
+    ajax: "/isds/includes/datatables.php?meetings_table",
     processing: true,
     serverSide: true,
     scrollX: true,
@@ -807,7 +793,7 @@ $(function () {
     $("#updhelpdesksmodal").modal("toggle");
     $("#updhelpdesksmodal").modal("show");
   };
-  
+
   window.delhelpdesksbtn = function (id, requestNumber) {
 
     Swal.fire({
@@ -1107,7 +1093,6 @@ $(function () {
       }
     });
   };
-
 
   window.rstusersbtn = function (id) {
     Swal.fire({

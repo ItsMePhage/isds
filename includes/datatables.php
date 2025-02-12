@@ -343,6 +343,104 @@ if (isset($_GET['helpdesks_table'])) {
     }
 }
 
+if (isset($_GET['meetings_table'])) {
+    switch ($_SESSION['role']) {
+        case 'admin':
+            $table = ($_SESSION['offices_id'] == 1)
+                ? "meetings_info"
+                : "(SELECT * FROM meetings_info WHERE offices_id = " . $_SESSION['offices_id'] . ") AS meetings_info";
+
+            $columns = array(
+                array(
+                    'db' => 'date_requested',
+                    'dt' => 0,
+                    'formatter' => function ($d, $row) {
+                        return date_format(date_create($d), 'd/m/Y');
+                    }
+                ),
+                array(
+                    'db' => 'request_number',
+                    'dt' => 1,
+                    'formatter' => function ($d, $row) {
+                        return '<a href="#" onclick="viewMeeting(' . $row['id'] . ')"><span><u>' . $d . '</u></span></a>';
+                    }
+                ),
+                array('db' => 'topic', 'dt' => 2),
+                array('db' => 'date_scheduled', 'dt' => 3),
+                array('db' => 'time_start', 'dt' => 4),
+                array('db' => 'time_end', 'dt' => 5),
+                array('db' => 'host', 'dt' => 6),
+                array(
+                    'db' => 'status',
+                    'dt' => 7,
+                    'formatter' => function ($d, $row) {
+                        return '<center><span class="w-100 badge text-bg-' . $row['status_color'] . '">' . $d . '</span></center>';
+                    }
+                ),
+                array('db' => 'requested_by_name', 'dt' => 8),
+                array('db' => 'approved_by_name', 'dt' => 9),
+                array(
+                    'db' => 'id',
+                    'dt' => 10,
+                    'formatter' => function ($d, $row) {
+                        $editBtn = '<button type="button" class="btn btn-primary mx-1 my-0 small" onclick="updateMeeting(' . $row['id'] . ')"><i class="bi bi-pencil-square small"></i></button>';
+                        $deleteBtn = '<button type="button" class="btn btn-danger mx-1 my-0 small" onclick="deleteMeeting(' . $row['id'] . ', \'' . $row['request_number'] . '\')"><i class="bi bi-trash3-fill small"></i></button>';
+                        $viewBtn = '<button type="button" class="btn btn-info mx-1 my-0 small" onclick="viewMeeting(' . $row['id'] . ')"><i class="bi bi-eye"></i></button>';
+                        
+                        $html = '<div class="btn-group text-end small" role="group">';
+                        $html .= "{$editBtn}{$viewBtn}{$deleteBtn}";
+                        $html .= '</div>';
+                        return $html;
+                    }
+                )
+            );
+            break;
+
+        case 'employee':
+        case 'VIP':
+            $table = "(SELECT * FROM meetings_info WHERE requested_by = " . $_SESSION['user_id'] . ") AS meetings_info";
+
+            $columns = array(
+                array(
+                    'db' => 'date_requested',
+                    'dt' => 0,
+                    'formatter' => function ($d, $row) {
+                        return date_format(date_create($d), 'd/m/Y');
+                    }
+                ),
+                array(
+                    'db' => 'request_number',
+                    'dt' => 1,
+                    'formatter' => function ($d, $row) {
+                        return '<a href="#" onclick="viewMeeting(' . $row['id'] . ')"><span><u>' . $d . '</u></span></a>';
+                    }
+                ),
+                array('db' => 'topic', 'dt' => 2),
+                array('db' => 'date_scheduled', 'dt' => 3),
+                array('db' => 'time_start', 'dt' => 4),
+                array('db' => 'time_end', 'dt' => 5),
+                array('db' => 'host', 'dt' => 6),
+                array(
+                    'db' => 'status',
+                    'dt' => 7,
+                    'formatter' => function ($d, $row) {
+                        return '<center><span class="w-100 badge text-bg-' . $row['status_color'] . '">' . $d . '</span></center>';
+                    }
+                ),
+                array(
+                    'db' => 'id',
+                    'dt' => 8,
+                    'formatter' => function ($d, $row) {
+                        $viewBtn = '<button type="button" class="btn btn-info mx-1 my-0 small" onclick="viewMeeting(' . $row['id'] . ')"><i class="bi bi-eye"></i></button>';
+                        return '<div class="btn-group text-end small" role="group">' . $viewBtn . '</div>';
+                    }
+                )
+            );
+            break;
+    }
+}
+
+/*
 if (isset($_GET['meeting_table'])) {
     $table = "(SELECT * FROM view_meetings WHERE requested_by = " . $_SESSION['isds_id'] . ") AS tbl_meetings";
 
@@ -445,6 +543,7 @@ if (isset($_GET['tbl_meetings_a'])) {
         )
     );
 }
+*/
 
 if (isset($_GET['tbl_request_types'])) {
     $table = "view_request_types";
