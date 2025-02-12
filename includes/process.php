@@ -316,9 +316,27 @@ if ($g_response == 1) {
                 $Message .= "<div>";
                 $Message .= "<p>Good day $row->requested_by_name,</p>";
                 $Message .= "<div>Thank you for reaching out to MIS.</div>";
-                $Message .= "<br>";
-                $Message .= "<div>Below are your request.</div>";
-                $Message .= "<br>";
+                switch ($row->status) {
+                    case 'Open':
+                        $Message .= "<p>Your request ({$row->request_number}) has been successfully submitted. Our team will review it and get back to you soon.</p>";
+                        break;
+                    case 'Cancelled':
+                        $Message .= "<p>Your request ({$row->request_number}) has been cancelled. If you need further assistance, please submit a new request or contact our support team.</p>";
+                        break;
+                    case 'Pending':
+                        $Message .= "<p>Your request ({$row->request_number}) is currently pending. Please provide the required information to proceed.</p>";
+                        break;
+                    case 'Pre-repair':
+                        $Message .= "<p>Your request ({$row->request_number}) is now scheduled for servicing. Our team will begin work on the assigned date.</p>";
+                        break;
+                    case 'Completed':
+                        $Message .= "<p>Your request ({$row->request_number}) has been completed. Please take a moment to fill out our feedback form:</p>";
+                        $Message .= "<p><a href='http://r6itbpm.site/isds/csf.php?reqno={$row->id}' style='font-size: 18pt;'>Online CSF Form</a></p>";
+                        break;
+                    case 'Unserviceable':
+                        $Message .= "<p>We regret to inform you that your request ({$row->request_number}) has been marked as unserviceable. Please contact support for alternative solutions.</p>";
+                        break;
+                }
                 $Message .= "<br>";
                 $Message .= "<h3><strong>Request Details</strong></h3>";
                 $Message .= "<ul>";
@@ -399,13 +417,28 @@ if ($g_response == 1) {
                     $Message .= "<p>Good day $row->requested_by_name,</p>";
                     $Message .= "<br>";
                     $Message .= "<div>Thank you for reaching out to MIS.</div>";
-                    if ($row->status == "Completed") {
-                        $Message .= "<br>";
-                        $Message .= "<div>Kindly spare a moment to complete our <strong>Customer Satisfaction Feedback Form</strong> and share your insights.</div>";
-                        $Message .= "<div style='font-size: 24pt;'><a href='http://r6itbpm.site/isds/csf.php?reqno=" . $row->id . "' style='font-size: 24pt;'>ONLINE CSF FORM</a></div>";
-                        $Message .= "<br><br>";
+                    switch ($row->status) {
+                        case 'Open':
+                            $Message .= "<p>Your request ({$row->request_number}) has been successfully submitted. Our team will review it and get back to you soon.</p>";
+                            break;
+                        case 'Cancelled':
+                            $Message .= "<p>Your request ({$row->request_number}) has been cancelled. If you need further assistance, please submit a new request or contact our support team.</p>";
+                            break;
+                        case 'Pending':
+                            $Message .= "<p>Your request ({$row->request_number}) is currently pending. Please provide the required information to proceed.</p>";
+                            break;
+                        case 'Pre-repair':
+                            $Message .= "<p>Your request ({$row->request_number}) is now scheduled for servicing. Our team will begin work on the assigned date.</p>";
+                            break;
+                        case 'Completed':
+                            $Message .= "<p>Your request ({$row->request_number}) has been completed. Please take a moment to fill out our feedback form:</p>";
+                            $Message .= "<p><a href='http://r6itbpm.site/isds/csf.php?reqno={$row->id}' style='font-size: 18pt;'>Online CSF Form</a></p>";
+                            break;
+                        case 'Unserviceable':
+                            $Message .= "<p>We regret to inform you that your request ({$row->request_number}) has been marked as unserviceable. Please contact support for alternative solutions.</p>";
+                            break;
                     }
-                    $Message .= "<p>Here is the update on your request:</p>";
+                    $Message .= "<br>";
                     $Message .= "<h3><strong>Request Details</strong></h3>";
                     $Message .= "<ul>";
                     $Message .= "<li><strong>Date of Request:</strong> " . $row->date_requested->format('d/m/Y') . "</li>";
@@ -522,13 +555,27 @@ if ($g_response == 1) {
                     $Message .= "<p>Good day $row->requested_by_name,</p>";
                     $Message .= "<br>";
                     $Message .= "<div>Thank you for reaching out to MIS.</div>";
-                    if ($row->status == "Completed") {
-                        $Message .= "<br>";
-                        $Message .= "<div>Kindly spare a moment to complete our <strong>Customer Satisfaction Feedback Form</strong> and share your insights.</div>";
-                        $Message .= "<div style='font-size: 24pt;'><a href='http://r6itbpm.site/isds/csf.php?reqno=" . $row->id . "' style='font-size: 24pt;'>ONLINE CSF FORM</a></div>";
-                        $Message .= "<br><br>";
+                    switch ($row->status) {
+                        case 'Open':
+                            $Message .= "<p>Your request {$row->request_number} has been successfully submitted. Our team will review it and get back to you soon.</p>";
+                            break;
+                        case 'Cancelled':
+                            $Message .= "<p>Your request {$row->request_number} has been cancelled. If you need further assistance, please submit a new request or contact our support team.</p>";
+                            break;
+                        case 'Pending':
+                            $Message .= "<p>Your request {$row->request_number} is pending and currently in progress.</p>";
+                            break;
+                        case 'Pre-repair':
+                            $Message .= "<p>Your request {$row->request_number} is now scheduled for servicing. Our team will begin work on the assigned date.</p>";
+                            break;
+                        case 'Completed':
+                            $Message .= "<p>Your request {$row->request_number} has been completed. Please take a moment to fill out our feedback form:</p>";
+                            $Message .= "<p><a href='http://r6itbpm.site/isds/csf.php?reqno={$row->id}' style='font-size: 18pt;'>Online CSF Form</a></p>";
+                            break;
+                        case 'Unserviceable':
+                            $Message .= "<p>We regret to inform you that your request {$row->request_number} has been marked as unserviceable. Please contact support for alternative solutions.</p>";
+                            break;
                     }
-                    $Message .= "<p>Here is the update on your request:</p>";
                     $Message .= "<h3><strong>Request Details</strong></h3>";
                     $Message .= "<ul>";
                     $Message .= "<li><strong>Date of Request:</strong> " . $row->date_requested->format('d/m/Y') . "</li>";
@@ -598,16 +645,33 @@ if ($g_response == 1) {
                 $date_requested = $_POST['date_requested'];
                 $topic = $_POST['topic'];
                 $date_scheduled = $_POST['date_scheduled'];
-
                 $time_start = $_POST['time_start'];
                 $time_end = $_POST['time_end'];
 
-                $query = "SELECT * FROM `meetings_info` WHERE `date_scheduled` = ? AND ( ( `time_start` < ? AND `time_end` > ? ) OR ( `time_start` < ? AND `time_end` > ? ) OR ( `time_start` >= ? AND `time_end` <= ? ))";
-
+                $query = "SELECT * FROM `meetings_info` WHERE `date_scheduled` = ? 
+                          AND ((`time_start` < ? AND `time_end` > ?) 
+                          OR (`time_start` < ? AND `time_end` > ?) 
+                          OR (`time_start` >= ? AND `time_end` <= ?))";
                 $result = $conn->execute_query($query, [$date_scheduled, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end]);
+
                 if ($result->num_rows == 0) {
-                    $query = "INSERT INTO meetings(`requested_by`,`topic`,`date_requested`,`date_scheduled`,`time_start`,`time_end`) VALUE (?,?,?,?,?,?)";
-                    $result = $conn->execute_query($query, [$requested_by, $topic, $date_requested, $date_scheduled, $time_start, $time_end]);
+                    $query = "INSERT INTO meetings (`requested_by`, `topic`, `date_requested`, `date_scheduled`, `time_start`, `time_end`)
+                              VALUES (?, ?, ?, ?, ?, ?)";
+                    $conn->execute_query($query, [$requested_by, $topic, $date_requested, $date_scheduled, $time_start, $time_end]);
+
+                    $status = 'Pending';
+                    $Subject = "Meeting Request - $status";
+                    $Message = "<p>Dear User,</p>";
+                    $Message .= "<p>Your meeting request is currently <strong>$status</strong>. Here are the details:</p>";
+                    $Message .= "<ul>";
+                    $Message .= "<li><strong>Topic:</strong> $topic</li>";
+                    $Message .= "<li><strong>Date Scheduled:</strong> $date_scheduled</li>";
+                    $Message .= "<li><strong>Time Start:</strong> $time_start</li>";
+                    $Message .= "<li><strong>Time End:</strong> $time_end</li>";
+                    $Message .= "</ul>";
+                    $Message .= "<p>Best Regards,<br>Meeting Coordinator</p>";
+
+                    sendEmail($_SESSION['user_email'], $Subject, $Message);
 
                     $response = [
                         'status' => 'success',
@@ -632,12 +696,81 @@ if ($g_response == 1) {
                 $m_statuses_id = !empty($_POST['m_statuses_id']) ? $_POST['m_statuses_id'] : 1;
                 $meeting_details = $_POST['meeting_details'];
 
-                $query = "SELECT * FROM `meetings_info` WHERE `date_scheduled` = ? AND ( ( `time_start` < ? AND `time_end` > ? ) OR ( `time_start` < ? AND `time_end` > ? ) OR ( `time_start` >= ? AND `time_end` <= ? ))";
-
+                $query = "SELECT * FROM `meetings_info` WHERE `date_scheduled` = ? 
+                          AND ((`time_start` < ? AND `time_end` > ?) 
+                          OR (`time_start` < ? AND `time_end` > ?) 
+                          OR (`time_start` >= ? AND `time_end` <= ?))";
                 $result = $conn->execute_query($query, [$date_scheduled, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end]);
+
                 if ($result->num_rows == 0) {
-                    $query = "INSERT INTO meetings(`requested_by`,`topic`,`date_requested`,`date_scheduled`,`time_start`,`time_end`,`hosts_id`,`m_statuses_id`,`meeting_details`) VALUE (?,?,?,?,?,?,?,?,?)";
-                    $result = $conn->execute_query($query, [$requested_by, $topic, $date_requested, $date_scheduled, $time_start, $time_end, $hosts_id, $m_statuses_id, $meeting_details]);
+                    $query = "INSERT INTO meetings (`requested_by`, `topic`, `date_requested`, `date_scheduled`, `time_start`, `time_end`, `hosts_id`, `m_statuses_id`, `meeting_details`)
+                              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    $conn->execute_query($query, [$requested_by, $topic, $date_requested, $date_scheduled, $time_start, $time_end, $hosts_id, $m_statuses_id, $meeting_details]);
+
+                    $meetings_id = $conn->insert_id;
+
+                    if (isset($_POST['send_email'])) {
+                        $query = "SELECT * FROM `meetings_info` WHERE `id` = ?";
+                        $result = $conn->execute_query($query, [$meetings_id]);
+
+                        $row = $result->fetch_object();
+
+                        $row->date_requested = new DateTime($row->date_requested);
+                        $row->datetime_start = new DateTime($row->datetime_start);
+                        $row->datetime_end = new DateTime($row->datetime_end);
+
+                        $Subject = "[$row->status] DTI6 ISDS REQUEST: " . $row->request_number;
+
+                        $Message = "";
+                        $Message .= "<p><img src='https://upload.wikimedia.org/wikipedia/commons/1/14/DTI_Logo_2019.png' alt='' width='58' height='55'></p>";
+                        $Message .= "<hr>";
+                        $Message .= "<div>";
+                        $Message .= "<p>Good day $row->requested_by_name,</p>";
+                        $Message .= "<br>";
+                        $Message .= "<div>Thank you for reaching out to MIS.</div>";
+                        if ($row->status == "Completed") {
+                            $Message .= "<br>";
+                            $Message .= "<div>Kindly spare a moment to complete our <strong>Customer Satisfaction Feedback Form</strong> and share your insights.</div>";
+                            $Message .= "<div style='font-size: 24pt;'><a href='http://r6itbpm.site/isds/csf.php?reqno=" . $row->id . "' style='font-size: 24pt;'>ONLINE CSF FORM</a></div>";
+                            $Message .= "<br><br>";
+                        }
+                        $Message .= "<p>Here is the update on your request:</p>";
+                        $Message .= "<h3><strong>Request Details</strong></h3>";
+                        $Message .= "<ul>";
+                        $Message .= "<li><strong>Date of Request:</strong> " . $row->date_requested->format('d/m/Y') . "</li>";
+                        $Message .= "<li><strong>Type of Request:</strong> " . $row->request_type . "</li>";
+                        $Message .= "<li><strong>Category of Request:</strong> " . $row->category . "</li>";
+                        $Message .= "<li><strong>Sub-Category of Request:</strong> " . $row->sub_category . "</li>";
+                        $Message .= "<li><strong>Description:</strong> " . $row->complaint . "</li>";
+                        $Message .= "<li><strong>Preferred Date and Time:</strong> " . $row->datetime_preferred->format('d/m/Y h:i A') . "</li>";
+                        $Message .= "</ul>";
+                        $Message .= "<h3><strong>Action Details</strong></h3>";
+                        $Message .= "<ul>";
+                        $Message .= "<li><strong>Status:</strong> <span style='color: " . $row->status_hex . "'>" . $row->status . "</span></li>";
+                        $Message .= "<li><strong>Property Number:</strong> " . $row->property_number . "</li>";
+                        $Message .= "<li><strong>Urgency:</strong> " . $row->priority_level . "</li>";
+                        $Message .= "<li><strong>Mode of Request:</strong> " . $row->medium . "</li>";
+                        $Message .= "<li><strong>Date & Time Started:</strong> " . $row->datetime_start->format('d/m/Y h:i A') . "</li>";
+                        $Message .= "<li><strong>Pulled Out:</strong> " . ($row->is_pullout != null ? 'Yes' : 'No') . "</li>";
+                        $Message .= "<li><strong>Date & Time Finished:</strong> " . $row->datetime_end->format('d/m/Y h:i A') . "</li>";
+                        $Message .= "<li><strong>Turned Over:</strong> " . ($row->is_turnover != null ? 'Yes' : 'No') . "</li>";
+                        $Message .= "<li><strong>Diagnosis:</strong> " . $row->diagnosis . "</li>";
+                        $Message .= "<li><strong>Action Taken:</strong> " . $row->action_taken . "</li>";
+                        $Message .= "<li><strong>Remarks:</strong> " . $row->remarks . "</li>";
+                        $Message .= "<li><strong>Serviced by:</strong> " . $row->serviced_by_name . "</li>";
+                        $Message .= "</ul>";
+                        $Message .= "<p>To access your account, please click the button below:</p>";
+                        $Message .= "<a href='http://r6itbpm.site/isds/'><u>Click Here to Login</u></a>";
+                        $Message .= "<br><br>";
+                        $Message .= "<p>Best Regards,</p>";
+                        $Message .= "<div>DTI6 MIS Administrator</div>";
+                        $Message .= "<div>DTI Region VI</div>";
+                        $Message .= "<hr>";
+                        $Message .= "<div>&copy; Copyright&nbsp;<strong>DTI6 MIS&nbsp;</strong>2024. All Rights Reserved</div>";
+                        $Message .= "</div>";
+
+                        sendEmail($row->requested_by_email, $Subject, $Message);
+                    }
 
                     $response = [
                         'status' => 'success',
@@ -653,6 +786,7 @@ if ($g_response == 1) {
                 break;
         }
     }
+
 
     if (isset($_POST['upd_meetings'])) {
         $upd_meetings_id = $_POST['upd_meetings_id'];
@@ -671,7 +805,7 @@ if ($g_response == 1) {
             $response = [
                 'status' => 'success',
                 'message' => 'Request updated.',
-                'redirect' => '../user/meetings.php'
+                'reload' => true
             ];
         } else {
             $response = [
@@ -692,7 +826,7 @@ if ($g_response == 1) {
         $response = [
             'status' => 'success',
             'message' => 'Request deleted.',
-            'redirect' => '../user/meetings.php'
+            'reload' => true
         ];
     }
 

@@ -366,27 +366,34 @@ if (isset($_GET['meetings_table'])) {
                     }
                 ),
                 array('db' => 'topic', 'dt' => 2),
-                array('db' => 'date_scheduled', 'dt' => 3),
-                array('db' => 'time_start', 'dt' => 4),
-                array('db' => 'time_end', 'dt' => 5),
-                array('db' => 'host', 'dt' => 6),
+                array('db' => 'time_start', 'dt' => null),
+                array('db' => 'time_end', 'dt' => null),
+                array(
+                    'db' => 'date_scheduled',
+                    'dt' => 3,
+                    'formatter' => function ($d, $row) {
+                        return date_format(date_create($d), 'd/m/Y') . ' | ' . date_format(date_create($row['time_start']), 'h:i a') . '-' . date_format(date_create($row['time_end']), 'h:i a');
+                    }
+                ),
+                array('db' => 'status_color', 'dt' => null),
                 array(
                     'db' => 'status',
-                    'dt' => 7,
+                    'dt' => 4,
                     'formatter' => function ($d, $row) {
                         return '<center><span class="w-100 badge text-bg-' . $row['status_color'] . '">' . $d . '</span></center>';
                     }
                 ),
-                array('db' => 'requested_by_name', 'dt' => 8),
-                array('db' => 'approved_by_name', 'dt' => 9),
+                array('db' => 'host', 'dt' => 5),
+                array('db' => 'requested_by_name', 'dt' => 6),
+                array('db' => 'generated_by_name', 'dt' => 7),
                 array(
                     'db' => 'id',
-                    'dt' => 10,
+                    'dt' => 8,
                     'formatter' => function ($d, $row) {
-                        $editBtn = '<button type="button" class="btn btn-primary mx-1 my-0 small" onclick="updateMeeting(' . $row['id'] . ')"><i class="bi bi-pencil-square small"></i></button>';
-                        $deleteBtn = '<button type="button" class="btn btn-danger mx-1 my-0 small" onclick="deleteMeeting(' . $row['id'] . ', \'' . $row['request_number'] . '\')"><i class="bi bi-trash3-fill small"></i></button>';
+                        $editBtn = '<button type="button" class="btn btn-primary mx-1 my-0 small" onclick="updmeetingsbtn(' . $row['id'] . ')"><i class="bi bi-pencil-square small"></i></button>';
+                        $deleteBtn = '<button type="button" class="btn btn-danger mx-1 my-0 small" onclick="delmeetingsbtn(' . $row['id'] . ', \'' . $row['request_number'] . '\')"><i class="bi bi-trash3-fill small"></i></button>';
                         $viewBtn = '<button type="button" class="btn btn-info mx-1 my-0 small" onclick="viewMeeting(' . $row['id'] . ')"><i class="bi bi-eye"></i></button>';
-                        
+
                         $html = '<div class="btn-group text-end small" role="group">';
                         $html .= "{$editBtn}{$viewBtn}{$deleteBtn}";
                         $html .= '</div>';

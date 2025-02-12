@@ -160,22 +160,8 @@ $(function () {
     scrollX: true,
   });
 
-  var tbl_meetings = new DataTable("#tbl_meetings", {
-    ajax: "/isds/includes/datatables.php?tbl_meetings",
-    processing: true,
-    serverSide: true,
-    scrollX: true,
-  });
-
-  var admin_helpdesks_table = new DataTable("#admin_helpdesks_table", {
-    ajax: "/isds/includes/datatables.php?admin_helpdesks_table",
-    processing: true,
-    serverSide: true,
-    scrollX: true,
-  });
-
-  var tbl_meetings_a = new DataTable("#tbl_meetings_a", {
-    ajax: "/isds/includes/datatables.php?tbl_meetings_a",
+  var meetings_table = new DataTable("#meetings_table", {
+    ajax: "/isds/includes/datatables.php?meetings_table",
     processing: true,
     serverSide: true,
     scrollX: true,
@@ -296,16 +282,10 @@ $(function () {
   bindFilterButton("#h_prerepair", helpdesks_table, 4, "Pre-repair");
 
   // Bind filter buttons for Meetings
-  bindFilterButton("#m_pending", tbl_meetings, 4, "Pending");
-  bindFilterButton("#m_scheduled", tbl_meetings, 4, "Scheduled");
-  bindFilterButton("#m_unavailable", tbl_meetings, 4, "Unavailable");
-  bindFilterButton("#m_cancelled", tbl_meetings, 4, "Cancelled");
-
-  // Bind filter buttons for Meetings
-  bindFilterButton("#m_pending", tbl_meetings_a, 5, "Pending");
-  bindFilterButton("#m_scheduled", tbl_meetings_a, 5, "Scheduled");
-  bindFilterButton("#m_unavailable", tbl_meetings_a, 5, "Unavailable");
-  bindFilterButton("#m_cancelled", tbl_meetings_a, 5, "Cancelled");
+  bindFilterButton("#m_pending", meetings_table, 4, "Pending");
+  bindFilterButton("#m_scheduled", meetings_table, 4, "Scheduled");
+  bindFilterButton("#m_unavailable", meetings_table, 4, "Unavailable");
+  bindFilterButton("#m_cancelled", meetings_table, 4, "Cancelled");
 
   grecaptcha.ready(function () {
     grecaptcha.execute(window.sitekey).then(function (token) {
@@ -345,7 +325,7 @@ $(function () {
               window.location.href = response.redirect;
             }
             if (response.reload) {
-              window.reload();
+              window.location.reload(true);
             }
           });
         }, 1000);
@@ -807,7 +787,7 @@ $(function () {
     $("#updhelpdesksmodal").modal("toggle");
     $("#updhelpdesksmodal").modal("show");
   };
-  
+
   window.delhelpdesksbtn = function (id, requestNumber) {
 
     Swal.fire({
@@ -857,7 +837,7 @@ $(function () {
                 if (response.redirect) {
                   window.location.href = response.redirect;
                 } else if (response.reload) {
-                  window.location.reload();
+                  window.location.reload(true);
                 }
               });
             },
@@ -916,7 +896,7 @@ $(function () {
   //                 window.location.href = response.redirect;
   //               }
   //               if (response.reload) {
-  //                 window.reload();
+  //                 window.location.reload(true);
   //               }
   //             });
   //           }, 1000);
@@ -974,7 +954,7 @@ $(function () {
                   window.location.href = response.redirect;
                 }
                 if (response.reload) {
-                  window.reload();
+                  window.location.reload(true);
                 }
               });
             }, 1000);
@@ -1092,7 +1072,7 @@ $(function () {
                   window.location.href = response.redirect;
                 }
                 if (response.reload) {
-                  window.reload();
+                  window.location.reload(true);
                 }
               });
             }, 1000);
@@ -1107,7 +1087,6 @@ $(function () {
       }
     });
   };
-
 
   window.rstusersbtn = function (id) {
     Swal.fire({
@@ -1150,7 +1129,7 @@ $(function () {
                   window.location.href = response.redirect;
                 }
                 if (response.reload) {
-                  window.reload();
+                  window.location.reload(true);
                 }
               });
             }, 1000);
