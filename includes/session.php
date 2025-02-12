@@ -23,6 +23,7 @@ if ($protected == true) {
         if ($result && $result->num_rows > 0) {
             $acc = $result->fetch_object();
             $_SESSION['role'] = $acc->role;
+            $_SESSION['user_email'] = $acc->email;
             $_SESSION['offices_id'] = $acc->offices_id;
         } else {
             header('Location: assets/components/includes/logout.php');

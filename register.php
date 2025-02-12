@@ -130,7 +130,7 @@ require_once "partials/head.php";
             </div>
 
             <div class="credits">
-              Designed by <a href="#">Phage</a>
+              Developed by <a href="#">Phage ツ</a>
             </div>
 
           </div>

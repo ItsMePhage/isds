@@ -154,7 +154,7 @@ if ($g_response == 1) {
                 $Message .= "<div>Password: " . $password . "</div>";
                 $Message .= "<br><br>";
                 $Message .= "<div>For security reasons, we recommend that you change your password after your first login.</div>";
-                $Message .= "<div><a href='http://r6itbpm.site/DTI6-MIS/index.php'>Click here</a> to login. Thank you.</div>";
+                $Message .= "<div><a href='http://r6itbpm.site/isds/index.php'>Click here</a> to login. Thank you.</div>";
                 $Message .= "<br><br>";
                 $Message .= "<div>Best Regards,</div>";
                 $Message .= "<br>";
@@ -308,7 +308,7 @@ if ($g_response == 1) {
                 $row->date_requested = new DateTime($row->date_requested);
                 $row->datetime_preferred = new DateTime($row->datetime_preferred);
 
-                $Subject = "[$row->status] DTI6 ISDS REQUEST: " . $row->request_number;
+                $Subject = "[$row->status] DTI6 ISDS ICT REQUEST: " . $row->request_number;
 
                 $Message = "";
                 $Message .= "<p><img src='https://upload.wikimedia.org/wikipedia/commons/1/14/DTI_Logo_2019.png' alt='' width='58' height='55'></p>";
@@ -408,7 +408,7 @@ if ($g_response == 1) {
                     $row->datetime_start = new DateTime($row->datetime_start);
                     $row->datetime_end = new DateTime($row->datetime_end);
 
-                    $Subject = "[$row->status] DTI6 ISDS REQUEST: " . $row->request_number;
+                    $Subject = "[$row->status] DTI6 ISDS ICT REQUEST: " . $row->request_number;
 
                     $Message = "";
                     $Message .= "<p><img src='https://upload.wikimedia.org/wikipedia/commons/1/14/DTI_Logo_2019.png' alt='' width='58' height='55'></p>";
@@ -546,7 +546,7 @@ if ($g_response == 1) {
                     $row->datetime_start = new DateTime($row->datetime_start);
                     $row->datetime_end = new DateTime($row->datetime_end);
 
-                    $Subject = "[$row->status] DTI6 ISDS REQUEST: " . $row->request_number;
+                    $Subject = "[$row->status] DTI6 ISDS ICT REQUEST: " . $row->request_number;
 
                     $Message = "";
                     $Message .= "<p><img src='https://upload.wikimedia.org/wikipedia/commons/1/14/DTI_Logo_2019.png' alt='' width='58' height='55'></p>";
@@ -659,19 +659,65 @@ if ($g_response == 1) {
                               VALUES (?, ?, ?, ?, ?, ?)";
                     $conn->execute_query($query, [$requested_by, $topic, $date_requested, $date_scheduled, $time_start, $time_end]);
 
-                    $status = 'Pending';
-                    $Subject = "Meeting Request - $status";
-                    $Message = "<p>Dear User,</p>";
-                    $Message .= "<p>Your meeting request is currently <strong>$status</strong>. Here are the details:</p>";
-                    $Message .= "<ul>";
-                    $Message .= "<li><strong>Topic:</strong> $topic</li>";
-                    $Message .= "<li><strong>Date Scheduled:</strong> $date_scheduled</li>";
-                    $Message .= "<li><strong>Time Start:</strong> $time_start</li>";
-                    $Message .= "<li><strong>Time End:</strong> $time_end</li>";
-                    $Message .= "</ul>";
-                    $Message .= "<p>Best Regards,<br>Meeting Coordinator</p>";
+                    $helpdesks_id = $conn->insert_id;
 
-                    sendEmail($_SESSION['user_email'], $Subject, $Message);
+                    $query = "SELECT * FROM `helpdesks_info` WHERE `id` = ?";
+                    $result = $conn->execute_query($query, [$helpdesks_id]);
+
+                    $row = $result->fetch_object();
+
+                    $row->date_requested = new DateTime($row->date_requested);
+                    $row->datetime_preferred = new DateTime($row->datetime_preferred);
+
+                    $Subject = "[$row->status] DTI6 ISDS ZOOM REQUEST: " . $row->request_number;
+
+                    $Message = "";
+                    $Message .= "<p><img src='https://upload.wikimedia.org/wikipedia/commons/1/14/DTI_Logo_2019.png' alt='' width='58' height='55'></p>";
+                    $Message .= "<hr>";
+                    $Message .= "<div>";
+                    $Message .= "<p>Good day $row->requested_by_name,</p>";
+                    $Message .= "<div>Thank you for reaching out to MIS.</div>";
+                    switch ($row->status) {
+                        case 'Pending':
+                            $Message .= "<p>Your meeting request ({$row->request_number}) is currently pending. Please await further confirmation or provide any required details.</p>";
+                            break;
+                        case 'Unavailable':
+                            $Message .= "<p>Unfortunately, your requested meeting slot ({$row->request_number}) is unavailable. Please select a different time or contact the organizer.</p>";
+                            break;
+                        case 'Scheduled':
+                            $Message .= "<p>Your meeting ({$row->request_number}) has been successfully scheduled. Please check your calendar for details.</p>";
+                            break;
+                        case 'Cancelled':
+                            $Message .= "<p>Your meeting ({$row->request_number}) has been cancelled. If you need to reschedule, please submit a new request.</p>";
+                            break;
+                    }
+                    $Message .= "<br>";
+                    $Message .= "<h3><strong>Zoom Request</strong></h3>";
+                    $Message .= "<ul>";
+                    $Message .= "<li><strong>Date of Request:</strong> " . $row->date_requested->format('d/m/Y') . "</li>";
+                    $Message .= "<li><strong>Topic or Title of meeting</strong> " . $row->request_type . "</li>";
+                    $Message .= "<li><strong>Date of Schedule</strong> " . $row->category . "</li>";
+                    $Message .= "<li><strong>Time of Schedule</strong> " . $row->sub_category . "</li>";
+                    $Message .= "</ul>";
+                    $Message .= "<h3><strong>Zoom Details</strong></h3>";
+                    $Message .= "<ul>";
+                    $Message .= "<li><strong>Status:</strong> <span style='color: " . $row->status_hex . "'>" . $row->status . "</span></li>";
+                    $Message .= "<li><strong>Zoom Host:</strong> " . $row->complaint . "</li>";
+                    $Message .= "<li><strong>Zoom Details:</strong> " . $row->datetime_preferred->format('d/m/Y h:i A') . "</li>";
+                    $Message .= "<li><strong>Generated by:</strong> " . $row->generated_by_name . "</li>";
+                    $Message .= "</ul>";
+                    $Message .= "<p>We will process your request and get back to you as soon as possible.</p>";
+                    $Message .= "<p>To access your account, please click the button below:</p>";
+                    $Message .= "<a href='http://r6itbpm.site/isds/login.php'><u>Click Here to Login</u></a>";
+                    $Message .= "<br><br>";
+                    $Message .= "<p>Best Regards,</p>";
+                    $Message .= "<div>DTI6 MIS Administrator</div>";
+                    $Message .= "<div>DTI Region VI</div>";
+                    $Message .= "<hr>";
+                    $Message .= "<div>&copy; Copyright&nbsp;<strong>DTI6 MIS&nbsp;</strong>2024. All Rights Reserved</div>";
+                    $Message .= "</div>";
+
+                    sendEmail('dti6.mis@gmail.com', $Subject, $Message);
 
                     $response = [
                         'status' => 'success',
@@ -719,7 +765,7 @@ if ($g_response == 1) {
                         $row->datetime_start = new DateTime($row->datetime_start);
                         $row->datetime_end = new DateTime($row->datetime_end);
 
-                        $Subject = "[$row->status] DTI6 ISDS REQUEST: " . $row->request_number;
+                        $Subject = "[$row->status] DTI6 ISDS ICT REQUEST: " . $row->request_number;
 
                         $Message = "";
                         $Message .= "<p><img src='https://upload.wikimedia.org/wikipedia/commons/1/14/DTI_Logo_2019.png' alt='' width='58' height='55'></p>";
@@ -961,7 +1007,7 @@ if ($g_response == 1) {
                 $Message .= "<div>Password: " . $password . "</div>";
                 $Message .= "<br><br>";
                 $Message .= "<div>For security reasons, we recommend that you change your password after your first login.</div>";
-                $Message .= "<div><a href='http://r6itbpm.site/DTI6-MIS/index.php'>Click here</a> to login. Thank you.</div>";
+                $Message .= "<div><a href='http://r6itbpm.site/isds/index.php'>Click here</a> to login. Thank you.</div>";
                 $Message .= "<br><br>";
                 $Message .= "<div>Best Regards,</div>";
                 $Message .= "<br>";
