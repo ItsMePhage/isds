@@ -659,15 +659,16 @@ if ($g_response == 1) {
                               VALUES (?, ?, ?, ?, ?, ?)";
                     $conn->execute_query($query, [$requested_by, $topic, $date_requested, $date_scheduled, $time_start, $time_end]);
 
-                    $helpdesks_id = $conn->insert_id;
+                    $meetings_id = $conn->insert_id;
 
-                    $query = "SELECT * FROM `helpdesks_info` WHERE `id` = ?";
-                    $result = $conn->execute_query($query, [$helpdesks_id]);
+                    $query = "SELECT * FROM `meetings_info` WHERE `id` = ?";
+                    $result = $conn->execute_query($query, [$meetings_id]);
 
                     $row = $result->fetch_object();
 
                     $row->date_requested = new DateTime($row->date_requested);
-                    $row->datetime_preferred = new DateTime($row->datetime_preferred);
+                    $row->time_start = new DateTime($row->time_start);
+                    $row->time_end = new DateTime($row->time_end);
 
                     $Subject = "[$row->status] DTI6 ISDS ZOOM REQUEST: " . $row->request_number;
 
@@ -682,9 +683,9 @@ if ($g_response == 1) {
                     $Message .= "<h3><strong>Zoom Request</strong></h3>";
                     $Message .= "<ul>";
                     $Message .= "<li><strong>Date of Request:</strong> " . $row->date_requested->format('d/m/Y') . "</li>";
-                    $Message .= "<li><strong>Topic or Title of meeting</strong> " . $row->request_type . "</li>";
-                    $Message .= "<li><strong>Date of Schedule</strong> " . $row->category . "</li>";
-                    $Message .= "<li><strong>Time of Schedule</strong> " . $row->sub_category . "</li>";
+                    $Message .= "<li><strong>Topic or Title of meeting</strong> " . $row->topic . "</li>";
+                    $Message .= "<li><strong>Date of Schedule</strong> " . $row->date_requested->format('d/m/Y') . "</li>";
+                    $Message .= "<li><strong>Time of Schedule</strong> " . $row->time_start->format('h:i A') . " - " . $row->time_start->format('h:i A') . "</li>";
                     $Message .= "</ul>";
                     $Message .= "<br>";
                     $Message .= "<p>To access your account, please click the button below:</p>";
