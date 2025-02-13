@@ -865,8 +865,17 @@ if ($g_response == 1) {
                 $generated_by = !empty($_POST['meeting_details']) ? $_SESSION['isds_id'] : null;
 
                 // Check for schedule conflicts
-                $query = "SELECT * FROM `meetings_info` WHERE `date_scheduled` = ? AND ((`time_start` < ? AND `time_end` > ?) OR (`time_start` < ? AND `time_end` > ?) OR (`time_start` >= ? AND `time_end` <= ?)) AND id != ?";
-                $result = $conn->execute_query($query, [$date_scheduled, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end, $meetings_id]);
+                $query = "SELECT * FROM `meetings_info` 
+                WHERE `date_scheduled` = ? 
+                AND `id` <> ? 
+                AND (
+                    (`time_start` < ? AND `time_end` > ?)  -- Overlapping meeting
+                    OR (`time_start` < ? AND `time_end` > ?) -- Partial overlap
+                    OR (`time_start` >= ? AND `time_start` < ?) -- New meeting starts inside an existing one
+                    OR (`time_end` > ? AND `time_end` <= ?) -- New meeting ends inside an existing one
+                )";
+
+                $result = $conn->execute_query($query, [$date_scheduled, $meetings_id, $time_end, $time_start, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end]);
 
                 if ($result->num_rows == 0) {
                     // Update the meeting details
