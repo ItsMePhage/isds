@@ -296,6 +296,13 @@ $(function () {
 
   $(".form-validation").on("submit", function (e) {
     e.preventDefault();
+    console.log("old: " + $(".captcha-token").val());
+
+    grecaptcha.execute(window.sitekey).then(function (token) {
+      $(".captcha-token").val(token);
+    });
+
+    console.log("new: " + $(".captcha-token").val());
 
     Swal.fire({
       title: "Loading",
@@ -324,17 +331,11 @@ $(function () {
             if (response.redirect) {
               window.location.href = response.redirect;
             }
-            if (response.reload) {
+            else if (response.reload) {
               window.location.reload(true);
             }
           });
         }, 1000);
-
-        grecaptcha.ready(function () {
-          grecaptcha.execute(window.sitekey).then(function (token) {
-            $(".captcha-token").val(token);
-          });
-        });
       },
     });
   });
@@ -895,7 +896,7 @@ $(function () {
   //               if (response.redirect) {
   //                 window.location.href = response.redirect;
   //               }
-  //               if (response.reload) {
+  //               else if (response.reload) {
   //                 window.location.reload(true);
   //               }
   //             });
@@ -933,6 +934,12 @@ $(function () {
           },
         });
 
+        grecaptcha.ready(function () {
+          grecaptcha.execute(window.sitekey).then(function (token) {
+            $(".captcha-token").val(token);
+          });
+        });
+
         $.ajax({
           type: "POST",
           url: "/isds/includes/process.php",
@@ -953,17 +960,11 @@ $(function () {
                 if (response.redirect) {
                   window.location.href = response.redirect;
                 }
-                if (response.reload) {
+                else if (response.reload) {
                   window.location.reload(true);
                 }
               });
             }, 1000);
-
-            grecaptcha.ready(function () {
-              grecaptcha.execute(window.sitekey).then(function (token) {
-                $(".captcha-token").val(token);
-              });
-            });
           },
         });
       }
@@ -1051,6 +1052,12 @@ $(function () {
           },
         });
 
+        grecaptcha.ready(function () {
+          grecaptcha.execute(window.sitekey).then(function (token) {
+            $(".captcha-token").val(token);
+          });
+        });
+
         $.ajax({
           type: "POST",
           url: "/isds/includes/process.php",
@@ -1071,17 +1078,11 @@ $(function () {
                 if (response.redirect) {
                   window.location.href = response.redirect;
                 }
-                if (response.reload) {
+                else if (response.reload) {
                   window.location.reload(true);
                 }
               });
             }, 1000);
-
-            grecaptcha.ready(function () {
-              grecaptcha.execute(window.sitekey).then(function (token) {
-                $(".captcha-token").val(token);
-              });
-            });
           },
         });
       }
@@ -1108,6 +1109,12 @@ $(function () {
           },
         });
 
+        grecaptcha.ready(function () {
+          grecaptcha.execute(window.sitekey).then(function (token) {
+            $(".captcha-token").val(token);
+          });
+        });
+
         $.ajax({
           type: "POST",
           url: "/isds/includes/process.php",
@@ -1128,17 +1135,11 @@ $(function () {
                 if (response.redirect) {
                   window.location.href = response.redirect;
                 }
-                if (response.reload) {
+                else if (response.reload) {
                   window.location.reload(true);
                 }
               });
             }, 1000);
-
-            grecaptcha.ready(function () {
-              grecaptcha.execute(window.sitekey).then(function (token) {
-                $(".captcha-token").val(token);
-              });
-            });
           },
         });
       }
