@@ -142,10 +142,19 @@ if (isset($_GET['accomplishment_report_table'])) {
             }
         ),
         array(
-            'db' => 'csf_id',
+            'db' => 'csf_overall',
             'dt' => 11,
             'formatter' => function ($d, $row) {
-                return '<center><span class="w-100 badge text-bg-' . ($d != null ? 'success' : 'warning') . '">' . ($d != null ? 'Responded' : 'Pending') . '</span></center>';
+                $labels = [
+                    1 => ['text' => 'Very Dissatisfied', 'class' => 'text-bg-danger'],
+                    2 => ['text' => 'Dissatisfied', 'class' => 'text-bg-warning'],
+                    3 => ['text' => 'Satisfied', 'class' => 'text-bg-info'],
+                    4 => ['text' => 'Very Satisfied', 'class' => 'text-bg-success']
+                ];
+
+                $label = isset($labels[$d]) ? $labels[$d] : ['text' => 'Pending', 'class' => 'text-bg-secondary'];
+
+                return '<center><span class="w-100 badge ' . $label['class'] . '">' . $label['text'] . '</span></center>';
             }
         ),
 

@@ -292,7 +292,7 @@ if ($g_response == 1) {
                 $request_types_id = $_POST['request_types_id'];
                 $categories_id = $_POST['categories_id'];
                 $sub_categories_id = $_POST['sub_categories_id'];
-                $complaint = $_POST['complaint'];
+                $complaint = str_replace("'", "&apos;", $_POST['complaint']);
                 $datetime_preferred = !empty($_POST['datetime_preferred']) ? $_POST['datetime_preferred'] : date('Y-m-d H:i:s');
 
                 $query = "INSERT INTO helpdesks(`requested_by`,`date_requested`,`request_types_id`,`categories_id`,`sub_categories_id`,`complaint`,`datetime_preferred`,`offices_id`) VALUE (?,?,?,?,?,?,?,?)";
@@ -375,7 +375,7 @@ if ($g_response == 1) {
                 $request_types_id = $_POST['request_types_id'];
                 $categories_id = $_POST['categories_id'];
                 $sub_categories_id = $_POST['sub_categories_id'];
-                $complaint = $_POST['complaint'];
+                $complaint = str_replace("'", "&apos;", $_POST['complaint']);
                 $datetime_preferred = !empty($_POST['datetime_preferred']) ? $_POST['datetime_preferred'] : date('Y-m-d H:i:s');
                 $h_statuses_id = !empty($_POST['h_statuses_id']) ? $_POST['h_statuses_id'] : 1;
                 $property_number = $_POST['property_number'];
@@ -388,9 +388,9 @@ if ($g_response == 1) {
                 $is_pullout = isset($_POST['is_pullout']) ? 1 : NULL;
                 $datetime_end = !empty($_POST['datetime_end']) ? $_POST['datetime_end'] : NULL;
                 $is_turnover = isset($_POST['is_turnover']) ? 1 : NULL;
-                $diagnosis = $_POST['diagnosis'];
-                $action_taken = $_POST['action_taken'];
-                $remarks = $_POST['remarks'];
+                $diagnosis = str_replace("'", "&apos;", $_POST['diagnosis']);
+                $action_taken = str_replace("'", "&apos;", $_POST['action_taken']);
+                $remarks = str_replace("'", "&apos;", $_POST['remarks']);
 
                 $query = "INSERT INTO helpdesks(`requested_by`,`date_requested`,`request_types_id`,`categories_id`,`sub_categories_id`,`complaint`,`datetime_preferred`,`h_statuses_id`,`property_number`,`priority_levels_id`,`repair_types_id`,`repair_classes_id`,`mediums_id`,`serviced_by`,`datetime_start`,`is_pullout`,`datetime_end`,`is_turnover`,`diagnosis`,`action_taken`,`remarks`, `offices_id`) VALUE (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
                 $result = $conn->execute_query($query, [$requested_by, $date_requested, $request_types_id, $categories_id, $sub_categories_id, $complaint, $datetime_preferred, $h_statuses_id, $property_number, $priority_levels_id, $repair_types_id, $repair_classes_id, $mediums_id, $serviced_by, $datetime_start, $is_pullout, $datetime_end, $is_turnover, $diagnosis, $action_taken, $remarks, $offices_id]);
@@ -495,7 +495,7 @@ if ($g_response == 1) {
                 $request_types_id = $_POST['request_types_id'];
                 $categories_id = $_POST['categories_id'];
                 $sub_categories_id = $_POST['sub_categories_id'];
-                $complaint = $_POST['complaint'];
+                $complaint = str_replace("'", "&apos;", $_POST['complaint']);
                 $datetime_preferred = !empty($_POST['datetime_preferred']) ? $_POST['datetime_preferred'] : date('Y-m-d H:i:s');
 
                 $query = "UPDATE `helpdesks` SET `date_requested` = ?, `request_types_id` = ?, `categories_id` = ?, `sub_categories_id` = ?, `complaint` = ?, `datetime_preferred` = ? WHERE `id` = ?";
@@ -514,7 +514,7 @@ if ($g_response == 1) {
                 $request_types_id = $_POST['request_types_id'];
                 $categories_id = $_POST['categories_id'];
                 $sub_categories_id = $_POST['sub_categories_id'];
-                $complaint = $_POST['complaint'];
+                $complaint = str_replace("'", "&apos;", $_POST['complaint']);
                 $datetime_preferred = !empty($_POST['datetime_preferred']) ? $_POST['datetime_preferred'] : date('Y-m-d H:i:s');
                 $h_statuses_id = !empty($_POST['h_statuses_id']) ? $_POST['h_statuses_id'] : 1;
                 $property_number = $_POST['property_number'];
@@ -527,9 +527,9 @@ if ($g_response == 1) {
                 $is_pullout = isset($_POST['is_pullout']) ? 1 : NULL;
                 $datetime_end = !empty($_POST['datetime_end']) ? $_POST['datetime_end'] : NULL;
                 $is_turnover = isset($_POST['is_turnover']) ? 1 : NULL;
-                $diagnosis = $_POST['diagnosis'];
-                $action_taken = $_POST['action_taken'];
-                $remarks = $_POST['remarks'];
+                $diagnosis = str_replace("'", "&apos;", $_POST['diagnosis']);
+                $action_taken = str_replace("'", "&apos;", $_POST['action_taken']);
+                $remarks = str_replace("'", "&apos;", $_POST['remarks']);
 
 
                 $query = "UPDATE `helpdesks` SET `requested_by` = ?, `date_requested` = ?, `request_types_id` = ?, `categories_id` = ?, `sub_categories_id` = ?, `complaint` = ?, `datetime_preferred` = ?, `h_statuses_id` = ?, `property_number` = ?, `priority_levels_id` = ?, `repair_types_id` = ?, `repair_classes_id` = ?, `mediums_id` = ?, `datetime_start` = ?, `is_pullout` = ?, `datetime_end` = ?, `is_turnover` = ?, `diagnosis` = ?, `action_taken` = ?, `serviced_by` = ?, `remarks` = ? WHERE `id` = ?";
