@@ -296,6 +296,13 @@ $(function () {
 
   $(".form-validation").on("submit", function (e) {
     e.preventDefault();
+    console.log("old: " + $(".captcha-token").val());
+
+    grecaptcha.execute(window.sitekey).then(function (token) {
+      $(".captcha-token").val(token);
+    });
+
+    console.log("new: " + $(".captcha-token").val());
 
     grecaptcha.execute(window.sitekey).then(function (token) {
       $(".captcha-token").val(token);
