@@ -29,39 +29,89 @@ require_once "../partials/aside.php";
             <h5 class="card-title">
               CSF Report
             </h5>
-            <table id="helpdesks_report_table" style="width:100%">
-              <thead>
-                <tr>
-                  <th scope="col" class="text-nowrap">id</th>
-                  <th scope="col" class="text-nowrap">Office</th>
-                  <th scope="col" class="text-nowrap">Request Number</th>
-                  <th scope="col" class="text-nowrap">Requested By</th>
-                  <th scope="col" class="text-nowrap">Email</th>
-                  <th scope="col" class="text-nowrap">Date Requested</th>
-                  <th scope="col" class="text-nowrap">Request Type</th>
-                  <th scope="col" class="text-nowrap">Category</th>
-                  <th scope="col" class="text-nowrap">Sub Category</th>
-                  <th scope="col" class="text-nowrap">Complaint</th>
-                  <th scope="col" class="text-nowrap">Date/Time Preferred</th>
-                  <th scope="col" class="text-nowrap">Status</th>
-                  <th scope="col" class="text-nowrap">CSF</th>
-                  <th scope="col" class="text-nowrap">Property Number</th>
-                  <th scope="col" class="text-nowrap">Priority Level</th>
-                  <th scope="col" class="text-nowrap">Repair Type</th>
-                  <th scope="col" class="text-nowrap">Repair Class</th>
-                  <th scope="col" class="text-nowrap">Medium</th>
-                  <th scope="col" class="text-nowrap">Serviced By</th>
-                  <th scope="col" class="text-nowrap">Approved By</th>
-                  <th scope="col" class="text-nowrap">Date/Time Started</th>
-                  <th scope="col" class="text-nowrap">Pullout</th>
-                  <th scope="col" class="text-nowrap">Date/Time Finished</th>
-                  <th scope="col" class="text-nowrap">Turnover</th>
-                  <th scope="col" class="text-nowrap">Diagnosis</th>
-                  <th scope="col" class="text-nowrap">Action Taken</th>
-                  <th scope="col" class="text-nowrap">Remarks</th>
-                </tr>
-              </thead>
-            </table>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="mjr-tab" data-bs-toggle="tab" data-bs-target="#mjr-tab-pane"
+                  type="button" role="tab" aria-controls="mjr-tab-pane" aria-selected="true">Maintenance Job
+                  Request</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="ois-tab" data-bs-toggle="tab" data-bs-target="#ois-tab-pane" type="button"
+                  role="tab" aria-controls="ois-tab-pane" aria-selected="false">Other ICT Service</button>
+              </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+              <div class="tab-pane fade show active" id="mjr-tab-pane" role="tabpanel" aria-labelledby="mjr-tab" tabindex="0">
+                <table id="mjr_report_table" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="text-nowrap">id</th>
+                      <th scope="col" class="text-nowrap">Office</th>
+                      <th scope="col" class="text-nowrap">Request Number</th>
+                      <th scope="col" class="text-nowrap">Requested By</th>
+                      <th scope="col" class="text-nowrap">Email</th>
+                      <th scope="col" class="text-nowrap">Date Requested</th>
+                      <th scope="col" class="text-nowrap">Request Type</th>
+                      <th scope="col" class="text-nowrap">Category</th>
+                      <th scope="col" class="text-nowrap">Sub Category</th>
+                      <th scope="col" class="text-nowrap">Complaint</th>
+                      <th scope="col" class="text-nowrap">Date/Time Preferred</th>
+                      <th scope="col" class="text-nowrap">Status</th>
+                      <th scope="col" class="text-nowrap">CSF</th>
+                      <th scope="col" class="text-nowrap">Property Number</th>
+                      <th scope="col" class="text-nowrap">Priority Level</th>
+                      <th scope="col" class="text-nowrap">Repair Type</th>
+                      <th scope="col" class="text-nowrap">Repair Class</th>
+                      <th scope="col" class="text-nowrap">Medium</th>
+                      <th scope="col" class="text-nowrap">Serviced By</th>
+                      <th scope="col" class="text-nowrap">Approved By</th>
+                      <th scope="col" class="text-nowrap">Date/Time Started</th>
+                      <th scope="col" class="text-nowrap">Pullout</th>
+                      <th scope="col" class="text-nowrap">Date/Time Finished</th>
+                      <th scope="col" class="text-nowrap">Turnover</th>
+                      <th scope="col" class="text-nowrap">Diagnosis</th>
+                      <th scope="col" class="text-nowrap">Action Taken</th>
+                      <th scope="col" class="text-nowrap">Remarks</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+              <div class="tab-pane fade" id="ois-tab-pane" role="tabpanel" aria-labelledby="ois-tab" tabindex="0">
+                <table id="ois_report_table" style="width:100%">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="text-nowrap">id</th>
+                      <th scope="col" class="text-nowrap">Office</th>
+                      <th scope="col" class="text-nowrap">Request Number</th>
+                      <th scope="col" class="text-nowrap">Requested By</th>
+                      <th scope="col" class="text-nowrap">Email</th>
+                      <th scope="col" class="text-nowrap">Date Requested</th>
+                      <th scope="col" class="text-nowrap">Request Type</th>
+                      <th scope="col" class="text-nowrap">Category</th>
+                      <th scope="col" class="text-nowrap">Sub Category</th>
+                      <th scope="col" class="text-nowrap">Complaint</th>
+                      <th scope="col" class="text-nowrap">Date/Time Preferred</th>
+                      <th scope="col" class="text-nowrap">Status</th>
+                      <th scope="col" class="text-nowrap">CSF</th>
+                      <th scope="col" class="text-nowrap">Property Number</th>
+                      <th scope="col" class="text-nowrap">Priority Level</th>
+                      <th scope="col" class="text-nowrap">Repair Type</th>
+                      <th scope="col" class="text-nowrap">Repair Class</th>
+                      <th scope="col" class="text-nowrap">Medium</th>
+                      <th scope="col" class="text-nowrap">Serviced By</th>
+                      <th scope="col" class="text-nowrap">Approved By</th>
+                      <th scope="col" class="text-nowrap">Date/Time Started</th>
+                      <th scope="col" class="text-nowrap">Pullout</th>
+                      <th scope="col" class="text-nowrap">Date/Time Finished</th>
+                      <th scope="col" class="text-nowrap">Turnover</th>
+                      <th scope="col" class="text-nowrap">Diagnosis</th>
+                      <th scope="col" class="text-nowrap">Action Taken</th>
+                      <th scope="col" class="text-nowrap">Remarks</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
 

@@ -214,16 +214,31 @@ $(function () {
 
   });
 
-  var helpdesks_report_table = new DataTable("#helpdesks_report_table", {
+  var mjr_report_table = new DataTable("#mjr_report_table", {
     layout: {
       topStart: {
         buttons: ['colvis', 'excel']
       }
     },
-    ajax: "/isds/includes/datatables.php?helpdesks_report_table",
+    ajax: "/isds/includes/datatables.php?helpdesks_report_table=mjr",
     processing: true,
     serverSide: true,
     scrollX: true,
+    order: [[2, 'asc']]
+
+  });
+
+  var ois_report_table = new DataTable("#ois_report_table", {
+    layout: {
+      topStart: {
+        buttons: ['colvis', 'excel']
+      }
+    },
+    ajax: "/isds/includes/datatables.php?helpdesks_report_table=ois",
+    processing: true,
+    serverSide: true,
+    scrollX: true,
+    order: [[2, 'asc']]
 
   });
 
@@ -296,6 +311,13 @@ $(function () {
 
   $(".form-validation").on("submit", function (e) {
     e.preventDefault();
+    console.log("old: " + $(".captcha-token").val());
+
+    grecaptcha.execute(window.sitekey).then(function (token) {
+      $(".captcha-token").val(token);
+    });
+
+    console.log("new: " + $(".captcha-token").val());
 
     grecaptcha.execute(window.sitekey).then(function (token) {
       $(".captcha-token").val(token);
@@ -786,129 +808,129 @@ $(function () {
     $("#updhelpdesksmodal").modal("show");
   };
 
-  window.delhelpdesksbtn = function (id, requestNumber) {
-
-    Swal.fire({
-      title: "Are you sure?",
-      html: `<p class="swal-text">You are trying to delete this item.<br>Please type \"<b>${requestNumber}</b>\" to confirm deletion.</p>`,
-      input: "text",
-      inputPlaceholder: `Type '${requestNumber}' to confirm`,
-      showCancelButton: true,
-      confirmButtonText: "I understand, delete",
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#6c757d",
-      icon: "warning",
-      inputValidator: (inputValue) => {
-        if (inputValue.trim() !== requestNumber) {
-          return "The request number does not match.";
-        }
-      }
-    }).then((result) => {
-      if (!result.isConfirmed) return;
-
-      Swal.fire({
-        title: "Processing...",
-        html: "Please wait...",
-        allowOutsideClick: false,
-        didOpen: () => Swal.showLoading(),
-      });
-
-      grecaptcha.ready(() => {
-        grecaptcha.execute(window.sitekey).then((captchaToken) => {
-          $.ajax({
-            type: "POST",
-            url: "/isds/includes/process.php",
-            data: {
-              del_helpdesks: true,
-              helpdesks_id: id,
-              request_number: requestNumber,
-              "captcha-token": captchaToken,
-            },
-            dataType: "json",
-            success: function (response) {
-              Swal.fire({
-                icon: response.status,
-                title: response.message,
-                showConfirmButton: false,
-                timer: 1500,
-              }).then(() => {
-                if (response.redirect) {
-                  window.location.href = response.redirect;
-                } else if (response.reload) {
-                  window.location.reload(true);
-                }
-              });
-            },
-            error: function () {
-              Swal.fire({
-                title: "Error",
-                text: "Failed to process request. Please try again.",
-                icon: "error",
-              });
-            }
-          });
-        });
-      });
-    });
-  };
-
   // window.delhelpdesksbtn = function (id, requestNumber) {
 
   //   Swal.fire({
   //     title: "Are you sure?",
-  //     text: "You are trying to delete this item.",
-  //     icon: "warning",
+  //     html: `<p class="swal-text">You are trying to delete this item.<br>Please type \"<b>${requestNumber}</b>\" to confirm deletion.</p>`,
+  //     input: "text",
+  //     inputPlaceholder: `Type '${requestNumber}' to confirm`,
   //     showCancelButton: true,
-  //     confirmButtonColor: "#3085d6",
-  //     cancelButtonColor: "#d33",
-  //     confirmButtonText: "Yes, delete",
+  //     confirmButtonText: "I understand, delete",
+  //     confirmButtonColor: "#d33",
+  //     cancelButtonColor: "#6c757d",
+  //     icon: "warning",
+  //     inputValidator: (inputValue) => {
+  //       if (inputValue.trim() !== requestNumber) {
+  //         return "The request number does not match.";
+  //       }
+  //     }
   //   }).then((result) => {
-  //     if (result.isConfirmed) {
-  //       Swal.fire({
-  //         title: "Loading",
-  //         html: "Please wait...",
-  //         allowOutsideClick: false,
-  //         didOpen: function () {
-  //           Swal.showLoading();
-  //         },
-  //       });
+  //     if (!result.isConfirmed) return;
 
-  //       $.ajax({
-  //         type: "POST",
-  //         url: "/isds/includes/process.php",
-  //         data: {
-  //           del_helpdesks: true,
-  //           helpdesks_id: id,
-  //           "captcha-token": captchaToken,
-  //         },
-  //         dataType: "json",
-  //         success: function (response) {
-  //           setTimeout(function () {
+  //     Swal.fire({
+  //       title: "Processing...",
+  //       html: "Please wait...",
+  //       allowOutsideClick: false,
+  //       didOpen: () => Swal.showLoading(),
+  //     });
+
+  //     grecaptcha.ready(() => {
+  //       grecaptcha.execute(window.sitekey).then((captchaToken) => {
+  //         $.ajax({
+  //           type: "POST",
+  //           url: "/isds/includes/process.php",
+  //           data: {
+  //             del_helpdesks: true,
+  //             helpdesks_id: id,
+  //             request_number: requestNumber,
+  //             "captcha-token": captchaToken,
+  //           },
+  //           dataType: "json",
+  //           success: function (response) {
   //             Swal.fire({
   //               icon: response.status,
   //               title: response.message,
   //               showConfirmButton: false,
-  //               timer: 1000,
-  //             }).then(function () {
+  //               timer: 1500,
+  //             }).then(() => {
   //               if (response.redirect) {
   //                 window.location.href = response.redirect;
-  //               }
-  //               else if (response.reload) {
+  //               } else if (response.reload) {
   //                 window.location.reload(true);
   //               }
   //             });
-  //           }, 1000);
-
-  //           grecaptcha.ready(function () {
-  //             grecaptcha.execute(window.sitekey).then(function (token) {
-  //               $(".captcha-token").val(token);
+  //           },
+  //           error: function () {
+  //             Swal.fire({
+  //               title: "Error",
+  //               text: "Failed to process request. Please try again.",
+  //               icon: "error",
   //             });
-  //           });
-  //         },
+  //           }
+  //         });
   //       });
-  //     }
+  //     });
   //   });
   // };
+
+  window.delhelpdesksbtn = function (id, requestNumber) {
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You are trying to delete this item.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Loading",
+          html: "Please wait...",
+          allowOutsideClick: false,
+          didOpen: function () {
+            Swal.showLoading();
+          },
+        });
+
+        $.ajax({
+          type: "POST",
+          url: "/isds/includes/process.php",
+          data: {
+            del_helpdesks: true,
+            helpdesks_id: id,
+            "captcha-token": captchaToken,
+          },
+          dataType: "json",
+          success: function (response) {
+            setTimeout(function () {
+              Swal.fire({
+                icon: response.status,
+                title: response.message,
+                showConfirmButton: false,
+                timer: 1000,
+              }).then(function () {
+                if (response.redirect) {
+                  window.location.href = response.redirect;
+                }
+                else if (response.reload) {
+                  window.location.reload(true);
+                }
+              });
+            }, 1000);
+
+            grecaptcha.ready(function () {
+              grecaptcha.execute(window.sitekey).then(function (token) {
+                $(".captcha-token").val(token);
+              });
+            });
+          },
+        });
+      }
+    });
+  };
 
   window.delmeetingsbtn = function (id) {
 
@@ -969,7 +991,6 @@ $(function () {
   };
 
   window.updmeetingsbtn = function (id) {
-
     $.ajax({
       url: "/isds/includes/fetch.php",
       type: "GET",
@@ -979,17 +1000,21 @@ $(function () {
       },
       dataType: "json",
       success: function (response) {
-
         $("#upd_date_requested").val(response.date_requested);
         $("#upd_requested_by").val(response.requested_by);
         $("#upd_topic").val(response.topic);
-        $("#upd_date_schedule").val(response.date_schedule);
+        $("#upd_date_scheduled").val(response.date_scheduled); // Fixed ID
         $("#upd_time_start").val(response.time_start);
         $("#upd_time_end").val(response.time_end);
+        $("#upd_hosts_id").val(response.hosts_id);
+        $("#upd_m_statuses_id").val(response.m_statuses_id);
+        $("#upd_meeting_details").val(response.meeting_details);
       },
+      error: function (xhr, status, error) {
+        console.error("Error fetching meeting data:", error);
+      }
     });
 
-    $("#updmeetingsmodal").modal("toggle");
     $("#updmeetingsmodal").modal("show");
   };
 

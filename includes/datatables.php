@@ -84,9 +84,21 @@ if (isset($_GET['csf_report_table'])) {
 }
 
 if (isset($_GET['helpdesks_report_table'])) {
-    $table = ($_SESSION['offices_id'] == 1)
+    $conditions = ($_SESSION['offices_id'] == 1)
         ? "helpdesks_info"
-        : "(SELECT * FROM helpdesks_info WHERE requested_by = " . $_SESSION['isds_id'] . " AND offices_id = " . $_SESSION['offices_id'] . ") AS helpdesks_info";
+        : "(SELECT * FROM helpdesks_info WHERE requested_by = " . $_SESSION['isds_id'] . " AND offices_id = " . $_SESSION['offices_id'];
+
+    switch ($_GET['helpdesks_report_table']) {
+        case 'mjr':
+            $conditions .= " AND request_types_id = 1";
+            break;
+        case 'ois':
+            $conditions .= " AND request_types_id = 2";
+            break;
+    }
+
+    $table = ($_SESSION['offices_id'] == 1) ? "helpdesks_info" : $conditions . ") AS helpdesks_info";
+
 
     $columns = array(
         array('db' => 'id', 'dt' => 0),

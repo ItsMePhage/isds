@@ -1,5 +1,5 @@
 <?php
-$page = "CSF Report";
+$page = "Accomplishment Report";
 $is_protected = true;
 require_once "session.php";
 require_once "../partials/head.php";
