@@ -732,9 +732,9 @@ if ($g_response == 1) {
                 $result = $conn->execute_query($query, [$date_scheduled, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end]);
 
                 if ($result->num_rows == 0) {
-                    $query = "INSERT INTO meetings (`requested_by`, `topic`, `date_requested`, `date_scheduled`, `time_start`, `time_end`, `hosts_id`, `m_statuses_id`, `meeting_details`)
+                    $query = "INSERT INTO meetings (`requested_by`, `topic`, `date_requested`, `date_scheduled`, `time_start`, `time_end`, `hosts_id`, `m_statuses_id`, `meeting_details`,`generated_by`)
                               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    $conn->execute_query($query, [$requested_by, $topic, $date_requested, $date_scheduled, $time_start, $time_end, $hosts_id, $m_statuses_id, $meeting_details]);
+                    $conn->execute_query($query, [$requested_by, $topic, $date_requested, $date_scheduled, $time_start, $time_end, $hosts_id, $m_statuses_id, $meeting_details, $generated_by]);
 
                     $meetings_id = $conn->insert_id;
 
@@ -894,7 +894,7 @@ if ($g_response == 1) {
                     ];
                 }
                 break;
-            case 'Admin':
+            case 'admin':
                 $meeting_id = $_POST['meeting_id'];
                 $requested_by = !empty($_POST['requested_by']) ? $_POST['requested_by'] : $_SESSION['isds_id'];
                 $date_requested = $_POST['date_requested'];
