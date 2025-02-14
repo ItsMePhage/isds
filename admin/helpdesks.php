@@ -134,26 +134,25 @@ require_once "../partials/aside.php";
               </div>
               <div>
                 <label for="requested_by" class="form-label">Requestor</label>
-                <select type="text" class="form-select select-init" id="requested_by" name="requested_by">
+                <select class="form-select select-init" id="requested_by" name="requested_by">
                   <option value="" selected disabled>choose...</option>
                 </select>
               </div>
               <div>
                 <label for="request_types_id" class="form-label">Type of Request</label>
-                <select type="text" class="form-select select-init" id="request_types_id" name="request_types_id"
-                  required>
+                <select class="form-select select-init" id="request_types_id" name="request_types_id" required>
                   <option value="" selected disabled>choose...</option>
                 </select>
               </div>
               <div>
                 <label for="categories_id" class="form-label">Category of Request</label>
-                <select type="text" class="form-select" id="categories_id" name="categories_id" required>
+                <select class="form-select" id="categories_id" name="categories_id" required>
                   <option value="" selected disabled>choose...</option>
                 </select>
               </div>
               <div>
                 <label for="sub_categories_id" class="form-label">Sub-Category of Request</label>
-                <select type="text" class="form-select" id="sub_categories_id" name="sub_categories_id" required>
+                <select class="form-select" id="sub_categories_id" name="sub_categories_id" required>
                   <option value="" selected disabled>choose...</option>
                 </select>
               </div>
@@ -170,7 +169,7 @@ require_once "../partials/aside.php";
             <div class="col-lg-6">
               <div>
                 <label for="h_statuses_id" class="form-label">Status</label>
-                <select type="text" class="form-select select-init" id="h_statuses_id" name="h_statuses_id">
+                <select class="form-select select-init" id="h_statuses_id" name="h_statuses_id">
                   <option value="" selected disabled>choose...</option>
                 </select>
               </div>
@@ -181,14 +180,14 @@ require_once "../partials/aside.php";
 
               <div>
                 <label for="priority_levels_id" class="form-label">Urgency</label>
-                <select type="text" class="form-select select-init" id="priority_levels_id" name="priority_levels_id">
+                <select class="form-select select-init" id="priority_levels_id" name="priority_levels_id">
                   <option value="" selected disabled>choose...</option>
                 </select>
               </div>
 
               <div>
                 <label for="mediums_id" class="form-label">Mode of Request</label>
-                <select type="text" class="form-select select-init" id="mediums_id" name="mediums_id">
+                <select class="form-select select-init" id="mediums_id" name="mediums_id">
                   <option value="" selected disabled>choose...</option>
                 </select>
               </div>
@@ -229,7 +228,7 @@ require_once "../partials/aside.php";
             </div>
 
             <div hidden>
-              
+
               <input name="add_helpdesks" />
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -464,7 +463,7 @@ require_once "../partials/aside.php";
 
             <div hidden>
               <input name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>" />
-              
+
               <input name="helpdesks_id" id="helpdesks_id" />
               <input name="id" id="id" />
               <input name="add_csf" id="add_csf" disabled />

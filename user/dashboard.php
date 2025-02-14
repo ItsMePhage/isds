@@ -134,19 +134,19 @@ require_once "../partials/aside.php";
               </div>
               <div>
                 <label for="request_types_id" class="form-label">Type of Request</label>
-                <select type="text" class="form-select select-init" id="request_types_id" name="request_types_id" required>
+                <select class="form-select select-init" id="request_types_id" name="request_types_id" required>
                   <option value="" selected disabled>choose...</option>
                 </select>
               </div>
               <div>
                 <label for="categories_id" class="form-label">Category of Request</label>
-                <select type="text" class="form-select" id="categories_id" name="categories_id" required>
+                <select class="form-select" id="categories_id" name="categories_id" required>
                   <option value="" selected disabled>choose...</option>
                 </select>
               </div>
               <div>
                 <label for="sub_categories_id" class="form-label">Sub-Category of Request</label>
-                <select type="text" class="form-select" id="sub_categories_id" name="sub_categories_id" required>
+                <select class="form-select" id="sub_categories_id" name="sub_categories_id" required>
                   <option value="" selected disabled>choose...</option>
                 </select>
               </div>

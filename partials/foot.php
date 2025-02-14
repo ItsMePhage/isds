@@ -16,9 +16,6 @@
 <script src="\<?= root ?>\node_modules\@fullcalendar\daygrid\index.global.js"></script>
 <script src="\<?= root ?>\node_modules\@fullcalendar\interaction\index.global.js"></script>
 
-
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-
 <!-- Template Main JS File -->
 <script src="\<?= root ?>\assets\js\main.js"></script>
 

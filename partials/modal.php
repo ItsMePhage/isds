@@ -22,7 +22,7 @@ switch ($page) {
                                         </div>
                                         <div>
                                             <label for="upd_requested_by" class="form-label">Requestor</label>
-                                            <select type="text" class="form-select select-init" id="upd_requested_by"
+                                            <select class="form-select select-init" id="upd_requested_by"
                                                 name="requested_by">
                                                 <option value="" selected disabled>choose...</option>
                                             </select>
@@ -30,21 +30,21 @@ switch ($page) {
 
                                         <div>
                                             <label for="upd_request_types_id" class="form-label">Type of Request</label>
-                                            <select type="text" class="form-select select-init" id="upd_request_types_id"
+                                            <select class="form-select select-init" id="upd_request_types_id"
                                                 name="request_types_id" required>
                                                 <option value="" selected disabled>choose...</option>
                                             </select>
                                         </div>
                                         <div>
                                             <label for="upd_categories_id" class="form-label">Category of Request</label>
-                                            <select type="text" class="form-select" id="upd_categories_id" name="categories_id"
+                                            <select class="form-select" id="upd_categories_id" name="categories_id"
                                                 required>
                                                 <option value="" selected disabled>choose...</option>
                                             </select>
                                         </div>
                                         <div>
                                             <label for="upd_sub_categories_id" class="form-label">Sub-Category of Request</label>
-                                            <select type="text" class="form-select" id="upd_sub_categories_id" name="sub_categories_id"
+                                            <select class="form-select" id="upd_sub_categories_id" name="sub_categories_id"
                                                 required>
                                                 <option value="" selected disabled>choose...</option>
                                             </select>
@@ -63,7 +63,7 @@ switch ($page) {
                                     <div class="col-lg-6">
                                         <div>
                                             <label for="upd_h_statuses_id" class="form-label">Status</label>
-                                            <select type="text" class="form-select select-init" id="upd_h_statuses_id"
+                                            <select class="form-select select-init" id="upd_h_statuses_id"
                                                 name="h_statuses_id">
                                                 <option value="" selected disabled>choose...</option>
                                             </select>
@@ -75,7 +75,7 @@ switch ($page) {
 
                                         <div>
                                             <label for="upd_priority_levels_id" class="form-label">Urgency</label>
-                                            <select type="text" class="form-select select-init" id="upd_priority_levels_id"
+                                            <select class="form-select select-init" id="upd_priority_levels_id"
                                                 name="priority_levels_id">
                                                 <option value="" selected disabled>choose...</option>
                                             </select>
@@ -83,7 +83,7 @@ switch ($page) {
 
                                         <!-- <div>
                                             <label for="upd_repair_types_id" class="form-label">Repair Type</label>
-                                            <select type="text" class="form-select select-init" id="upd_repair_types_id"
+                                            <select class="form-select select-init" id="upd_repair_types_id"
                                                 name="repair_types_id">
                                                 <option value="" selected disabled>choose...</option>
                                             </select>
@@ -91,7 +91,7 @@ switch ($page) {
                                         
                                         <div>
                                             <label for="upd_repair_classes_id" class="form-label">Repair Classification</label>
-                                            <select type="text" class="form-select select-init" id="upd_repair_classes_id"
+                                            <select class="form-select select-init" id="upd_repair_classes_id"
                                                 name="repair_classes_id">
                                                 <option value="" selected disabled>choose...</option>
                                             </select>
@@ -99,7 +99,7 @@ switch ($page) {
 
                                         <div>
                                             <label for="upd_mediums_id" class="form-label">Mode of Request</label>
-                                            <select type="text" class="form-select select-init" id="upd_mediums_id" name="mediums_id">
+                                            <select class="form-select select-init" id="upd_mediums_id" name="mediums_id">
                                                 <option value="" selected disabled>choose...</option>
                                             </select>
                                         </div>
@@ -269,20 +269,20 @@ switch ($page) {
                                     </div>
                                     <div>
                                         <label for="upd_request_types_id" class="form-label">Type of Request</label>
-                                        <select type="text" class="form-select select-init" id="upd_request_types_id"
+                                        <select class="form-select select-init" id="upd_request_types_id"
                                             name="request_types_id" required>
                                             <option value="" selected disabled>choose...</option>
                                         </select>
                                     </div>
                                     <div>
                                         <label for="upd_categories_id" class="form-label">Category of Request</label>
-                                        <select type="text" class="form-select" id="upd_categories_id" name="categories_id" required>
+                                        <select class="form-select" id="upd_categories_id" name="categories_id" required>
                                             <option value="" selected disabled>choose...</option>
                                         </select>
                                     </div>
                                     <div>
                                         <label for="upd_sub_categories_id" class="form-label">Sub-Category of Request</label>
-                                        <select type="text" class="form-select" id="upd_sub_categories_id" name="sub_categories_id"
+                                        <select class="form-select" id="upd_sub_categories_id" name="sub_categories_id"
                                             required>
                                             <option value="" selected disabled>choose...</option>
                                         </select>
@@ -427,7 +427,7 @@ switch ($page) {
                                         </div>
                                         <div>
                                             <label for="upd_requested_by" class="form-label">Requestor</label>
-                                            <select type="text" class="form-select select-init" id="upd_requested_by"
+                                            <select class="form-select select-init" id="upd_requested_by"
                                                 name="requested_by">
                                                 <option value="" selected disabled>choose...</option>
                                             </select>
@@ -454,14 +454,14 @@ switch ($page) {
                                     <div class="col-lg-6">
                                         <div>
                                             <label for="upd_hosts_id" class="form-label">Zoom Host</label>
-                                            <select type="text" class="form-select select-init" id="upd_hosts_id" name="hosts_id">
+                                            <select class="form-select select-init" id="upd_hosts_id" name="hosts_id">
                                                 <option value="" selected disabled>choose...</option>
                                             </select>
                                         </div>
 
                                         <div>
                                             <label for="upd_m_statuses_id" class="form-label">Status</label>
-                                            <select type="text" class="form-select select-init" id="upd_m_statuses_id"
+                                            <select class="form-select select-init" id="upd_m_statuses_id"
                                                 name="m_statuses_id">
                                                 <option value="" selected disabled>choose...</option>
                                             </select>

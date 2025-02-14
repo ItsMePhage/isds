@@ -540,6 +540,7 @@ $(function () {
   });
 
   // Dropdown Function
+
   $(".select-init").each(function (index, element) {
     let select_data = $(element).attr("id");
 
@@ -1281,4 +1282,5 @@ $(function () {
 
     var calendarjQ = $(calendarEl);
   }
+
 });

@@ -157,7 +157,7 @@ require_once "../partials/aside.php";
               </div>
               <div>
                 <label for="requested_by" class="form-label">Requestor</label>
-                <select type="text" class="form-select select-init" id="requested_by" name="requested_by">
+                <select class="form-select select-init" id="requested_by" name="requested_by">
                   <option value="" selected disabled>choose...</option>
                 </select>
               </div>
@@ -181,14 +181,14 @@ require_once "../partials/aside.php";
             <div class="col-lg-6">
               <div>
                 <label for="hosts_id" class="form-label">Zoom Host</label>
-                <select type="text" class="form-select select-init" id="hosts_id" name="hosts_id">
+                <select class="form-select select-init" id="hosts_id" name="hosts_id">
                   <option value="" selected disabled>choose...</option>
                 </select>
               </div>
 
               <div>
                 <label for="m_statuses_id" class="form-label">Status</label>
-                <select type="text" class="form-select select-init" id="m_statuses_id" name="m_statuses_id">
+                <select class="form-select select-init" id="m_statuses_id" name="m_statuses_id">
                   <option value="" selected disabled>choose...</option>
                 </select>
               </div>
