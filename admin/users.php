@@ -202,7 +202,7 @@ require_once "../partials/aside.php";
               </div>
             </div>
             <div hidden>
-              <input class="captcha-token" name="captcha-token" />
+              
               <input name="add_users" />
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>

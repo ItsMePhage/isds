@@ -49,7 +49,7 @@ require_once "../partials/aside.php";
                     </div>
                   </div>
                   <div hidden>
-                    <input class="captcha-token" name="captcha-token" />
+                    
                     <input name="change_username" />
                   </div>
                   <div class="text-end">
@@ -80,7 +80,7 @@ require_once "../partials/aside.php";
                     </div>
                   </div>
                   <div hidden>
-                    <input class="captcha-token" name="captcha-token" />
+                    
                     <input name="change_password" />
                   </div>
                   <div class="text-end">

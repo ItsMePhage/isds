@@ -114,7 +114,7 @@ require_once "../partials/aside.php";
                 <input type="time" class="form-control" id="time_end" name="time_end" required />
               </div>
               <div hidden>
-                <input class="captcha-token" name="captcha-token" />
+                
                 <input name="add_meetings" />
               </div>
               <button type="submit" class="btn btn-primary">Submit</button>

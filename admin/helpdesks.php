@@ -229,7 +229,7 @@ require_once "../partials/aside.php";
             </div>
 
             <div hidden>
-              <input class="captcha-token" name="captcha-token" />
+              
               <input name="add_helpdesks" />
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -464,7 +464,7 @@ require_once "../partials/aside.php";
 
             <div hidden>
               <input name="csrf_token" value="<?= $_SESSION['csrf_token']; ?>" />
-              <input class="captcha-token" name="captcha-token" />
+              
               <input name="helpdesks_id" id="helpdesks_id" />
               <input name="id" id="id" />
               <input name="add_csf" id="add_csf" disabled />

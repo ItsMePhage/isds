@@ -176,7 +176,7 @@ require_once "../partials/aside.php";
                   </div>
 
                   <div hidden>
-                    <input class="captcha-token" name="captcha-token" />
+                    
                     <input name="update_profile" />
                   </div>
 

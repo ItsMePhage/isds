@@ -648,11 +648,16 @@ if ($g_response == 1) {
                 $time_start = $_POST['time_start'];
                 $time_end = $_POST['time_end'];
 
-                $query = "SELECT * FROM `meetings_info` WHERE `date_scheduled` = ? 
-                          AND ((`time_start` < ? AND `time_end` > ?) 
-                          OR (`time_start` < ? AND `time_end` > ?) 
-                          OR (`time_start` >= ? AND `time_end` <= ?))";
-                $result = $conn->execute_query($query, [$date_scheduled, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end]);
+                $query = "SELECT * FROM `meetings` 
+                AND `date_scheduled` = ? 
+                AND (
+                    (? BETWEEN `time_start` AND `time_end`) -- New start time falls within an existing meeting
+                    OR (? BETWEEN `time_start` AND `time_end`) -- New end time falls within an existing meeting
+                    OR (`time_start` BETWEEN ? AND ?) -- Existing meeting starts during the new one
+                    OR (`time_end` BETWEEN ? AND ?) -- Existing meeting ends during the new one
+                )";
+
+                $result = $conn->execute_query($query, [$meetings_id, $date_scheduled, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end]);
 
                 if ($result->num_rows == 0) {
                     $query = "INSERT INTO meetings (`requested_by`, `topic`, `date_requested`, `date_scheduled`, `time_start`, `time_end`)
@@ -725,11 +730,16 @@ if ($g_response == 1) {
                 $meeting_details = str_replace("'", "&apos;", $_POST['meeting_details']);
                 $generated_by = !empty($_POST['meeting_details']) ? $_SESSION['isds_id'] : null;
 
-                $query = "SELECT * FROM `meetings_info` WHERE `date_scheduled` = ? 
-                          AND ((`time_start` < ? AND `time_end` > ?) 
-                          OR (`time_start` < ? AND `time_end` > ?) 
-                          OR (`time_start` >= ? AND `time_end` <= ?))";
-                $result = $conn->execute_query($query, [$date_scheduled, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end]);
+                $query = "SELECT * FROM `meetings` 
+                AND `date_scheduled` = ? 
+                AND (
+                    (? BETWEEN `time_start` AND `time_end`) -- New start time falls within an existing meeting
+                    OR (? BETWEEN `time_start` AND `time_end`) -- New end time falls within an existing meeting
+                    OR (`time_start` BETWEEN ? AND ?) -- Existing meeting starts during the new one
+                    OR (`time_end` BETWEEN ? AND ?) -- Existing meeting ends during the new one
+                )";
+
+                $result = $conn->execute_query($query, [$meetings_id, $date_scheduled, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end]);
 
                 if ($result->num_rows == 0) {
                     $query = "INSERT INTO meetings (`requested_by`, `topic`, `date_requested`, `date_scheduled`, `time_start`, `time_end`, `hosts_id`, `m_statuses_id`, `meeting_details`,`generated_by`)
@@ -820,22 +830,26 @@ if ($g_response == 1) {
         switch ($_SESSION['role']) {
             case 'employee':
             case 'VIP':
-                $meetings_id = $_POST['upd_meetings_id'];
+                $meetings_id = $_POST['meetings_id'];
                 $date_requested = $_POST['date_requested'];
                 $topic = str_replace("'", "&apos;", $_POST['topic']);
                 $date_scheduled = $_POST['date_scheduled'];
                 $time_start = $_POST['time_start'];
                 $time_end = $_POST['time_end'];
 
-                $query = "SELECT * FROM `meetings_info` WHERE `date_scheduled` = ? 
-                        AND ((`time_start` < ? AND `time_end` > ?) 
-                        OR (`time_start` < ? AND `time_end` > ?) 
-                        OR (`time_start` >= ? AND `time_end` <= ?)) 
-                        AND id != ?";
+                $query = "SELECT id FROM meetings 
+                WHERE date_scheduled = ? 
+                AND (
+                    (time_start < ? AND time_end > ?)  
+                    OR (time_start >= ? AND time_start < ?)  
+                    OR (time_end > ? AND time_end <= ?)  
+                    OR (time_start <= ? AND time_end >= ?) 
+                )
+                AND id != ?";
 
-                $result = $conn->execute_query($query, [$date_scheduled, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end, $meetings_id]);
+                $result = $conn->execute_query($query, [$date_scheduled, $time_end, $time_start, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end, $meetings_id]);
 
-                if ($result->num_rows == 0) {
+                if ($result->num_rows > 0) {
                     $query = "UPDATE meetings SET date_requested = ?, topic = ?, date_scheduled = ?, time_start = ?, time_end = ? WHERE id = ?";
                     $conn->execute_query($query, [$date_requested, $topic, $date_scheduled, $time_start, $time_end, $meetings_id]);
 
@@ -852,7 +866,7 @@ if ($g_response == 1) {
                 }
                 break;
             case 'admin':
-                $meetings_id = $_POST['upd_meetings_id'];
+                $meetings_id = $_POST['meetings_id'];
                 $requested_by = !empty($_POST['requested_by']) ? $_POST['requested_by'] : $_SESSION['isds_id'];
                 $date_requested = $_POST['date_requested'];
                 $topic = str_replace("'", "&apos;", $_POST['topic']);
@@ -862,25 +876,26 @@ if ($g_response == 1) {
                 $hosts_id = !empty($_POST['hosts_id']) ? $_POST['hosts_id'] : NULL;
                 $m_statuses_id = !empty($_POST['m_statuses_id']) ? $_POST['m_statuses_id'] : 1;
                 $meeting_details = str_replace("'", "&apos;", $_POST['meeting_details']);
-                $generated_by = !empty($_POST['meeting_details']) ? $_SESSION['isds_id'] : null;
+                $generated_by = $_POST['generated_by'];
 
-                // Check for schedule conflicts
-                $query = "SELECT * FROM `meetings_info` 
-                WHERE `date_scheduled` = ? 
-                AND `id` <> ? 
+                $query = "SELECT id FROM meetings 
+                WHERE date_scheduled = ? 
                 AND (
-                    (`time_start` < ? AND `time_end` > ?)  -- Overlapping meeting
-                    OR (`time_start` < ? AND `time_end` > ?) -- Partial overlap
-                    OR (`time_start` >= ? AND `time_start` < ?) -- New meeting starts inside an existing one
-                    OR (`time_end` > ? AND `time_end` <= ?) -- New meeting ends inside an existing one
-                )";
+                    (time_start < ? AND time_end > ?)  
+                    OR (time_start >= ? AND time_start < ?)  
+                    OR (time_end > ? AND time_end <= ?)  
+                    OR (time_start <= ? AND time_end >= ?) 
+                )
+                AND id != ?";
 
-                $result = $conn->execute_query($query, [$date_scheduled, $meetings_id, $time_end, $time_start, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end]);
+                $result = $conn->execute_query($query, [$date_scheduled, $time_end, $time_start, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end, $meetings_id]);
 
-                if ($result->num_rows == 0) {
+
+
+                if ($result->num_rows > 0) {
                     // Update the meeting details
-                    $query = "UPDATE meetings SET requested_by = ?, topic = ?, date_requested = ?, date_scheduled = ?, time_start = ?, time_end = ?, hosts_id = ?, m_statuses_id = ?, meeting_details = ?, generated_by = ? WHERE id = ?";
-                    $conn->execute_query($query, [$requested_by, $topic, $date_requested, $date_scheduled, $time_start, $time_end, $hosts_id, $m_statuses_id, $meeting_details, $generated_by, $meeting_id]);
+                    $query = "UPDATE `meetings` SET `requested_by` = ?, `topic` = ?, `date_requested` = ?, `date_scheduled` = ?, `time_start` = ?, `time_end` = ?, `hosts_id` = ?, `m_statuses_id` = ?, `meeting_details` = ?, `generated_by` = ? WHERE `id` = ?";
+                    $conn->execute_query($query, [$requested_by, $topic, $date_requested, $date_scheduled, $time_start, $time_end, $hosts_id, $m_statuses_id, $meeting_details, $generated_by, $meetings_id]);
 
                     if (isset($_POST['send_email'])) {
                         $query = "SELECT * FROM `meetings_info` WHERE `id` = ?";

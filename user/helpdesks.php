@@ -125,7 +125,7 @@ require_once "../partials/aside.php";
                 <input type="datetime-local" class="form-control" id="datetime_preferred" name="datetime_preferred" />
               </div>
               <div hidden>
-                <input class="captcha-token" name="captcha-token" />
+                
                 <input name="add_helpdesks" />
               </div>
               <button type="submit" class="btn btn-primary">Submit</button>

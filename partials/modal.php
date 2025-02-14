@@ -142,7 +142,7 @@ switch ($page) {
                                         </div>
                                     </div>
                                     <div hidden>
-                                        <input class="captcha-token" name="captcha-token" />
+                                        
                                         <input id="upd_helpdesks_id" name="upd_helpdesks_id" />
                                         <input name="upd_helpdesks" />
                                     </div>
@@ -297,7 +297,7 @@ switch ($page) {
                                             name="datetime_preferred" />
                                     </div>
                                     <div hidden>
-                                        <input class="captcha-token" name="captcha-token" />
+                                        
                                         <input id="upd_helpdesks_id" name="upd_helpdesks_id" />
                                         <input name="upd_helpdesks" />
                                     </div>
@@ -473,11 +473,6 @@ switch ($page) {
                                                 rows='8'></textarea>
                                         </div>
 
-                                        <!-- <div class="mt-3">
-                                            <button type="button"
-                                                class="btn btn-secondary float-end small btn-sm generate-zoom">Generate</button>
-                                        </div>
-                                        <br> -->
                                         <hr>
                                         <div class="mb-3 form-check">
                                             <input type="checkbox" class="form-check-input" value="1" id="upd_send_email"
@@ -487,8 +482,9 @@ switch ($page) {
                                     </div>
 
                                     <div hidden>
-                                        <input class="captcha-token" name="captcha-token" />
-                                        <input id="upd_meetings_id" name="upd_meetings_id" />
+                                        
+                                        <input id="upd_meetings_id" name="meetings_id" />
+                                        <input name="generated_by" value="<?= $_SESSION['isds_id'] ?>" />
                                         <input name="upd_meetings" />
                                     </div>
                                     <button type="submit" class="btn btn-primary">Submit</button>
@@ -535,7 +531,7 @@ switch ($page) {
                                         <input type="time" class="form-control" id="upd_time_end" name="time_end" required />
                                     </div>
                                     <div hidden>
-                                        <input class="captcha-token" name="captcha-token" />
+                                        
                                         <input id="upd_meetings_id" name="upd_meetings_id" />
                                         <input name="upd_meetings" />
                                     </div>
@@ -649,7 +645,7 @@ switch ($page) {
                             </div> -->
                             <div hidden>
                                 <input name="id" id="upd_id" />
-                                <input class="captcha-token" name="captcha-token" />
+                                
                                 <input name="upd_users" />
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>

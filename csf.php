@@ -251,7 +251,7 @@ session_start();
                                             maxlength="150"></textarea>
                                     </div>
                                     <div hidden>
-                                        <input class="captcha-token" name="captcha-token" />
+                                        
                                         <input name="helpdesks_id" id="helpdesks_id" />
                                         <input name="quick_csf" />
                                         <input type="submit" id="csfbtn" />

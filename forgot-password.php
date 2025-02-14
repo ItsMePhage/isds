@@ -38,7 +38,7 @@ require_once "partials/head.php";
                   <a href="login.php" class="float-end btn-link">Return to Login.</a>
                 </span>
                 <div hidden>
-                  <input class="captcha-token" name="captcha-token" />
+                  
                   <input name="forgot_password" />
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
