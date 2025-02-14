@@ -327,7 +327,7 @@ $(function () {
             type: "POST",
             url: "/isds/includes/process.php",
             data: {
-              del_users: true,
+              del_user: true,
               users_id: id,
               "captcha-token": token, // Corrected token usage
             },
@@ -433,7 +433,7 @@ $(function () {
             type: "POST",
             url: "/isds/includes/process.php",
             data: {
-              del_helpdesks: true,
+              del_helpdesk: true,
               helpdesks_id: id,
               "captcha-token": token, // Use token from reCAPTCHA
             },
@@ -486,7 +486,7 @@ $(function () {
             type: "POST",
             url: "/isds/includes/process.php",
             data: {
-              del_meetings: true,
+              del_meeting: true,
               meetings_id: id,
               "captcha-token": token, // Use token from reCAPTCHA
             },
@@ -777,7 +777,7 @@ $(function () {
       url: "/isds/includes/fetch.php",
       type: "GET",
       data: {
-        upd_helpdesks: true,
+        upd_helpdesk: true,
         helpdesks_id: id,
       },
       dataType: "json",
@@ -892,7 +892,7 @@ $(function () {
         $("#upd_action_taken").val(response.action_taken);
         $("#upd_remarks").val(response.remarks);
 
-        $("#upd_helpdesks_id").val(response.id);
+        $("#upd_helpdesk_id").val(response.id);
       },
     });
 
@@ -921,7 +921,7 @@ $(function () {
       url: "/isds/includes/fetch.php",
       type: "GET",
       data: {
-        upd_meetings: true,
+        upd_meeting: true,
         meetings_id: id,
       },
       dataType: "json",
@@ -950,7 +950,7 @@ $(function () {
       url: "/isds/includes/fetch.php",
       type: "GET",
       data: {
-        upd_users: true,
+        upd_user: true,
         users_id: id,
       },
       dataType: "json",

@@ -92,7 +92,7 @@ require_once "../partials/aside.php";
           <div class="card-body">
             <h5 class="card-title">
               Helpdesks
-              <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#add_helpdesks">Add
+              <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#add_helpdesk">Add
                 ICT Heldesks</button>
             </h5>
             <table id="helpdesks_table" style="width:100%">
@@ -117,7 +117,7 @@ require_once "../partials/aside.php";
     </div>
   </section>
   <!-- Modal -->
-  <div class="modal fade" id="add_helpdesks" tabindex="-1">
+  <div class="modal fade" id="add_helpdesk" tabindex="-1">
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -229,7 +229,7 @@ require_once "../partials/aside.php";
 
             <div hidden>
 
-              <input name="add_helpdesks" />
+              <input name="add_helpdesk" />
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>

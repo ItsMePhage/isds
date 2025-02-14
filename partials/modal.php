@@ -143,8 +143,8 @@ switch ($page) {
                                     </div>
                                     <div hidden>
                                         
-                                        <input id="upd_helpdesks_id" name="upd_helpdesks_id" />
-                                        <input name="upd_helpdesks" />
+                                        <input id="upd_helpdesk_id" name="upd_helpdesk_id" />
+                                        <input name="upd_helpdesk" />
                                     </div>
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </form>
@@ -298,8 +298,8 @@ switch ($page) {
                                     </div>
                                     <div hidden>
                                         
-                                        <input id="upd_helpdesks_id" name="upd_helpdesks_id" />
-                                        <input name="upd_helpdesks" />
+                                        <input id="upd_helpdesk_id" name="upd_helpdesk_id" />
+                                        <input name="upd_helpdesk" />
                                     </div>
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </form>
@@ -483,9 +483,9 @@ switch ($page) {
 
                                     <div hidden>
                                         
-                                        <input id="upd_meetings_id" name="meetings_id" />
+                                        <input id="upd_meeting_id" name="meetings_id" />
                                         <input name="generated_by" value="<?= $_SESSION['isds_id'] ?>" />
-                                        <input name="upd_meetings" />
+                                        <input name="upd_meeting" />
                                     </div>
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </form>
@@ -532,8 +532,8 @@ switch ($page) {
                                     </div>
                                     <div hidden>
                                         
-                                        <input id="upd_meetings_id" name="upd_meetings_id" />
-                                        <input name="upd_meetings" />
+                                        <input id="upd_meeting_id" name="upd_meeting_id" />
+                                        <input name="upd_meeting" />
                                     </div>
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </form>
@@ -646,7 +646,7 @@ switch ($page) {
                             <div hidden>
                                 <input name="id" id="upd_id" />
                                 
-                                <input name="upd_users" />
+                                <input name="upd_user" />
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </form>

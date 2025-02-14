@@ -197,7 +197,7 @@ if (isset($_GET["view_helpdesks"])) {
     $response = $result->fetch_object();
 }
 
-if (isset($_GET["upd_helpdesks"])) {
+if (isset($_GET["upd_helpdesk"])) {
 
     $helpdesks_id = $_GET['helpdesks_id'];
     $query = "SELECT * FROM helpdesks WHERE id = ?";
@@ -206,7 +206,7 @@ if (isset($_GET["upd_helpdesks"])) {
     $response = $result->fetch_object();
 }
 
-if (isset($_GET["upd_meetings"])) {
+if (isset($_GET["upd_meeting"])) {
 
     $meetings_id = $_GET['meetings_id'];
     $query = "SELECT * FROM meetings WHERE id = ?";
@@ -217,7 +217,7 @@ if (isset($_GET["upd_meetings"])) {
 
 }
 
-if (isset($_GET["upd_users"])) {
+if (isset($_GET["upd_user"])) {
 
     $users_id = $_GET['users_id'];
     $query = "SELECT * FROM users WHERE id = ?";

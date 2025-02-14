@@ -282,7 +282,7 @@ if ($g_response == 1) {
         }
     }
 
-    if (isset($_POST['add_helpdesks'])) {
+    if (isset($_POST['add_helpdesk'])) {
         switch ($_SESSION['role']) {
             case 'employee':
             case 'VIP':
@@ -485,12 +485,12 @@ if ($g_response == 1) {
         }
     }
 
-    if (isset($_POST['upd_helpdesks'])) {
+    if (isset($_POST['upd_helpdesk'])) {
 
         switch ($_SESSION['role']) {
             case 'employee':
             case 'VIP':
-                $upd_helpdesks_id = $_POST['upd_helpdesks_id'];
+                $upd_helpdesk_id = $_POST['upd_helpdesk_id'];
                 $date_requested = $_POST['date_requested'];
                 $request_types_id = $_POST['request_types_id'];
                 $categories_id = $_POST['categories_id'];
@@ -499,7 +499,7 @@ if ($g_response == 1) {
                 $datetime_preferred = !empty($_POST['datetime_preferred']) ? $_POST['datetime_preferred'] : date('Y-m-d H:i:s');
 
                 $query = "UPDATE `helpdesks` SET `date_requested` = ?, `request_types_id` = ?, `categories_id` = ?, `sub_categories_id` = ?, `complaint` = ?, `datetime_preferred` = ? WHERE `id` = ?";
-                $result = $conn->execute_query($query, [$date_requested, $request_types_id, $categories_id, $sub_categories_id, $complaint, $datetime_preferred, $upd_helpdesks_id]);
+                $result = $conn->execute_query($query, [$date_requested, $request_types_id, $categories_id, $sub_categories_id, $complaint, $datetime_preferred, $upd_helpdesk_id]);
 
                 $response = [
                     'status' => 'success',
@@ -508,7 +508,7 @@ if ($g_response == 1) {
                 ];
                 break;
             case 'admin':
-                $helpdesks_id = $_POST['upd_helpdesks_id'];
+                $helpdesks_id = $_POST['upd_helpdesk_id'];
                 $requested_by = !empty($_POST['requested_by']) ? $_POST['requested_by'] : $_SESSION['isds_id'];
                 $date_requested = $_POST['date_requested'];
                 $request_types_id = $_POST['request_types_id'];
@@ -622,7 +622,7 @@ if ($g_response == 1) {
         }
     }
 
-    if (isset($_POST['del_helpdesks'])) {
+    if (isset($_POST['del_helpdesk'])) {
         $helpdesks_id = $_POST['helpdesks_id'];
 
         $conn->query("SET @audit_user_id = " . (int) $_SESSION['isds_id']);
@@ -637,7 +637,7 @@ if ($g_response == 1) {
         ];
     }
 
-    if (isset($_POST['add_meetings'])) {
+    if (isset($_POST['add_meeting'])) {
         switch ($_SESSION['role']) {
             case 'employee':
             case 'VIP':
@@ -826,7 +826,7 @@ if ($g_response == 1) {
         }
     }
 
-    if (isset($_POST['upd_meetings'])) {
+    if (isset($_POST['upd_meeting'])) {
         switch ($_SESSION['role']) {
             case 'employee':
             case 'VIP':
@@ -976,7 +976,7 @@ if ($g_response == 1) {
         }
     }
 
-    if (isset($_POST['del_meetings'])) {
+    if (isset($_POST['del_meeting'])) {
         $meetings_id = $_POST['meetings_id'];
 
         $conn->query("SET @audit_user_id = " . (int) $_SESSION['isds_id']);
@@ -991,7 +991,7 @@ if ($g_response == 1) {
         ];
     }
 
-    if (isset($_POST['add_users'])) {
+    if (isset($_POST['add_user'])) {
         $id_number = $_POST['id_number'];
         $first_name = $_POST['first_name'];
         $middle_name = $_POST['middle_name'];
@@ -1032,7 +1032,7 @@ if ($g_response == 1) {
         }
     }
 
-    if (isset($_POST['upd_users'])) {
+    if (isset($_POST['upd_user'])) {
         $id = $_POST['id'];
         $id_number = $_POST['id_number'];
         $first_name = $_POST['first_name'];
@@ -1078,7 +1078,7 @@ if ($g_response == 1) {
         }
     }
 
-    if (isset($_POST['del_users'])) {
+    if (isset($_POST['del_user'])) {
         $users_id = $_POST['users_id'];
 
         $query = "DELETE FROM users WHERE id = ?";

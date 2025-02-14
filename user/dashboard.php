@@ -160,7 +160,7 @@ require_once "../partials/aside.php";
               </div>
               <div hidden>
                 
-                <input name="add_helpdesks" />
+                <input name="add_helpdesk" />
               </div>
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
@@ -197,7 +197,7 @@ require_once "../partials/aside.php";
               </div>
               <div hidden>
                 
-                <input name="add_meetings" />
+                <input name="add_meeting" />
               </div>
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>

@@ -92,7 +92,7 @@ require_once "../partials/aside.php";
           <div class="card-body">
             <h5 class="card-title">
               Meetings
-              <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#add_meetings">Add Zoom
+              <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#add_meeting">Add Zoom
                 Request</button>
               <!-- <button class="btn btn-link float-end"
                 onclick="tbl_meetings_card.style.display = 'none';cal_meetings_card.style.visibility = 'visible'">calendar
@@ -125,7 +125,7 @@ require_once "../partials/aside.php";
           <div class="card-body">
             <h5 class="card-title">
               Meetings
-              <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#add_meetings">Add Zoom
+              <button class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#add_meeting">Add Zoom
                 Request</button>
               <button class="btn btn-link float-end"
                 onclick="tbl_meetings_card.style.display = '';cal_meetings_card.style.visibility = 'hidden'">table
@@ -140,7 +140,7 @@ require_once "../partials/aside.php";
     </div>
   </section>
   <!-- Modal -->
-  <div class="modal fade" id="add_meetings" tabindex="-1">
+  <div class="modal fade" id="add_meeting" tabindex="-1">
     <div class="modal-dialog modal-dialog-scrollable modal-lg">
       <div class="modal-content">
         <div class="modal-header">
@@ -212,7 +212,7 @@ require_once "../partials/aside.php";
 
             <div hidden>
               
-              <input name="add_meetings" />
+              <input name="add_meeting" />
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
