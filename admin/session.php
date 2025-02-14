@@ -59,7 +59,9 @@ $helpdesk_counts = $conn->query("
         SUM(h_statuses_id = 1) as h_open,
         SUM(h_statuses_id = 3) as h_pending,
         SUM(h_statuses_id = 5) as h_completed,
-        SUM(h_statuses_id = 4) as h_prerepair
+        SUM(h_statuses_id = 4) as h_prerepair,
+        SUM(h_statuses_id = 2) as h_cancelled,
+        SUM(h_statuses_id = 6) as h_unserviceable
     FROM helpdesks_info 
     WHERE offices_id = $offices_id OR $offices_id = 1
 ")->fetch_object();
@@ -71,6 +73,8 @@ $h_open = $helpdesk_counts->h_open;
 $h_pending = $helpdesk_counts->h_pending;
 $h_completed = $helpdesk_counts->h_completed;
 $h_prerepair = $helpdesk_counts->h_prerepair;
+$h_cancelled = $helpdesk_counts->h_cancelled;
+$h_unserviceable = $helpdesk_counts->h_unserviceable;
 
 // Queries for meetings
 $meeting_counts = $conn->query("
@@ -80,8 +84,8 @@ $meeting_counts = $conn->query("
         SUM(YEAR(date_requested) = YEAR(CURDATE()) AND MONTH(date_requested) = MONTH(CURDATE())) as count_month,
         SUM(YEAR(date_requested) = YEAR(CURDATE())) as count_year,
         SUM(m_statuses_id = 1) as m_pending,
-        SUM(m_statuses_id = 2) as m_scheduled,
-        SUM(m_statuses_id = 3) as m_unavailable,
+        SUM(m_statuses_id = 2) as m_unavailable,
+        SUM(m_statuses_id = 3) as m_scheduled,
         SUM(m_statuses_id = 4) as m_cancelled
     FROM meetings_info
     WHERE offices_id = $offices_id OR $offices_id = 1

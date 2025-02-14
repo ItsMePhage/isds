@@ -22,7 +22,7 @@ require_once "../partials/aside.php";
   <section class="section dashboard">
     <div class="row">
 
-      <div class="col-lg-3">
+      <div class="col-lg-4">
         <div class="card info-card count-card">
           <div class="card-body" id="h_open">
             <h5 class="card-title">Open</h5>
@@ -38,7 +38,23 @@ require_once "../partials/aside.php";
         </div>
       </div>
 
-      <div class="col-lg-3">
+      <div class="col-lg-4">
+        <div class="card info-card count-card">
+          <div class="card-body" id="h_cancelled">
+            <h5 class="card-title">Cancelled</h5>
+            <div class="d-flex align-items-center">
+              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-danger">
+                <i class="bi bi-people-fill"></i>
+              </div>
+              <div class="ps-3">
+                <h6 id="meetings_count"><?= $h_cancelled ?></h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
         <div class="card info-card count-card">
           <div class="card-body" id="h_pending">
             <h5 class="card-title">Pending</h5>
@@ -54,7 +70,7 @@ require_once "../partials/aside.php";
         </div>
       </div>
 
-      <div class="col-lg-3">
+      <div class="col-lg-4">
         <div class="card info-card count-card">
           <div class="card-body" id="h_completed">
             <h5 class="card-title">Completed</h5>
@@ -70,7 +86,7 @@ require_once "../partials/aside.php";
         </div>
       </div>
 
-      <div class="col-lg-3">
+      <div class="col-lg-4">
         <div class="card info-card count-card">
           <div class="card-body" id="h_prerepair">
             <h5 class="card-title">Pre-repair</h5>
@@ -80,6 +96,22 @@ require_once "../partials/aside.php";
               </div>
               <div class="ps-3">
                 <h6 id="meetings_count"><?= $h_prerepair ?></h6>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="card info-card count-card">
+          <div class="card-body" id="h_unserviceable">
+            <h5 class="card-title">Unserviceable</h5>
+            <div class="d-flex align-items-center">
+              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center bg-secondary">
+                <i class="bi bi-people-fill"></i>
+              </div>
+              <div class="ps-3">
+                <h6 id="meetings_count"><?= $h_unserviceable ?></h6>
               </div>
             </div>
           </div>

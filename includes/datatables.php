@@ -84,20 +84,14 @@ if (isset($_GET['csf_report_table'])) {
 }
 
 if (isset($_GET['helpdesks_report_table'])) {
-    $conditions = ($_SESSION['offices_id'] == 1)
-        ? "helpdesks_info"
-        : "(SELECT * FROM helpdesks_info WHERE requested_by = " . $_SESSION['isds_id'] . " AND offices_id = " . $_SESSION['offices_id'];
-
     switch ($_GET['helpdesks_report_table']) {
         case 'mjr':
-            $conditions .= " AND request_types_id = 1";
+            $table = "(SELECT * FROM helpdesks_info WHERE offices_id = " . $_SESSION['offices_id'] . " AND request_types_id = 1) AS helpdesks_info";
             break;
         case 'ois':
-            $conditions .= " AND request_types_id = 2";
+            $table = "(SELECT * FROM helpdesks_info WHERE offices_id = " . $_SESSION['offices_id'] . " AND request_types_id = 2) AS helpdesks_info";
             break;
     }
-
-    $table = ($_SESSION['offices_id'] == 1) ? "helpdesks_info" : $conditions . ") AS helpdesks_info";
 
 
     $columns = array(
@@ -406,10 +400,9 @@ if (isset($_GET['meetings_table'])) {
                 ),
                 array('db' => 'host', 'dt' => 5),
                 array('db' => 'requested_by_name', 'dt' => 6),
-                array('db' => 'generated_by_name', 'dt' => 7),
                 array(
                     'db' => 'id',
-                    'dt' => 8,
+                    'dt' => 7,
                     'formatter' => function ($d, $row) {
                         $editBtn = '<button type="button" class="btn btn-primary mx-1 my-0 small" onclick="updmeetingsbtn(' . $row['id'] . ')"><i class="bi bi-pencil-square small"></i></button>';
                         $deleteBtn = '<button type="button" class="btn btn-danger mx-1 my-0 small" onclick="delmeetingsbtn(' . $row['id'] . ', \'' . $row['request_number'] . '\')"><i class="bi bi-trash3-fill small"></i></button>';

@@ -140,6 +140,8 @@ $(function () {
   bindFilterButton("#h_pending", helpdesks_table, 4, "Pending");
   bindFilterButton("#h_completed", helpdesks_table, 4, "Completed");
   bindFilterButton("#h_prerepair", helpdesks_table, 4, "Pre-repair");
+  bindFilterButton("#h_cancelled", helpdesks_table, 4, "Cancelled");
+  bindFilterButton("#h_unserviceable", helpdesks_table, 4, "Unserviceable");
 
   var meetings_table = new DataTable("#meetings_table", {
     ajax: "/isds/includes/datatables.php?meetings_table",
