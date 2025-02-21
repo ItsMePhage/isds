@@ -223,47 +223,39 @@ if (isset($_GET['helpdesks_table'])) {
                     'db' => 'id',
                     'dt' => 8,
                     'formatter' => function ($d, $row) {
-                        $editBtn = '<button type="button" class="btn btn-primary mx-1 my-0 small" onclick="updhelpdesksbtn(' . $row['id'] . ')"><i class="bi bi-pencil-square small"></i></button>';
-                        $deleteBtn = '<button type="button" class="btn btn-danger mx-1 my-0 small" onclick="delhelpdesksbtn(' . $row['id'] . ', \'' . $row['request_number'] . '\')"><i class="bi bi-trash3-fill small"></i></button>';
-                        $printBtn = ($row['status'] == "Pre-repair")
-                            ? '<button type="button" class="btn btn-info mx-1 my-0 small" onclick=\'printpribtn(' . json_encode($row) . ')\'><i class="bi bi-printer"></i></button>'
-                            : (($row['request_types_id'] == 1)
-                                ? '<button type="button" class="btn btn-info mx-1 my-0 small" onclick=\'printmjrbtn(' . json_encode($row) . ')\'><i class="bi bi-printer"></i></button>'
-                                : (($row['request_types_id'] == 2)
-                                    ? '<button type="button" class="btn btn-info mx-1 my-0 small" onclick=\'printoisbtn(' . json_encode($row) . ')\'><i class="bi bi-printer"></i></button>'
-                                    : ''));
+                        $editBtn = '<button type="button" class="btn btn-primary" onclick="updhelpdesksbtn(' . $row['id'] . ')"><i class="bi bi-pencil-square"></i></button>';
+                        $deleteBtn = '<button type="button" class="btn btn-danger" onclick="delhelpdesksbtn(' . $row['id'] . ', \'' . $row['request_number'] . '\')"><i class="bi bi-trash3-fill"></i></button>';
 
-                        $feedbackBtn = $row['csf_id'] == null
-                            ? '<button type="button" class="btn btn-warning mx-1 my-0 small" onclick="window.open(\'/isds/csf.php?reqno=' . $d . '\', \'_blank\')"><i class="bi bi-list-check"></i></button>'
-                            : '<button type="button" class="btn btn-success mx-1 my-0 small" onclick="window.open(\'/isds/view_csf.php?reqno=' . $d . '\', \'_blank\')"><i class="bi bi-list-check"></i></button>';
-
-                        $html = '<div class="btn-group text-end small" role="group">';
-                        switch ($row['status']) {
-                            case 'Open':
-                                $html .= "{$editBtn}{$printBtn}{$deleteBtn}";
-                                break;
-                            case 'Cancelled':
-                                $html .= "{$editBtn}{$printBtn}{$deleteBtn}";
-                                break;
-                            case 'Unserviceable':
-                                $html .= "{$editBtn}{$printBtn}{$deleteBtn}";
-                                break;
-                            case 'Pending':
-                                $html .= "{$editBtn}{$printBtn}{$deleteBtn}";
-                                break;
-                            case 'Pre-repair':
-                                $html .= "{$editBtn}{$printBtn}{$deleteBtn}";
-                                break;
-                            case 'Completed':
-                                $html .= "{$editBtn}{$feedbackBtn}{$deleteBtn}";
-                                break;
+                        // Print Button Handling
+                        $rowJson = htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8');
+                        if ($row['status'] == "Pre-repair") {
+                            $printBtn = '<button type="button" class="btn btn-info" onclick=\'printpribtn(' . $rowJson . ')\'> <i class="bi bi-printer"></i> </button>';
+                        } elseif ($row['request_types_id'] == 1) {
+                            $printBtn = '<button type="button" class="btn btn-info" onclick=\'printmjrbtn(' . $rowJson . ')\'> <i class="bi bi-printer"></i> </button>';
+                        } elseif ($row['request_types_id'] == 2) {
+                            $printBtn = '<button type="button" class="btn btn-info" onclick=\'printoisbtn(' . $rowJson . ')\'> <i class="bi bi-printer"></i> </button>';
+                        } else {
+                            $printBtn = '';
                         }
+
+                        // Feedback Button
+                        $feedbackBtn = $row['csf_id'] === null
+                            ? '<button type="button" class="btn btn-warning" onclick="window.open(\'/isds/csf.php?reqno=' . $d . '\', \'_blank\')"><i class="bi bi-list-check"></i></button>'
+                            : '<button type="button" class="btn btn-success" onclick="window.open(\'/isds/view_csf.php?reqno=' . $d . '\', \'_blank\')"><i class="bi bi-list-check"></i></button>';
+
+                        // Generate Button Group
+                        $html = '<div class="btn-group" role="group">';
+
+                        if ($row['status'] === 'Completed') {
+                            $html .= "{$editBtn}{$feedbackBtn}{$deleteBtn}";
+                        } else {
+                            $html .= "{$editBtn}{$printBtn}{$deleteBtn}";
+                        }
+
                         $html .= '</div>';
                         return $html;
                     }
-
                 )
-
             );
             break;
         case 'employee':
