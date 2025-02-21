@@ -108,7 +108,7 @@ require_once "../partials/aside.php";
                   <th scope="col" class="text-nowrap">Status</th>
                   <th scope="col" class="text-nowrap">Host</th>
                   <th scope="col" class="text-nowrap">Requested By</th>
-                  <th scope="col" class="text-nowrap" style="width:0%">Actions</th>
+                  <th scope="col" class="text-nowrap text-center" style="width:0%">Actions</th>
                 </tr>
               </thead>
             </table>
