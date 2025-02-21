@@ -99,7 +99,7 @@ require_once "../partials/aside.php";
   </section>
   <!-- Modal -->
   <div class="modal fade" id="add_helpdesk" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5">Add User</h1>

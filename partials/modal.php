@@ -6,7 +6,7 @@ switch ($page) {
 ?>
                 <!-- Modal -->
                 <div class="modal fade" id="updhelpdesksmodal" tabindex="-1">
-                    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                    <div class="modal-dialog modal-dialog-scrollable modal-xl">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5">Update Request</h1>
@@ -134,6 +134,12 @@ switch ($page) {
                                             <label for="upd_remarks" class="form-label">Remarks</label>
                                             <textarea class="form-control" id="upd_remarks" name="remarks"></textarea>
                                         </div>
+                                        <div>
+                                            <label for="serviced_by" class="form-label">Assigned to</label>
+                                            <select class="form-select select-init" id="upd_serviced_by" name="serviced_by">
+                                                <option value="">choose...</option>
+                                            </select>
+                                        </div>
                                         <hr>
                                         <div class="mb-3 form-check">
                                             <input type="checkbox" class="form-check-input" value="1" id="upd_send_email"
@@ -154,7 +160,7 @@ switch ($page) {
                 </div>
                 <!-- Modal -->
                 <div class="modal fade" id="viewhelpdesksmodal" tabindex="-1">
-                    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                    <div class="modal-dialog modal-dialog-scrollable modal-xl">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5">Request Overview</h1>
@@ -309,7 +315,7 @@ switch ($page) {
                 </div>
                 <!-- Modal -->
                 <div class="modal fade" id="viewhelpdesksmodal" tabindex="-1">
-                    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                    <div class="modal-dialog modal-dialog-scrollable modal-xl">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5">Request Overview</h1>
@@ -411,7 +417,7 @@ switch ($page) {
             ?>
                 <!-- Modal -->
                 <div class="modal fade" id="updmeetingsmodal" tabindex="-1">
-                    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                    <div class="modal-dialog modal-xl modal-dialog-scrollable">
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5">Update Schedule</h1>
@@ -545,7 +551,7 @@ switch ($page) {
         ?>
         <!-- Modal -->
         <div class="modal fade" id="updusersmodal" tabindex="-1">
-            <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-dialog modal-xl modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5">Update User</h1>

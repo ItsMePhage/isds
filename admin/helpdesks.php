@@ -150,7 +150,7 @@ require_once "../partials/aside.php";
   </section>
   <!-- Modal -->
   <div class="modal fade" id="add_helpdesk" tabindex="-1">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5">Add ICT Request</h1>
@@ -252,6 +252,12 @@ require_once "../partials/aside.php";
                 <label for="remarks" class="form-label">Remarks</label>
                 <textarea class="form-control" id="remarks" name="remarks"></textarea>
               </div>
+              <div>
+                <label for="serviced_by" class="form-label">Assigned to</label>
+                <select class="form-select select-init" id="serviced_by" name="serviced_by">
+                  <option value="" selected>choose...</option>
+                </select>
+              </div>
               <hr>
               <div class="mb-3 form-check">
                 <input type="checkbox" class="form-check-input" value="1" id="send_email" name="send_email" />
@@ -271,7 +277,7 @@ require_once "../partials/aside.php";
   </div>
   <!-- csf Modal -->
   <div class="modal fade" id="csfModal" tabindex="-1" aria-labelledby="csfModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="csfModalLabel">csf</h1>

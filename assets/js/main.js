@@ -893,6 +893,7 @@ $(function () {
         $("#upd_diagnosis").val(response.diagnosis);
         $("#upd_action_taken").val(response.action_taken);
         $("#upd_remarks").val(response.remarks);
+        $("#upd_serviced_by").val(response.serviced_by);
 
         $("#upd_helpdesk_id").val(response.id);
       },

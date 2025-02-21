@@ -328,7 +328,7 @@ if ($g_response == 1) {
                         break;
                     case 'Completed':
                         $Message .= "<p>Your request ({$row->request_number}) has been completed. Please take a moment to fill out our feedback form:</p>";
-                        $Message .= "<p><a href='" . base_url . "isds/csf.php?reqno={$row->id}' style='font-size: 18pt;'>Online CSF Form</a></p>";
+                        $Message .= "<p><a href='" . base_url . "isds/csf.php?reqno=" . encryptID($row->id, encryptionkey) . "' style='font-size: 18pt;'>Online CSF Form</a></p>";
                         break;
                     case 'Unserviceable':
                         $Message .= "<p>We regret to inform you that your request ({$row->request_number}) has been marked as unserviceable. Please contact support for alternative solutions.</p>";
@@ -380,7 +380,7 @@ if ($g_response == 1) {
                 $repair_types_id = !empty($_POST['repair_types_id']) ? $_POST['repair_types_id'] : NULL;
                 $repair_classes_id = !empty($_POST['repair_classes_id']) ? $_POST['repair_classes_id'] : NULL;
                 $mediums_id = !empty($_POST['mediums_id']) ? $_POST['mediums_id'] : NULL;
-                $serviced_by = (empty($h_statuses_id) || $h_statuses_id == 1) ? null : $_SESSION['isds_id'];
+                $serviced_by = !empty($_POST['serviced_by']) ? $_POST['serviced_by'] : NULL;
                 $datetime_start = !empty($_POST['datetime_start']) ? $_POST['datetime_start'] : NULL;
                 $is_pullout = isset($_POST['is_pullout']) ? 1 : NULL;
                 $datetime_end = !empty($_POST['datetime_end']) ? $_POST['datetime_end'] : NULL;
@@ -429,7 +429,7 @@ if ($g_response == 1) {
                             break;
                         case 'Completed':
                             $Message .= "<p>Your request ({$row->request_number}) has been completed. Please take a moment to fill out our feedback form:</p>";
-                            $Message .= "<p><a href='" . base_url . "isds/csf.php?reqno={$row->id}' style='font-size: 18pt;'>Online CSF Form</a></p>";
+                            $Message .= "<p><a href='" . base_url . "isds/csf.php?reqno=" . encryptID($row->id, encryptionkey) . "' style='font-size: 18pt;'>Online CSF Form</a></p>";
                             break;
                         case 'Unserviceable':
                             $Message .= "<p>We regret to inform you that your request ({$row->request_number}) has been marked as unserviceable. Please contact support for alternative solutions.</p>";
@@ -519,7 +519,7 @@ if ($g_response == 1) {
                 $repair_types_id = !empty($_POST['repair_types_id']) ? $_POST['repair_types_id'] : NULL;
                 $repair_classes_id = !empty($_POST['repair_classes_id']) ? $_POST['repair_classes_id'] : NULL;
                 $mediums_id = !empty($_POST['mediums_id']) ? $_POST['mediums_id'] : NULL;
-                $serviced_by = ($h_statuses_id == 1) ? null : $_SESSION['isds_id'];
+                $serviced_by = !empty($_POST['serviced_by']) ? $_POST['serviced_by'] : NULL;
                 $datetime_start = !empty($_POST['datetime_start']) ? $_POST['datetime_start'] : NULL;
                 $is_pullout = isset($_POST['is_pullout']) ? 1 : NULL;
                 $datetime_end = !empty($_POST['datetime_end']) ? $_POST['datetime_end'] : NULL;
@@ -567,7 +567,7 @@ if ($g_response == 1) {
                             break;
                         case 'Completed':
                             $Message .= "<p>Your request {$row->request_number} has been completed. Please take a moment to fill out our feedback form:</p>";
-                            $Message .= "<p><a href='" . base_url . "isds/csf.php?reqno={$row->id}' style='font-size: 18pt;'>Online CSF Form</a></p>";
+                            $Message .= "<p><a href='" . base_url . "isds/csf.php?reqno=" . encryptID($row->id, encryptionkey) . "' style='font-size: 18pt;'>Online CSF Form</a></p>";
                             break;
                         case 'Unserviceable':
                             $Message .= "<p>We regret to inform you that your request {$row->request_number} has been marked as unserviceable. Please contact support for alternative solutions.</p>";
@@ -1293,7 +1293,7 @@ if ($g_response == 1) {
 
         $response['status'] = 'success';
         $response['message'] = 'CSF submit successfully, Thank You!';
-        $response['redirect'] = 'quick_csf.php?reqno=' . $helpdesks_id;
+        $response['redirect'] = 'view_csf.php?reqno=' . encryptID($helpdesks_id, encryptionkey);
     }
 } else {
     $response = [

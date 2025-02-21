@@ -140,7 +140,7 @@ require_once "../partials/aside.php";
   </section>
   <!-- Modal -->
   <div class="modal fade" id="add_meeting" tabindex="-1">
-    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl">
       <div class="modal-content">
         <div class="modal-header">
           <h1 class="modal-title fs-5">Add Zoom Request</h1>

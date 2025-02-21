@@ -292,7 +292,7 @@ if (isset($_GET['reqno'])) {
             url: "includes/fetch.php",
             data: {
                 'csf': '',
-                'id': <?= $_GET['reqno'] ?>
+                'id': '<?= $_GET['reqno'] ?>'
             },
             dataType: 'json',
             success: function (response) {

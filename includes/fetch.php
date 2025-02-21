@@ -2,6 +2,7 @@
 
 // get connection
 require_once 'conn.php';
+require_once 'common_functions.php';
 
 session_start();
 
@@ -52,6 +53,16 @@ if (isset($_GET['select_data'])) {
         case "requested_by":
         case "upd_requested_by":
             $query = "SELECT `id`, CONCAT(first_name,' ',last_name) as `name` FROM users ORDER BY first_name ASC";
+            $result = $conn->execute_query($query);
+
+            while ($row = $result->fetch_object()) {
+                $response[] = $row;
+            }
+
+            break;
+        case "serviced_by":
+        case "upd_serviced_by":
+            $query = "SELECT `id`, CONCAT(first_name,' ',last_name) as `name` FROM users WHERE roles_id = 1 ORDER BY first_name ASC";
             $result = $conn->execute_query($query);
 
             while ($row = $result->fetch_object()) {
@@ -213,8 +224,6 @@ if (isset($_GET["upd_meeting"])) {
     $result = $conn->execute_query($query, [$meetings_id]);
 
     $response = $result->fetch_object();
-
-
 }
 
 if (isset($_GET["upd_user"])) {
@@ -224,8 +233,6 @@ if (isset($_GET["upd_user"])) {
     $result = $conn->execute_query($query, [$users_id]);
 
     $response = $result->fetch_object();
-
-
 }
 
 if (isset($_GET["chart_category"])) {
@@ -309,7 +316,7 @@ if (isset($_GET["chart_month"])) {
 }
 
 if (isset($_POST['csf'])) {
-    $id = $conn->real_escape_string($_POST['id']);
+    $id = $conn->real_escape_string(decryptID($_POST['id'], encryptionkey));
 
     $query = "SELECT * FROM helpdesks_info WHERE id = ?";
     $result = $conn->execute_query($query, [$id]);
@@ -317,7 +324,7 @@ if (isset($_POST['csf'])) {
 }
 
 if (isset($_POST['view_csf'])) {
-    $id = $conn->real_escape_string($_POST['id']);
+    $id = $conn->real_escape_string(decryptID($_POST['id'], encryptionkey));
 
     $query = "SELECT * FROM csf_info WHERE id = ?";
     $result = $conn->execute_query($query, [$id]);
