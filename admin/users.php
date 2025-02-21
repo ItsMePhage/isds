@@ -87,7 +87,7 @@ require_once "../partials/aside.php";
                   <th scope="col" class="text-nowrap">Office</th>
                   <th scope="col" class="text-nowrap">Division</th>
                   <th scope="col" class="text-nowrap">Role</th>
-                  <th scope="col" class="text-nowrap"></th>
+                  <th scope="col" class="text-nowrap" style="width:0%">Actions</th>
                 </tr>
               </thead>
             </table>

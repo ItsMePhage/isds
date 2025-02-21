@@ -152,7 +152,7 @@ require_once "../partials/aside.php";
                   <th scope="col" class="text-nowrap">Date Scheduled</th>
                   <th scope="col" class="text-nowrap">Status</th>
                   <th scope="col" class="text-nowrap">Host</th>
-                  <th scope="col" class="text-nowrap">Actions</th>
+                  <th scope="col" class="text-nowrap" style="width:0%">Actions</th>
                 </tr>
               </thead>
             </table>
