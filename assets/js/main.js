@@ -937,6 +937,7 @@ $(function () {
         $("#upd_hosts_id").val(response.hosts_id);
         $("#upd_m_statuses_id").val(response.m_statuses_id);
         $("#upd_meeting_details").val(response.meeting_details);
+        $("#upd_meeting_id").val(id);
       },
       error: function (xhr, status, error) {
         console.error("Error fetching meeting data:", error);

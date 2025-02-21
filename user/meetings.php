@@ -91,19 +91,21 @@ require_once "../partials/aside.php";
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Zoom Schedule</h5>
-            <form class="row g-3 form-validation">
+            <!-- Form remains the same -->
+            <form class="row g-3 form-validation" method="POST">
               <div>
                 <label for="date_requested" class="form-label">Date of Request</label>
                 <input type="date" class="form-control" id="date_requested" name="date_requested"
-                  value="<?= date('Y-m-d') ?>" required />
+                  value="<?= date('Y-m-d') ?>" readonly required />
               </div>
               <div>
                 <label for="topic" class="form-label">Topic or Title of meeting</label>
-                <textarea class="form-control" id="topic" name="topic"></textarea>
+                <textarea class="form-control" id="topic" name="topic" required></textarea>
               </div>
               <div>
                 <label for="date_scheduled" class="form-label">Date of Schedule</label>
-                <input type="date" class="form-control" id="date_scheduled" name="date_scheduled" required />
+                <input type="date" class="form-control" id="date_scheduled" name="date_scheduled"
+                  min="<?= date('Y-m-d') ?>" required />
               </div>
               <div>
                 <label for="time_start" class="form-label">Start Time of Schedule</label>
@@ -113,9 +115,9 @@ require_once "../partials/aside.php";
                 <label for="time_end" class="form-label">End Time of Schedule</label>
                 <input type="time" class="form-control" id="time_end" name="time_end" required />
               </div>
+
               <div hidden>
-                
-                <input name="add_meeting" />
+                <input name="add_meeting" value="1" />
               </div>
               <button type="submit" class="btn btn-primary">Submit</button>
             </form>
@@ -129,7 +131,7 @@ require_once "../partials/aside.php";
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">Meetings <button class="btn btn-link float-end" onclick="tbl_meetings_card.style.display = 'none';cal_meetings_card.style.visibility = 'visible'">calendar view</button></h5>
-            <table id="tbl_meetings" style="width:100%">
+            <!-- <table id="tbl_meetings" style="width:100%">
               <thead>
                 <tr>
                   <th scope="col" class="text-nowrap">Date Requested</th>
@@ -138,6 +140,19 @@ require_once "../partials/aside.php";
                   <th scope="col" class="text-nowrap">Time</th>
                   <th scope="col" class="text-nowrap">Status</th>
                   <th scope="col" class="text-nowrap">Action</th>
+                </tr>
+              </thead>
+            </table> -->
+            <table id="meetings_table" style="width:100%">
+              <thead>
+                <tr>
+                  <th scope="col" class="text-nowrap">Date Requested</th>
+                  <th scope="col" class="text-nowrap">Request Number</th>
+                  <th scope="col" class="text-wrap">Topic</th>
+                  <th scope="col" class="text-nowrap">Date Scheduled</th>
+                  <th scope="col" class="text-nowrap">Status</th>
+                  <th scope="col" class="text-nowrap">Host</th>
+                  <th scope="col" class="text-nowrap">Actions</th>
                 </tr>
               </thead>
             </table>

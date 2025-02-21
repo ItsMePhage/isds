@@ -147,26 +147,29 @@ require_once "../partials/aside.php";
           <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
         <div class="modal-body">
-          <form class="row g-3 form-validation">
+          <!-- Form remains the same -->
+          <form class="row g-3 form-validation" method="POST">
             <div class="col-lg-6">
               <div>
                 <label for="date_requested" class="form-label">Date of Request</label>
                 <input type="date" class="form-control" id="date_requested" name="date_requested"
-                  value="<?= date('Y-m-d') ?>" required />
+                  value="<?= date('Y-m-d') ?>" readonly required />
               </div>
               <div>
                 <label for="requested_by" class="form-label">Requestor</label>
-                <select class="form-select select-init" id="requested_by" name="requested_by">
+                <select class="form-select select-init" id="requested_by" name="requested_by" required>
                   <option value="" selected disabled>choose...</option>
+                  <!-- Options should be populated dynamically -->
                 </select>
               </div>
               <div>
                 <label for="topic" class="form-label">Topic or Title of meeting</label>
-                <textarea class="form-control" id="topic" name="topic"></textarea>
+                <textarea class="form-control" id="topic" name="topic" required></textarea>
               </div>
               <div>
                 <label for="date_scheduled" class="form-label">Date of Schedule</label>
-                <input type="date" class="form-control" id="date_scheduled" name="date_scheduled" required />
+                <input type="date" class="form-control" id="date_scheduled" name="date_scheduled"
+                  min="<?= date('Y-m-d') ?>" required />
               </div>
               <div>
                 <label for="time_start" class="form-label">Start Time of Schedule</label>
@@ -182,36 +185,31 @@ require_once "../partials/aside.php";
                 <label for="hosts_id" class="form-label">Zoom Host</label>
                 <select class="form-select select-init" id="hosts_id" name="hosts_id">
                   <option value="" selected disabled>choose...</option>
+                  <!-- Options should be populated dynamically -->
                 </select>
               </div>
-
               <div>
                 <label for="m_statuses_id" class="form-label">Status</label>
                 <select class="form-select select-init" id="m_statuses_id" name="m_statuses_id">
                   <option value="" selected disabled>choose...</option>
+                  <!-- Options should be populated dynamically -->
                 </select>
               </div>
-
               <div>
                 <label for="meeting_details" class="form-label">Zoom meeting details</label>
-                <textarea class="form-control" id="meeting_details" name="meeting_details" cols='60'
-                  rows='8'></textarea>
+                <textarea class="form-control" id="meeting_details" name="meeting_details"
+                  cols="60" rows="8"></textarea>
               </div>
-
-              <!-- <div class="mt-3">
-                <button type="button" class="btn btn-secondary float-end small btn-sm generate-zoom">Generate</button>
-              </div>
-              <br> -->
               <hr>
               <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" value="1" id="send_email" name="send_email" />
+                <input type="checkbox" class="form-check-input" value="1" id="send_email"
+                  name="send_email" />
                 <label class="form-check-label" for="send_email">Send email</label>
               </div>
             </div>
 
             <div hidden>
-
-              <input name="add_meeting" />
+              <input name="add_meeting" value="1" />
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>

@@ -27,7 +27,6 @@ if ($g_response == 1) {
 
             if (password_verify($password, $row->password)) {
                 if (password_verify($password, $row->password)) {
-
                 }
                 if ($row->is_active == 1) {
 
@@ -61,8 +60,6 @@ if ($g_response == 1) {
                             'redirect' => ($row->roles_id == 1 ? 'admin' : 'user') . '/dashboard.php'
                         ];
                     }
-
-
                 } else {
                     $response = [
                         'status' => 'warning',
@@ -154,7 +151,7 @@ if ($g_response == 1) {
                 $Message .= "<div>Password: " . $password . "</div>";
                 $Message .= "<br><br>";
                 $Message .= "<div>For security reasons, we recommend that you change your password after your first login.</div>";
-                $Message .= "<div><a href='http://r6itbpm.site/isds/index.php'>Click here</a> to login. Thank you.</div>";
+                $Message .= "<div><a href='" . base_url . "isds/index.php'>Click here</a> to login. Thank you.</div>";
                 $Message .= "<br><br>";
                 $Message .= "<div>Best Regards,</div>";
                 $Message .= "<br>";
@@ -331,7 +328,7 @@ if ($g_response == 1) {
                         break;
                     case 'Completed':
                         $Message .= "<p>Your request ({$row->request_number}) has been completed. Please take a moment to fill out our feedback form:</p>";
-                        $Message .= "<p><a href='http://r6itbpm.site/isds/csf.php?reqno={$row->id}' style='font-size: 18pt;'>Online CSF Form</a></p>";
+                        $Message .= "<p><a href='" . base_url . "isds/csf.php?reqno={$row->id}' style='font-size: 18pt;'>Online CSF Form</a></p>";
                         break;
                     case 'Unserviceable':
                         $Message .= "<p>We regret to inform you that your request ({$row->request_number}) has been marked as unserviceable. Please contact support for alternative solutions.</p>";
@@ -351,7 +348,7 @@ if ($g_response == 1) {
                 $Message .= "</ul>";
                 $Message .= "<p>We will process your request and get back to you as soon as possible.</p>";
                 $Message .= "<p>To access your account, please click the button below:</p>";
-                $Message .= "<a href='http://r6itbpm.site/isds/login.php'><u>Click Here to Login</u></a>";
+                $Message .= "<a href='" . base_url . "isds/login.php'><u>Click Here to Login</u></a>";
                 $Message .= "<br><br>";
                 $Message .= "<p>Best Regards,</p>";
                 $Message .= "<div>DTI6 MIS Administrator</div>";
@@ -432,7 +429,7 @@ if ($g_response == 1) {
                             break;
                         case 'Completed':
                             $Message .= "<p>Your request ({$row->request_number}) has been completed. Please take a moment to fill out our feedback form:</p>";
-                            $Message .= "<p><a href='http://r6itbpm.site/isds/csf.php?reqno={$row->id}' style='font-size: 18pt;'>Online CSF Form</a></p>";
+                            $Message .= "<p><a href='" . base_url . "isds/csf.php?reqno={$row->id}' style='font-size: 18pt;'>Online CSF Form</a></p>";
                             break;
                         case 'Unserviceable':
                             $Message .= "<p>We regret to inform you that your request ({$row->request_number}) has been marked as unserviceable. Please contact support for alternative solutions.</p>";
@@ -464,7 +461,7 @@ if ($g_response == 1) {
                     $Message .= "<li><strong>Serviced by:</strong> " . $row->serviced_by_name . "</li>";
                     $Message .= "</ul>";
                     $Message .= "<p>To access your account, please click the button below:</p>";
-                    $Message .= "<a href='http://r6itbpm.site/isds/'><u>Click Here to Login</u></a>";
+                    $Message .= "<a href='" . base_url . "isds/'><u>Click Here to Login</u></a>";
                     $Message .= "<br><br>";
                     $Message .= "<p>Best Regards,</p>";
                     $Message .= "<div>DTI6 MIS Administrator</div>";
@@ -570,7 +567,7 @@ if ($g_response == 1) {
                             break;
                         case 'Completed':
                             $Message .= "<p>Your request {$row->request_number} has been completed. Please take a moment to fill out our feedback form:</p>";
-                            $Message .= "<p><a href='http://r6itbpm.site/isds/csf.php?reqno={$row->id}' style='font-size: 18pt;'>Online CSF Form</a></p>";
+                            $Message .= "<p><a href='" . base_url . "isds/csf.php?reqno={$row->id}' style='font-size: 18pt;'>Online CSF Form</a></p>";
                             break;
                         case 'Unserviceable':
                             $Message .= "<p>We regret to inform you that your request {$row->request_number} has been marked as unserviceable. Please contact support for alternative solutions.</p>";
@@ -601,7 +598,7 @@ if ($g_response == 1) {
                     $Message .= "<li><strong>Serviced by:</strong> " . $row->serviced_by_name . "</li>";
                     $Message .= "</ul>";
                     $Message .= "<p>To access your account, please click the button below:</p>";
-                    $Message .= "<a href='http://r6itbpm.site/isds/'><u>Click Here to Login</u></a>";
+                    $Message .= "<a href='" . base_url . "isds/'><u>Click Here to Login</u></a>";
                     $Message .= "<br><br>";
                     $Message .= "<p>Best Regards,</p>";
                     $Message .= "<div>DTI6 MIS Administrator</div>";
@@ -638,39 +635,56 @@ if ($g_response == 1) {
     }
 
     if (isset($_POST['add_meeting'])) {
+
         switch ($_SESSION['role']) {
             case 'employee':
             case 'VIP':
                 $requested_by = $_SESSION['isds_id'];
                 $date_requested = $_POST['date_requested'];
-                $topic = str_replace("'", "&apos;", $_POST['topic']);
+                $topic = htmlspecialchars($_POST['topic'], ENT_QUOTES, 'UTF-8');
                 $date_scheduled = $_POST['date_scheduled'];
                 $time_start = $_POST['time_start'];
                 $time_end = $_POST['time_end'];
 
                 $query = "SELECT * FROM `meetings` 
-                AND `date_scheduled` = ? 
-                AND (
-                    (? BETWEEN `time_start` AND `time_end`) -- New start time falls within an existing meeting
-                    OR (? BETWEEN `time_start` AND `time_end`) -- New end time falls within an existing meeting
-                    OR (`time_start` BETWEEN ? AND ?) -- Existing meeting starts during the new one
-                    OR (`time_end` BETWEEN ? AND ?) -- Existing meeting ends during the new one
-                )";
+                         WHERE `date_scheduled` = ? 
+                         AND (
+                             (? BETWEEN `time_start` AND `time_end`)
+                             OR (? BETWEEN `time_start` AND `time_end`)
+                             OR (`time_start` BETWEEN ? AND ?)
+                             OR (`time_end` BETWEEN ? AND ?)
+                         )";
 
-                $result = $conn->execute_query($query, [$meetings_id, $date_scheduled, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end]);
+                $result = $conn->execute_query($query, [
+                    $date_scheduled,
+                    $time_start,
+                    $time_end,
+                    $time_start,
+                    $time_end,
+                    $time_start,
+                    $time_end
+                ]);
 
                 if ($result->num_rows == 0) {
-                    $query = "INSERT INTO meetings (`requested_by`, `topic`, `date_requested`, `date_scheduled`, `time_start`, `time_end`)
-                              VALUES (?, ?, ?, ?, ?, ?)";
-                    $conn->execute_query($query, [$requested_by, $topic, $date_requested, $date_scheduled, $time_start, $time_end]);
+                    $query = "INSERT INTO meetings (`requested_by`, `topic`, `date_requested`, 
+                             `date_scheduled`, `time_start`, `time_end`)
+                             VALUES (?, ?, ?, ?, ?, ?)";
+                    $conn->execute_query($query, [
+                        $requested_by,
+                        $topic,
+                        $date_requested,
+                        $date_scheduled,
+                        $time_start,
+                        $time_end
+                    ]);
 
                     $meetings_id = $conn->insert_id;
 
                     $query = "SELECT * FROM `meetings_info` WHERE `id` = ?";
                     $result = $conn->execute_query($query, [$meetings_id]);
-
                     $row = $result->fetch_object();
 
+                    // Fix DateTime creation
                     $row->date_requested = new DateTime($row->date_requested);
                     $row->date_scheduled = new DateTime($row->date_scheduled);
                     $row->time_start = new DateTime($row->time_start);
@@ -678,10 +692,8 @@ if ($g_response == 1) {
 
                     $Subject = "[$row->status] DTI6 ISDS ZOOM REQUEST: " . $row->request_number;
 
-                    $Message = "";
-                    $Message .= "<p><img src='https://upload.wikimedia.org/wikipedia/commons/1/14/DTI_Logo_2019.png' alt='' width='58' height='55'></p>";
+                    $Message = "<p><img src='https://upload.wikimedia.org/wikipedia/commons/1/14/DTI_Logo_2019.png' alt='' width='58' height='55'></p>";
                     $Message .= "<hr>";
-                    $Message .= "<div>";
                     $Message .= "<p>Good day $row->requested_by_name,</p>";
                     $Message .= "<div>Thank you for reaching out to MIS.</div>";
                     $Message .= "<p>Your meeting request ({$row->request_number}) is currently pending. Please await further confirmation or provide any required details.</p>";
@@ -689,20 +701,20 @@ if ($g_response == 1) {
                     $Message .= "<h3><strong>Zoom Request</strong></h3>";
                     $Message .= "<ul>";
                     $Message .= "<li><strong>Date of Request:</strong> " . $row->date_requested->format('d/m/Y') . "</li>";
-                    $Message .= "<li><strong>Topic or Title of meeting</strong> " . $row->topic . "</li>";
-                    $Message .= "<li><strong>Date of Schedule</strong> " . $row->date_scheduled->format('d/m/Y') . "</li>";
-                    $Message .= "<li><strong>Time of Schedule</strong> " . $row->time_start->format('h:i A') . " - " . $row->time_start->format('h:i A') . "</li>";
+                    $Message .= "<li><strong>Topic:</strong> " . htmlspecialchars($row->topic) . "</li>";
+                    $Message .= "<li><strong>Date of Schedule:</strong> " . $row->date_scheduled->format('d/m/Y') . "</li>";
+                    $Message .= "<li><strong>Time of Schedule:</strong> " . $row->time_start->format('h:i A') . " - " .
+                        $row->time_end->format('h:i A') . "</li>";
                     $Message .= "</ul>";
                     $Message .= "<br>";
                     $Message .= "<p>To access your account, please click the button below:</p>";
-                    $Message .= "<a href='http://r6itbpm.site/isds/login.php'><u>Click Here to Login</u></a>";
+                    $Message .= "<a href='" . base_url . "isds/login.php'><u>Click Here to Login</u></a>";
                     $Message .= "<br><br>";
                     $Message .= "<p>Best Regards,</p>";
                     $Message .= "<div>DTI6 MIS Administrator</div>";
                     $Message .= "<div>DTI Region VI</div>";
                     $Message .= "<hr>";
-                    $Message .= "<div>&copy; Copyright&nbsp;<strong>DTI6 MIS&nbsp;</strong>2024. All Rights Reserved</div>";
-                    $Message .= "</div>";
+                    $Message .= "<div>© Copyright <strong>DTI6 MIS</strong> 2024. All Rights Reserved</div>";
 
                     sendEmail($row->requested_by_email, $Subject, $Message);
 
@@ -718,95 +730,112 @@ if ($g_response == 1) {
                     ];
                 }
                 break;
+
             case 'admin':
                 $requested_by = !empty($_POST['requested_by']) ? $_POST['requested_by'] : $_SESSION['isds_id'];
                 $date_requested = $_POST['date_requested'];
-                $topic = str_replace("'", "&apos;", $_POST['topic']);
+                $topic = htmlspecialchars($_POST['topic'], ENT_QUOTES, 'UTF-8');
                 $date_scheduled = $_POST['date_scheduled'];
                 $time_start = $_POST['time_start'];
                 $time_end = $_POST['time_end'];
                 $hosts_id = !empty($_POST['hosts_id']) ? $_POST['hosts_id'] : NULL;
                 $m_statuses_id = !empty($_POST['m_statuses_id']) ? $_POST['m_statuses_id'] : 1;
-                $meeting_details = str_replace("'", "&apos;", $_POST['meeting_details']);
+                $meeting_details = htmlspecialchars($_POST['meeting_details'], ENT_QUOTES, 'UTF-8');
                 $generated_by = !empty($_POST['meeting_details']) ? $_SESSION['isds_id'] : null;
 
                 $query = "SELECT * FROM `meetings` 
-                AND `date_scheduled` = ? 
-                AND (
-                    (? BETWEEN `time_start` AND `time_end`) -- New start time falls within an existing meeting
-                    OR (? BETWEEN `time_start` AND `time_end`) -- New end time falls within an existing meeting
-                    OR (`time_start` BETWEEN ? AND ?) -- Existing meeting starts during the new one
-                    OR (`time_end` BETWEEN ? AND ?) -- Existing meeting ends during the new one
-                )";
+                         WHERE `date_scheduled` = ? 
+                         AND (
+                             (? BETWEEN `time_start` AND `time_end`)
+                             OR (? BETWEEN `time_start` AND `time_end`)
+                             OR (`time_start` BETWEEN ? AND ?)
+                             OR (`time_end` BETWEEN ? AND ?)
+                         )";
 
-                $result = $conn->execute_query($query, [$meetings_id, $date_scheduled, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end]);
+                $result = $conn->execute_query($query, [
+                    $date_scheduled,
+                    $time_start,
+                    $time_end,
+                    $time_start,
+                    $time_end,
+                    $time_start,
+                    $time_end
+                ]);
 
                 if ($result->num_rows == 0) {
-                    $query = "INSERT INTO meetings (`requested_by`, `topic`, `date_requested`, `date_scheduled`, `time_start`, `time_end`, `hosts_id`, `m_statuses_id`, `meeting_details`,`generated_by`)
-                              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    $conn->execute_query($query, [$requested_by, $topic, $date_requested, $date_scheduled, $time_start, $time_end, $hosts_id, $m_statuses_id, $meeting_details, $generated_by]);
+                    $query = "INSERT INTO meetings (`requested_by`, `topic`, `date_requested`, 
+                             `date_scheduled`, `time_start`, `time_end`, `hosts_id`, 
+                             `m_statuses_id`, `meeting_details`, `generated_by`)
+                             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    $conn->execute_query($query, [
+                        $requested_by,
+                        $topic,
+                        $date_requested,
+                        $date_scheduled,
+                        $time_start,
+                        $time_end,
+                        $hosts_id,
+                        $m_statuses_id,
+                        $meeting_details,
+                        $generated_by
+                    ]);
 
                     $meetings_id = $conn->insert_id;
 
                     if (isset($_POST['send_email'])) {
                         $query = "SELECT * FROM `meetings_info` WHERE `id` = ?";
                         $result = $conn->execute_query($query, [$meetings_id]);
-
                         $row = $result->fetch_object();
 
                         $row->date_requested = new DateTime($row->date_requested);
                         $row->date_scheduled = new DateTime($row->date_scheduled);
                         $row->time_start = new DateTime($row->time_start);
                         $row->time_end = new DateTime($row->time_end);
-                        $row->meeting_details = htmlspecialchars($row->meeting_details, ENT_QUOTES, 'UTF-8');
 
                         $Subject = "[$row->status] DTI6 ISDS ZOOM REQUEST: " . $row->request_number;
 
-                        $Message = "";
-                        $Message .= "<p><img src='https://upload.wikimedia.org/wikipedia/commons/1/14/DTI_Logo_2019.png' alt='' width='58' height='55'></p>";
+                        $Message = "<p><img src='https://upload.wikimedia.org/wikipedia/commons/1/14/DTI_Logo_2019.png' alt='' width='58' height='55'></p>";
                         $Message .= "<hr>";
-                        $Message .= "<div>";
                         $Message .= "<p>Good day $row->requested_by_name,</p>";
                         $Message .= "<div>Thank you for reaching out to MIS.</div>";
                         switch ($row->status) {
                             case 'Pending':
-                                $Message .= "<p>Your meeting request ({$row->request_number}) is currently pending. Please await further confirmation or provide any required details.</p>";
+                                $Message .= "<p>Your meeting request ({$row->request_number}) is currently pending.</p>";
                                 break;
                             case 'Unavailable':
-                                $Message .= "<p>Unfortunately, your requested meeting slot ({$row->request_number}) is unavailable. Please select a different time or contact the organizer.</p>";
+                                $Message .= "<p>Unfortunately, your requested meeting slot ({$row->request_number}) is unavailable.</p>";
                                 break;
                             case 'Scheduled':
-                                $Message .= "<p>Your meeting ({$row->request_number}) has been successfully scheduled. Please check your calendar for details.</p>";
+                                $Message .= "<p>Your meeting ({$row->request_number}) has been successfully scheduled.</p>";
                                 break;
                             case 'Cancelled':
-                                $Message .= "<p>Your meeting ({$row->request_number}) has been cancelled. If you need to reschedule, please submit a new request.</p>";
+                                $Message .= "<p>Your meeting ({$row->request_number}) has been cancelled.</p>";
                                 break;
                         }
                         $Message .= "<br>";
                         $Message .= "<h3><strong>Zoom Request</strong></h3>";
                         $Message .= "<ul>";
                         $Message .= "<li><strong>Date of Request:</strong> " . $row->date_requested->format('d/m/Y') . "</li>";
-                        $Message .= "<li><strong>Topic or Title of meeting</strong> " . $row->topic . "</li>";
-                        $Message .= "<li><strong>Date of Schedule</strong> " . $row->date_scheduled->format('d/m/Y') . "</li>";
-                        $Message .= "<li><strong>Time of Schedule</strong> " . $row->time_start->format('h:i A') . " - " . $row->time_start->format('h:i A') . "</li>";
+                        $Message .= "<li><strong>Topic:</strong> " . htmlspecialchars($row->topic) . "</li>";
+                        $Message .= "<li><strong>Date of Schedule:</strong> " . $row->date_scheduled->format('d/m/Y') . "</li>";
+                        $Message .= "<li><strong>Time of Schedule:</strong> " . $row->time_start->format('h:i A') . " - " . $row->time_end->format('h:i A') . "</li>";
                         $Message .= "</ul>";
                         $Message .= "<h3><strong>Zoom Details</strong></h3>";
                         $Message .= "<ul>";
-                        $Message .= "<li><strong>Status:</strong> <span style='color: " . $row->status_hex . "'>" . $row->status . "</span></li>";
-                        $Message .= "<li><strong>Zoom Host:</strong> " . $row->host . "</li>";
-                        $Message .= "<li><strong>Zoom Details:</strong><br>" . nl2br($row->meeting_details) . "</li>";
-                        $Message .= "<li><strong>Generated by:</strong> " . $row->generated_by_name . "</li>";
+                        $Message .= "<li><strong>Status:</strong> <span style='color: " . ($row->status_hex ?? '#000000') . "'>" . $row->status . "</span></li>";
+                        $Message .= "<li><strong>Zoom Host:</strong> " . ($row->host ?? 'Not assigned') . "</li>";
+                        $Message .= "<li><strong>Generated by:</strong> " . ($row->generated_by_name ?? 'N/A') . "</li>";
+                        $Message .= "<li><strong>Zoom Details:</strong><br>" . nl2br(htmlspecialchars($row->meeting_details)) . "</li>";
                         $Message .= "</ul>";
                         $Message .= "<br>";
                         $Message .= "<p>To access your account, please click the button below:</p>";
-                        $Message .= "<a href='http://r6itbpm.site/isds/login.php'><u>Click Here to Login</u></a>";
+                        $Message .= "<a href='" . base_url . "isds/login.php'><u>Click Here to Login</u></a>";
                         $Message .= "<br><br>";
                         $Message .= "<p>Best Regards,</p>";
                         $Message .= "<div>DTI6 MIS Administrator</div>";
                         $Message .= "<div>DTI Region VI</div>";
                         $Message .= "<hr>";
-                        $Message .= "<div>&copy; Copyright&nbsp;<strong>DTI6 MIS&nbsp;</strong>2024. All Rights Reserved</div>";
-                        $Message .= "</div>";
+                        $Message .= "<div>© Copyright <strong>DTI6 MIS</strong> 2024. All Rights Reserved</div>";
 
                         sendEmail($row->requested_by_email, $Subject, $Message);
                     }
@@ -827,152 +856,252 @@ if ($g_response == 1) {
     }
 
     if (isset($_POST['upd_meeting'])) {
+
+        // Get the meeting ID to update
+        $meetings_id = $_POST['meetings_id'] ?? null;
+        if (!$meetings_id) {
+            $response = [
+                'status' => 'error',
+                'message' => 'No meeting ID provided.'
+            ];
+            header('Content-Type: application/json');
+            echo json_encode($response);
+            exit;
+        }
+
         switch ($_SESSION['role']) {
             case 'employee':
             case 'VIP':
-                $meetings_id = $_POST['meetings_id'];
+                $requested_by = $_SESSION['isds_id'];
                 $date_requested = $_POST['date_requested'];
-                $topic = str_replace("'", "&apos;", $_POST['topic']);
+                $topic = htmlspecialchars($_POST['topic'], ENT_QUOTES, 'UTF-8');
                 $date_scheduled = $_POST['date_scheduled'];
                 $time_start = $_POST['time_start'];
                 $time_end = $_POST['time_end'];
 
-                $query = "SELECT id FROM meetings 
-                WHERE date_scheduled = ? 
-                AND (
-                    (time_start < ? AND time_end > ?)  
-                    OR (time_start >= ? AND time_start < ?)  
-                    OR (time_end > ? AND time_end <= ?)  
-                    OR (time_start <= ? AND time_end >= ?) 
-                )
-                AND id != ?";
+                // Check for conflicts excluding the current meeting
+                $query = "SELECT * FROM `meetings` 
+                         WHERE `date_scheduled` = ? 
+                         AND `id` != ?
+                         AND (
+                             (? BETWEEN `time_start` AND `time_end`)
+                             OR (? BETWEEN `time_start` AND `time_end`)
+                             OR (`time_start` BETWEEN ? AND ?)
+                             OR (`time_end` BETWEEN ? AND ?)
+                         )";
 
-                $result = $conn->execute_query($query, [$date_scheduled, $time_end, $time_start, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end, $meetings_id]);
+                $result = $conn->execute_query($query, [
+                    $date_scheduled,
+                    $meetings_id,
+                    $time_start,
+                    $time_end,
+                    $time_start,
+                    $time_end,
+                    $time_start,
+                    $time_end
+                ]);
 
-                if ($result->num_rows > 0) {
-                    $query = "UPDATE meetings SET date_requested = ?, topic = ?, date_scheduled = ?, time_start = ?, time_end = ? WHERE id = ?";
-                    $conn->execute_query($query, [$date_requested, $topic, $date_scheduled, $time_start, $time_end, $meetings_id]);
+                if ($result->num_rows == 0) {
+                    $query = "UPDATE meetings SET 
+                             `requested_by` = ?, 
+                             `topic` = ?, 
+                             `date_requested` = ?, 
+                             `date_scheduled` = ?, 
+                             `time_start` = ?, 
+                             `time_end` = ?
+                             WHERE `id` = ?";
+                    $conn->execute_query($query, [
+                        $requested_by,
+                        $topic,
+                        $date_requested,
+                        $date_scheduled,
+                        $time_start,
+                        $time_end,
+                        $meetings_id
+                    ]);
+
+                    $query = "SELECT * FROM `meetings_info` WHERE `id` = ?";
+                    $result = $conn->execute_query($query, [$meetings_id]);
+                    $row = $result->fetch_object();
+
+                    $row->date_requested = new DateTime($row->date_requested);
+                    $row->date_scheduled = new DateTime($row->date_scheduled);
+                    $row->time_start = new DateTime($row->time_start);
+                    $row->time_end = new DateTime($row->time_end);
+
+                    $Subject = "[$row->status] DTI6 ISDS ZOOM REQUEST UPDATED: " . $row->request_number;
+
+                    $Message = "<p><img src='https://upload.wikimedia.org/wikipedia/commons/1/14/DTI_Logo_2019.png' alt='' width='58' height='55'></p>";
+                    $Message .= "<hr>";
+                    $Message .= "<p>Good day $row->requested_by_name,</p>";
+                    $Message .= "<div>Your meeting request has been updated.</div>";
+                    $Message .= "<p>Your meeting request ({$row->request_number}) has been modified. Please review the updated details below.</p>";
+                    $Message .= "<br>";
+                    $Message .= "<h3><strong>Updated Zoom Request</strong></h3>";
+                    $Message .= "<ul>";
+                    $Message .= "<li><strong>Date of Request:</strong> " . $row->date_requested->format('d/m/Y') . "</li>";
+                    $Message .= "<li><strong>Topic or Title of meeting</strong> " . htmlspecialchars($row->topic) . "</li>";
+                    $Message .= "<li><strong>Date of Schedule</strong> " . $row->date_scheduled->format('d/m/Y') . "</li>";
+                    $Message .= "<li><strong>Time of Schedule</strong> " . $row->time_start->format('h:i A') . " - " .
+                        $row->time_end->format('h:i A') . "</li>";
+                    $Message .= "</ul>";
+                    $Message .= "<br>";
+                    $Message .= "<p>To access your account, please click the button below:</p>";
+                    $Message .= "<a href='" . base_url . "isds/login.php'><u>Click Here to Login</u></a>";
+                    $Message .= "<br><br>";
+                    $Message .= "<p>Best Regards,</p>";
+                    $Message .= "<div>DTI6 MIS Administrator</div>";
+                    $Message .= "<div>DTI Region VI</div>";
+                    $Message .= "<hr>";
+                    $Message .= "<div>© Copyright <strong>DTI6 MIS</strong> 2024. All Rights Reserved</div>";
+
+                    sendEmail($row->requested_by_email, $Subject, $Message);
 
                     $response = [
                         'status' => 'success',
-                        'message' => 'Meeting request updated successfully.',
-                        'reload' => true
+                        'message' => 'Meeting updated successfully.',
+                        'redirect' => '../user/meetings.php'
                     ];
                 } else {
                     $response = [
                         'status' => 'warning',
-                        'message' => 'Conflict: Another meeting is scheduled at this time.'
+                        'message' => 'Conflict with another meeting.'
                     ];
                 }
                 break;
+
             case 'admin':
-                $meetings_id = $_POST['meetings_id'];
                 $requested_by = !empty($_POST['requested_by']) ? $_POST['requested_by'] : $_SESSION['isds_id'];
                 $date_requested = $_POST['date_requested'];
-                $topic = str_replace("'", "&apos;", $_POST['topic']);
+                $topic = htmlspecialchars($_POST['topic'], ENT_QUOTES, 'UTF-8');
                 $date_scheduled = $_POST['date_scheduled'];
                 $time_start = $_POST['time_start'];
                 $time_end = $_POST['time_end'];
                 $hosts_id = !empty($_POST['hosts_id']) ? $_POST['hosts_id'] : NULL;
                 $m_statuses_id = !empty($_POST['m_statuses_id']) ? $_POST['m_statuses_id'] : 1;
-                $meeting_details = str_replace("'", "&apos;", $_POST['meeting_details']);
-                $generated_by = $_POST['generated_by'];
+                $meeting_details = htmlspecialchars($_POST['meeting_details'], ENT_QUOTES, 'UTF-8');
+                $generated_by = !empty($_POST['meeting_details']) ? $_SESSION['isds_id'] : null;
 
-                $query = "SELECT id FROM meetings 
-                WHERE date_scheduled = ? 
-                AND (
-                    (time_start < ? AND time_end > ?)  
-                    OR (time_start >= ? AND time_start < ?)  
-                    OR (time_end > ? AND time_end <= ?)  
-                    OR (time_start <= ? AND time_end >= ?) 
-                )
-                AND id != ?";
+                $query = "SELECT * FROM `meetings` 
+                         WHERE `date_scheduled` = ? 
+                         AND `id` != ?
+                         AND (
+                             (? BETWEEN `time_start` AND `time_end`)
+                             OR (? BETWEEN `time_start` AND `time_end`)
+                             OR (`time_start` BETWEEN ? AND ?)
+                             OR (`time_end` BETWEEN ? AND ?)
+                         )";
 
-                $result = $conn->execute_query($query, [$date_scheduled, $time_end, $time_start, $time_start, $time_end, $time_start, $time_end, $time_start, $time_end, $meetings_id]);
+                $result = $conn->execute_query($query, [
+                    $date_scheduled,
+                    $meetings_id,
+                    $time_start,
+                    $time_end,
+                    $time_start,
+                    $time_end,
+                    $time_start,
+                    $time_end
+                ]);
 
-
-
-                if ($result->num_rows > 0) {
-                    // Update the meeting details
-                    $query = "UPDATE `meetings` SET `requested_by` = ?, `topic` = ?, `date_requested` = ?, `date_scheduled` = ?, `time_start` = ?, `time_end` = ?, `hosts_id` = ?, `m_statuses_id` = ?, `meeting_details` = ?, `generated_by` = ? WHERE `id` = ?";
-                    $conn->execute_query($query, [$requested_by, $topic, $date_requested, $date_scheduled, $time_start, $time_end, $hosts_id, $m_statuses_id, $meeting_details, $generated_by, $meetings_id]);
+                if ($result->num_rows == 0) {
+                    $query = "UPDATE meetings SET 
+                             `requested_by` = ?, 
+                             `topic` = ?, 
+                             `date_requested` = ?, 
+                             `date_scheduled` = ?, 
+                             `time_start` = ?, 
+                             `time_end` = ?, 
+                             `hosts_id` = ?, 
+                             `m_statuses_id` = ?, 
+                             `meeting_details` = ?, 
+                             `generated_by` = ?
+                             WHERE `id` = ?";
+                    $conn->execute_query($query, [
+                        $requested_by,
+                        $topic,
+                        $date_requested,
+                        $date_scheduled,
+                        $time_start,
+                        $time_end,
+                        $hosts_id,
+                        $m_statuses_id,
+                        $meeting_details,
+                        $generated_by,
+                        $meetings_id
+                    ]);
 
                     if (isset($_POST['send_email'])) {
                         $query = "SELECT * FROM `meetings_info` WHERE `id` = ?";
                         $result = $conn->execute_query($query, [$meetings_id]);
-
                         $row = $result->fetch_object();
 
                         $row->date_requested = new DateTime($row->date_requested);
                         $row->date_scheduled = new DateTime($row->date_scheduled);
                         $row->time_start = new DateTime($row->time_start);
                         $row->time_end = new DateTime($row->time_end);
-                        $row->meeting_details = htmlspecialchars($row->meeting_details, ENT_QUOTES, 'UTF-8');
 
-                        $Subject = "[$row->status] DTI6 ISDS ZOOM REQUEST: " . $row->request_number;
+                        $Subject = "[$row->status] DTI6 ISDS ZOOM REQUEST UPDATED: " . $row->request_number;
 
-                        $Message = "";
-                        $Message .= "<p><img src='https://upload.wikimedia.org/wikipedia/commons/1/14/DTI_Logo_2019.png' alt='' width='58' height='55'></p>";
+                        $Message = "<p><img src='https://upload.wikimedia.org/wikipedia/commons/1/14/DTI_Logo_2019.png' alt='' width='58' height='55'></p>";
                         $Message .= "<hr>";
-                        $Message .= "<div>";
                         $Message .= "<p>Good day $row->requested_by_name,</p>";
-                        $Message .= "<div>Thank you for reaching out to MIS.</div>";
+                        $Message .= "<div>Your meeting request has been updated.</div>";
                         switch ($row->status) {
                             case 'Pending':
-                                $Message .= "<p>Your meeting request ({$row->request_number}) is currently pending. Please await further confirmation or provide any required details.</p>";
+                                $Message .= "<p>Your updated meeting request ({$row->request_number}) is currently pending.</p>";
                                 break;
                             case 'Unavailable':
-                                $Message .= "<p>Unfortunately, your requested meeting slot ({$row->request_number}) is unavailable. Please select a different time or contact the organizer.</p>";
+                                $Message .= "<p>Unfortunately, your updated meeting slot ({$row->request_number}) is unavailable.</p>";
                                 break;
                             case 'Scheduled':
-                                $Message .= "<p>Your meeting ({$row->request_number}) has been successfully scheduled. Please check your calendar for details.</p>";
+                                $Message .= "<p>Your updated meeting ({$row->request_number}) has been successfully scheduled.</p>";
                                 break;
                             case 'Cancelled':
-                                $Message .= "<p>Your meeting ({$row->request_number}) has been cancelled. If you need to reschedule, please submit a new request.</p>";
+                                $Message .= "<p>Your updated meeting ({$row->request_number}) has been cancelled.</p>";
                                 break;
                         }
                         $Message .= "<br>";
-                        $Message .= "<h3><strong>Zoom Request</strong></h3>";
+                        $Message .= "<h3><strong>Updated Zoom Request</strong></h3>";
                         $Message .= "<ul>";
                         $Message .= "<li><strong>Date of Request:</strong> " . $row->date_requested->format('d/m/Y') . "</li>";
-                        $Message .= "<li><strong>Topic or Title of meeting</strong> " . $row->topic . "</li>";
+                        $Message .= "<li><strong>Topic or Title of meeting</strong> " . htmlspecialchars($row->topic) . "</li>";
                         $Message .= "<li><strong>Date of Schedule</strong> " . $row->date_scheduled->format('d/m/Y') . "</li>";
-                        $Message .= "<li><strong>Time of Schedule</strong> " . $row->time_start->format('h:i A') . " - " . $row->time_start->format('h:i A') . "</li>";
+                        $Message .= "<li><strong>Time of Schedule</strong> " . $row->time_start->format('h:i A') . " - " .
+                            $row->time_end->format('h:i A') . "</li>";
                         $Message .= "</ul>";
                         $Message .= "<h3><strong>Zoom Details</strong></h3>";
                         $Message .= "<ul>";
-                        $Message .= "<li><strong>Status:</strong> <span style='color: " . $row->status_hex . "'>" . $row->status . "</span></li>";
-                        $Message .= "<li><strong>Zoom Host:</strong> " . $row->host . "</li>";
-                        $Message .= "<li><strong>Zoom Details:</strong><br>" . nl2br($row->meeting_details) . "</li>";
-                        $Message .= "<li><strong>Generated by:</strong> " . $row->generated_by_name . "</li>";
+                        $Message .= "<li><strong>Status:</strong> <span style='color: " . ($row->status_hex ?? '#000000') . "'>" .
+                            $row->status . "</span></li>";
+                        $Message .= "<li><strong>Zoom Host:</strong> " . ($row->host ?? 'Not assigned') . "</li>";
+                        $Message .= "<li><strong>Generated by:</strong> " . ($row->generated_by_name ?? 'N/A') . "</li>";
+                        $Message .= "<li><strong>Zoom Details:</strong><br><br>" . nl2br(htmlspecialchars($row->meeting_details)) . "</li>";
                         $Message .= "</ul>";
                         $Message .= "<br>";
                         $Message .= "<p>To access your account, please click the button below:</p>";
-                        $Message .= "<a href='http://r6itbpm.site/isds/login.php'><u>Click Here to Login</u></a>";
+                        $Message .= "<a href='" . base_url . "isds/login.php'><u>Click Here to Login</u></a>";
                         $Message .= "<br><br>";
                         $Message .= "<p>Best Regards,</p>";
                         $Message .= "<div>DTI6 MIS Administrator</div>";
                         $Message .= "<div>DTI Region VI</div>";
                         $Message .= "<hr>";
-                        $Message .= "<div>&copy; Copyright&nbsp;<strong>DTI6 MIS&nbsp;</strong>2024. All Rights Reserved</div>";
-                        $Message .= "</div>";
+                        $Message .= "<div>© Copyright <strong>DTI6 MIS</strong> 2024. All Rights Reserved</div>";
 
                         sendEmail($row->requested_by_email, $Subject, $Message);
                     }
 
                     $response = [
                         'status' => 'success',
-                        'message' => 'Meeting request updated successfully.',
+                        'message' => 'Meeting updated successfully.',
                         'redirect' => '../admin/meetings.php'
                     ];
                 } else {
                     $response = [
                         'status' => 'warning',
-                        'message' => 'Conflict: Another meeting is scheduled at this time.'
+                        'message' => 'Conflict with another meeting.'
                     ];
                 }
                 break;
-
         }
     }
 
@@ -1122,7 +1251,7 @@ if ($g_response == 1) {
                 $Message .= "<div>Password: " . $password . "</div>";
                 $Message .= "<br><br>";
                 $Message .= "<div>For security reasons, we recommend that you change your password after your first login.</div>";
-                $Message .= "<div><a href='http://r6itbpm.site/isds/index.php'>Click here</a> to login. Thank you.</div>";
+                $Message .= "<div><a href='" . base_url . "isds/index.php'>Click here</a> to login. Thank you.</div>";
                 $Message .= "<br><br>";
                 $Message .= "<div>Best Regards,</div>";
                 $Message .= "<br>";
@@ -1158,7 +1287,7 @@ if ($g_response == 1) {
 
         $query = "INSERT 
         INTO csf(`helpdesks_id`,`criteria_a`,`criteria_b`,`criteria_c`,`criteria_d`,`overall`,`reasons`,`comments`) 
-    VALUES(?,?,?,?,?,?,?,?)";
+        VALUES(?,?,?,?,?,?,?,?)";
 
         $result = $conn->execute_query($query, [$helpdesks_id, $crit1, $crit2, $crit3, $crit4, $overall, $reasons, $comments]);
 
@@ -1166,7 +1295,6 @@ if ($g_response == 1) {
         $response['message'] = 'CSF submit successfully, Thank You!';
         $response['redirect'] = 'quick_csf.php?reqno=' . $helpdesks_id;
     }
-
 } else {
     $response = [
         'status' => 'warning',

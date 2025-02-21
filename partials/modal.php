@@ -3,7 +3,7 @@ switch ($page) {
     case "ICT Helpdesks":
         switch ($acc->role) {
             case 'admin':
-                ?>
+?>
                 <!-- Modal -->
                 <div class="modal fade" id="updhelpdesksmodal" tabindex="-1">
                     <div class="modal-dialog modal-dialog-scrollable modal-lg">
@@ -142,7 +142,7 @@ switch ($page) {
                                         </div>
                                     </div>
                                     <div hidden>
-                                        
+
                                         <input id="upd_helpdesk_id" name="upd_helpdesk_id" />
                                         <input name="upd_helpdesk" />
                                     </div>
@@ -247,11 +247,11 @@ switch ($page) {
                         </div>
                     </div>
                 </div>
-                <?php
+            <?php
                 break;
             case 'employee':
             case 'VIP':
-                ?>
+            ?>
                 <!-- Modal -->
                 <div class="modal fade" id="updhelpdesksmodal" tabindex="-1">
                     <div class="modal-dialog modal-dialog-scrollable">
@@ -297,7 +297,7 @@ switch ($page) {
                                             name="datetime_preferred" />
                                     </div>
                                     <div hidden>
-                                        
+
                                         <input id="upd_helpdesk_id" name="upd_helpdesk_id" />
                                         <input name="upd_helpdesk" />
                                     </div>
@@ -408,7 +408,7 @@ switch ($page) {
     case "Zoom Meetings":
         switch ($acc->role) {
             case 'admin':
-                ?>
+            ?>
                 <!-- Modal -->
                 <div class="modal fade" id="updmeetingsmodal" tabindex="-1">
                     <div class="modal-dialog modal-lg modal-dialog-scrollable">
@@ -418,86 +418,82 @@ switch ($page) {
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                             </div>
                             <div class="modal-body">
-                                <form class="row g-3 form-validation">
+                                <!-- Update Meeting Form -->
+                                <form class="row g-3 form-validation" method="POST">
                                     <div class="col-lg-6">
                                         <div>
-                                            <label for="upd_date_requested" class="form-label">Date of Request</label>
+                                            <label for="date_requested" class="form-label">Date of Request</label>
                                             <input type="date" class="form-control" id="upd_date_requested" name="date_requested"
-                                                required />
+                                                readonly required />
                                         </div>
                                         <div>
-                                            <label for="upd_requested_by" class="form-label">Requestor</label>
-                                            <select class="form-select select-init" id="upd_requested_by"
-                                                name="requested_by">
+                                            <label for="requested_by" class="form-label">Requestor</label>
+                                            <select class="form-select select-init" id="upd_requested_by" name="requested_by" required>
                                                 <option value="" selected disabled>choose...</option>
+                                                <!-- Options should be populated dynamically -->
                                             </select>
                                         </div>
                                         <div>
-                                            <label for="upd_topic" class="form-label">Topic or Title of meeting</label>
-                                            <textarea class="form-control" id="upd_topic" name="topic"></textarea>
+                                            <label for="topic" class="form-label">Topic or Title of meeting</label>
+                                            <textarea class="form-control" id="upd_topic" name="topic" required></textarea>
                                         </div>
                                         <div>
-                                            <label for="upd_date_scheduled" class="form-label">Date of Schedule</label>
+                                            <label for="date_scheduled" class="form-label">Date of Schedule</label>
                                             <input type="date" class="form-control" id="upd_date_scheduled" name="date_scheduled"
-                                                required />
+                                                min="<?= date('Y-m-d') ?>" required />
                                         </div>
                                         <div>
-                                            <label for="upd_time_start" class="form-label">Start Time of Schedule</label>
+                                            <label for="time_start" class="form-label">Start Time of Schedule</label>
                                             <input type="time" class="form-control" id="upd_time_start" name="time_start" required />
                                         </div>
                                         <div>
-                                            <label for="upd_time_end" class="form-label">End Time of Schedule</label>
+                                            <label for="time_end" class="form-label">End Time of Schedule</label>
                                             <input type="time" class="form-control" id="upd_time_end" name="time_end" required />
                                         </div>
                                     </div>
-
                                     <div class="col-lg-6">
                                         <div>
-                                            <label for="upd_hosts_id" class="form-label">Zoom Host</label>
+                                            <label for="hosts_id" class="form-label">Zoom Host</label>
                                             <select class="form-select select-init" id="upd_hosts_id" name="hosts_id">
                                                 <option value="" selected disabled>choose...</option>
+                                                <!-- Options should be populated dynamically -->
                                             </select>
                                         </div>
-
                                         <div>
-                                            <label for="upd_m_statuses_id" class="form-label">Status</label>
-                                            <select class="form-select select-init" id="upd_m_statuses_id"
-                                                name="m_statuses_id">
+                                            <label for="m_statuses_id" class="form-label">Status</label>
+                                            <select class="form-select select-init" id="upd_m_statuses_id" name="m_statuses_id">
                                                 <option value="" selected disabled>choose...</option>
+                                                <!-- Options should be populated dynamically -->
                                             </select>
                                         </div>
-
                                         <div>
-                                            <label for="upd_meeting_details" class="form-label">Zoom meeting details</label>
-                                            <textarea class="form-control" id="upd_meeting_details" name="meeting_details" cols='60'
-                                                rows='8'></textarea>
+                                            <label for="meeting_details" class="form-label">Zoom meeting details</label>
+                                            <textarea class="form-control" id="upd_meeting_details" name="meeting_details"
+                                                cols="60" rows="8"></textarea>
                                         </div>
-
                                         <hr>
                                         <div class="mb-3 form-check">
-                                            <input type="checkbox" class="form-check-input" value="1" id="upd_send_email"
+                                            <input type="checkbox" class="form-check-input" value="1" id="send_email"
                                                 name="send_email" />
-                                            <label class="form-check-label" for="upd_send_email">Send email</label>
+                                            <label class="form-check-label" for="send_email">Send email</label>
                                         </div>
                                     </div>
 
                                     <div hidden>
-                                        
-                                        <input id="upd_meeting_id" name="meetings_id" />
-                                        <input name="generated_by" value="<?= $_SESSION['isds_id'] ?>" />
                                         <input name="upd_meeting" />
+                                        <input name="meetings_id" id="upd_meeting_id" />
                                     </div>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="submit" class="btn btn-primary">Update Meeting</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
-                <?php
+            <?php
                 break;
             case 'employee':
             case 'VIP':
-                ?>
+            ?>
                 <!-- Modal -->
                 <div class="modal fade" id="updmeetingsmodal" tabindex="-1">
                     <div class="modal-dialog">
@@ -531,7 +527,7 @@ switch ($page) {
                                         <input type="time" class="form-control" id="upd_time_end" name="time_end" required />
                                     </div>
                                     <div hidden>
-                                        
+
                                         <input id="upd_meeting_id" name="upd_meeting_id" />
                                         <input name="upd_meeting" />
                                     </div>
@@ -541,7 +537,7 @@ switch ($page) {
                         </div>
                     </div>
                 </div>
-                <?php
+        <?php
                 break;
         }
         break;
@@ -645,7 +641,7 @@ switch ($page) {
                             </div> -->
                             <div hidden>
                                 <input name="id" id="upd_id" />
-                                
+
                                 <input name="upd_user" />
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
@@ -654,7 +650,7 @@ switch ($page) {
                 </div>
             </div>
         </div>
-        <?php
+<?php
         break;
 }
 ?>
