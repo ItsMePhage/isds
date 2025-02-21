@@ -241,8 +241,8 @@ if (isset($_GET['helpdesks_table'])) {
 
                         // Feedback Button
                         $feedbackBtn = $row['csf_id'] === null
-                            ? '<button type="button" class="btn btn-warning" onclick="window.open(\'/isds/csf.php?reqno=' . encryptID($d, encryptionkey) . '\', \'_blank\')"><i class="bi bi-list-check"></i></button>'
-                            : '<button type="button" class="btn btn-success" onclick="window.open(\'/isds/view_csf.php?reqno=' . encryptID($d, encryptionkey) . '\', \'_blank\')"><i class="bi bi-list-check"></i></button>';
+                            ? '<button type="button" class="btn btn-warning" onclick="window.open(\'/isds/csf.php?reqno=' . $d . '\', \'_blank\')"><i class="bi bi-list-check"></i></button>'
+                            : '<button type="button" class="btn btn-success" onclick="window.open(\'/isds/view_csf.php?reqno=' . $d . '\', \'_blank\')"><i class="bi bi-list-check"></i></button>';
 
                         // Generate Button Group
                         $html = '<div class="btn-group" role="group">';
@@ -323,8 +323,8 @@ if (isset($_GET['helpdesks_table'])) {
 
                         // Feedback Button Logic
                         $feedbackBtn = ($row['csf_id'] === null)
-                            ? '<button type="button" class="btn btn-warning" onclick="window.open(\'/isds/csf.php?reqno=' . encryptID($d, encryptionkey) . '\', \'_blank\')"><i class="bi bi-list-check"></i></button>'
-                            : '<button type="button" class="btn btn-success" onclick="window.open(\'/isds/view_csf.php?reqno=' . encryptID($d, encryptionkey) . '\', \'_blank\')"><i class="bi bi-list-check"></i></button>';
+                            ? '<button type="button" class="btn btn-warning" onclick="window.open(\'/isds/csf.php?reqno=' . $d . '\', \'_blank\')"><i class="bi bi-list-check"></i></button>'
+                            : '<button type="button" class="btn btn-success" onclick="window.open(\'/isds/view_csf.php?reqno=' . $d . '\', \'_blank\')"><i class="bi bi-list-check"></i></button>';
 
                         // Generate Button Group
                         $html = '<div class="btn-group" role="group">';
