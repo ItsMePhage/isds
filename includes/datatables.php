@@ -314,19 +314,14 @@ if (isset($_GET['helpdesks_table'])) {
                         // Secure JSON encoding
                         $rowJson = htmlspecialchars(json_encode($row), ENT_QUOTES, 'UTF-8');
 
-                        // Print Button Logic
-                        if ($row['status'] == "Pre-repair") {
-                            $printBtn = '<button type="button" class="btn btn-info" onclick=\'printpribtn(' . $rowJson . ')\'> <i class="bi bi-printer"></i> </button>';
-                        } elseif ($row['request_types_id'] == 1) {
-                            $printBtn = '<button type="button" class="btn btn-info" onclick=\'printmjrbtn(' . $rowJson . ')\'> <i class="bi bi-printer"></i> </button>';
-                        } elseif ($row['request_types_id'] == 2) {
-                            $printBtn = '<button type="button" class="btn btn-info" onclick=\'printoisbtn(' . $rowJson . ')\'> <i class="bi bi-printer"></i> </button>';
-                        } else {
-                            $printBtn = '';
-                        }
+                        // Print Button Logic (Consolidated)
+                        $printBtn = ($row['status'] === "Pre-repair") ? '<button type="button" class="btn btn-info" onclick=\'printpribtn(' . $rowJson . ')\'><i class="bi bi-printer"></i></button>'
+                            : (($row['request_types_id'] == 1) ? '<button type="button" class="btn btn-info" onclick=\'printmjrbtn(' . $rowJson . ')\'><i class="bi bi-printer"></i></button>'
+                                : (($row['request_types_id'] == 2) ? '<button type="button" class="btn btn-info" onclick=\'printoisbtn(' . $rowJson . ')\'><i class="bi bi-printer"></i></button>'
+                                    : ''));
 
                         // Feedback Button Logic
-                        $feedbackBtn = $row['csf_id'] === null
+                        $feedbackBtn = ($row['csf_id'] === null)
                             ? '<button type="button" class="btn btn-warning" onclick="window.open(\'/isds/csf.php?reqno=' . $d . '\', \'_blank\')"><i class="bi bi-list-check"></i></button>'
                             : '<button type="button" class="btn btn-success" onclick="window.open(\'/isds/view_csf.php?reqno=' . $d . '\', \'_blank\')"><i class="bi bi-list-check"></i></button>';
 
@@ -334,7 +329,7 @@ if (isset($_GET['helpdesks_table'])) {
                         $html = '<div class="btn-group" role="group">';
 
                         if (in_array($row['status'], ['Open', 'Cancelled'])) {
-                            $html .= "{$editBtn}{$deleteBtn}";
+                            $html .= "{$editBtn}{$printBtn}{$deleteBtn}";
                         } elseif (in_array($row['status'], ['Unserviceable', 'Pending', 'Pre-repair', 'Completed'])) {
                             $html .= "{$printBtn}{$feedbackBtn}";
                         }
@@ -395,16 +390,22 @@ if (isset($_GET['meetings_table'])) {
                     'db' => 'id',
                     'dt' => 7,
                     'formatter' => function ($d, $row) {
-                        $editBtn = '<button type="button" class="btn btn-primary mx-1 my-0 small" onclick="updmeetingsbtn(' . $row['id'] . ')"><i class="bi bi-pencil-square small"></i></button>';
-                        $deleteBtn = '<button type="button" class="btn btn-danger mx-1 my-0 small" onclick="delmeetingsbtn(' . $row['id'] . ', \'' . $row['request_number'] . '\')"><i class="bi bi-trash3-fill small"></i></button>';
-                        $viewBtn = '<button type="button" class="btn btn-info mx-1 my-0 small" onclick="viewMeeting(' . $row['id'] . ')"><i class="bi bi-eye"></i></button>';
+                        $editBtn = '<button type="button" class="btn btn-primary" onclick="updmeetingsbtn(' . $row['id'] . ')">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </button>';
 
-                        $html = '<div class="btn-group text-end small" role="group">';
-                        $html .= "{$editBtn}{$viewBtn}{$deleteBtn}";
-                        $html .= '</div>';
-                        return $html;
+                        $deleteBtn = '<button type="button" class="btn btn-danger" onclick="delmeetingsbtn(' . $row['id'] . ', \'' . $row['request_number'] . '\')">
+                                        <i class="bi bi-trash3-fill"></i>
+                                    </button>';
+
+                        $viewBtn = '<button type="button" class="btn btn-info" onclick="viewMeeting(' . $row['id'] . ')">
+                                        <i class="bi bi-eye"></i>
+                                    </button>';
+
+                        return '<div class="btn-group" role="group">' . $editBtn . $viewBtn . $deleteBtn . '</div>';
                     }
                 )
+
             );
             break;
 
@@ -450,14 +451,23 @@ if (isset($_GET['meetings_table'])) {
                     'db' => 'id',
                     'dt' => 6,
                     'formatter' => function ($d, $row) {
-                        $editBtn = '<button type="button" class="btn btn-primary mx-1 my-0 small" onclick="updmeetingsbtn(' . $row['id'] . ')"><i class="bi bi-pencil-square small"></i></button>';
-                        $deleteBtn = '<button type="button" class="btn btn-danger mx-1 my-0 small" onclick="delmeetingsbtn(' . $row['id'] . ', \'' . $row['request_number'] . '\')"><i class="bi bi-trash3-fill small"></i></button>';
-                        $viewBtn = '<button type="button" class="btn btn-info mx-1 my-0 small" onclick="viewMeeting(' . $row['id'] . ')"><i class="bi bi-eye"></i></button>';
+                        $viewBtn = '<button type="button" class="btn btn-info" onclick="viewMeeting(' . $row['id'] . ')">
+                                        <i class="bi bi-eye"></i>
+                                    </button>';
 
-                        $html = '<div class="btn-group text-end small" role="group">';
-                        $html .= "{$editBtn}{$viewBtn}{$deleteBtn}";
-                        $html .= '</div>';
-                        return $html;
+                        // Show edit and delete buttons only if status is "Pending"
+                        $editBtn = $deleteBtn = '';
+                        if ($row['status'] === 'Pending') {
+                            $editBtn = '<button type="button" class="btn btn-primary" onclick="updmeetingsbtn(' . $row['id'] . ')">
+                                            <i class="bi bi-pencil-square"></i>
+                                        </button>';
+
+                            $deleteBtn = '<button type="button" class="btn btn-danger" onclick="delmeetingsbtn(' . $row['id'] . ', \'' . $row['request_number'] . '\')">
+                                            <i class="bi bi-trash3-fill"></i>
+                                        </button>';
+                        }
+
+                        return '<div class="btn-group text-end" role="group">' . $editBtn . $viewBtn . $deleteBtn . '</div>';
                     }
                 )
             );
