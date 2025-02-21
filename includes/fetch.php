@@ -316,7 +316,7 @@ if (isset($_GET["chart_month"])) {
 }
 
 if (isset($_POST['csf'])) {
-    $id = $conn->real_escape_string(decryptID($_POST['id'], encryptionkey));
+    $id = $conn->real_escape_string($_POST['id']);
 
     $query = "SELECT * FROM helpdesks_info WHERE id = ?";
     $result = $conn->execute_query($query, [$id]);
@@ -324,7 +324,7 @@ if (isset($_POST['csf'])) {
 }
 
 if (isset($_POST['view_csf'])) {
-    $id = $conn->real_escape_string(decryptID($_POST['id'], encryptionkey));
+    $id = $conn->real_escape_string($_POST['id']);
 
     $query = "SELECT * FROM csf_info WHERE id = ?";
     $result = $conn->execute_query($query, [$id]);
