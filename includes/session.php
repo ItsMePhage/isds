@@ -6,14 +6,14 @@ session_start();
 
 if ($protected == true) {
     if (isset($_SESSION['id'])) {
-        if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 1800)) {
-            session_unset();
-            session_destroy();
-            header('Location: assets/components/includes/logout.php');
-            exit();
-        }
+        // if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 1800)) {
+        //     session_unset();
+        //     session_destroy();
+        //     header('Location: assets/components/includes/logout.php');
+        //     exit();
+        // }
 
-        $_SESSION['last_activity'] = time();
+        // $_SESSION['last_activity'] = time();
 
         $query = "SELECT * FROM users_info";
         $query .= " WHERE id = ? AND is_active = 1";
