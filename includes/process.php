@@ -41,7 +41,7 @@ if ($g_response == 1) {
                             ];
                         } else {
                             $conn->query('UPDATE `users` SET `password_exp` = NULL WHERE `id` = ' . $row->id);
-                            $_SESSION['isds_id'] = $row->id;
+                            $_SESSION['id'] = $row->id;
                             $_SESSION['role'] = $row->role;
 
                             $response = [
@@ -51,7 +51,7 @@ if ($g_response == 1) {
                             ];
                         }
                     } else {
-                        $_SESSION['isds_id'] = $row->id;
+                        $_SESSION['id'] = $row->id;
                         $_SESSION['role'] = $row->role;
 
                         $response = [
@@ -105,7 +105,7 @@ if ($g_response == 1) {
             $query = "INSERT INTO `users` (`id_number`,`first_name`,`middle_name`,`last_name`,`designation`,`offices_id`,`divisions_id`,`client_types_id`,`date_birth`,`sex`,`is_pwd`,`phone`,`email`,`address`,`username`,`password`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
             $result = $conn->execute_query($query, [$id_number, $first_name, $middle_name, $last_name, $designation, $offices_id, $divisions_id, $client_types_id, $date_birth, $sex, $is_pwd, $phone, $email, $address, $username, $password]);
 
-            $_SESSION['isds_id'] = $conn->insert_id;
+            $_SESSION['id'] = $conn->insert_id;
 
             $response = [
                 'status' => 'success',
@@ -180,11 +180,11 @@ if ($g_response == 1) {
         $username = $_POST['username'];
 
         $query = "SELECT * FROM `users_info` WHERE userna`me = ? AND `id` != ?";
-        $result = $conn->execute_query($query, [$username, $_SESSION['isds_id']]);
+        $result = $conn->execute_query($query, [$username, $_SESSION['id']]);
 
         if ($result && $result->num_rows == 0) {
             $query = "UPDATE `users` SET `username` = ? WHERE `id` = ?";
-            $result = $conn->execute_query($query, [$username, $_SESSION['isds_id']]);
+            $result = $conn->execute_query($query, [$username, $_SESSION['id']]);
             $response = [
                 'status' => 'success',
                 'message' => 'Username updated.'
@@ -206,14 +206,14 @@ if ($g_response == 1) {
         if ($new_password != $password) {
             if ($ver_password == $new_password) {
                 $query = "SELECT * FROM `users_info` WHERE `id` = ?";
-                $result = $conn->execute_query($query, [$_SESSION['isds_id']]);
+                $result = $conn->execute_query($query, [$_SESSION['id']]);
 
                 $row = $result->fetch_object();
 
                 if (password_verify($password, $row->password)) {
 
                     $query = "UPDATE `users` SET `password` = ? WHERE `id` = ?";
-                    $result = $conn->execute_query($query, [$hashed_password, $_SESSION['isds_id']]);
+                    $result = $conn->execute_query($query, [$hashed_password, $_SESSION['id']]);
                     $response = [
                         'status' => 'success',
                         'message' => 'Password updated.'
@@ -256,17 +256,17 @@ if ($g_response == 1) {
 
         $query = "SELECT * FROM `users_info` WHERE `id_number` = ? AND `id` != ?";
 
-        $result = $conn->execute_query($query, [$id_number, $_SESSION['isds_id']]);
+        $result = $conn->execute_query($query, [$id_number, $_SESSION['id']]);
 
         if (!$result->num_rows) {
             $query = "SELECT * FROM `users_info` WHERE `email` = ? AND `id` <> ?";
 
-            $result = $conn->execute_query($query, [$email, $_SESSION['isds_id']]);
+            $result = $conn->execute_query($query, [$email, $_SESSION['id']]);
 
             if (!$result->num_rows) {
                 $query = "UPDATE `users` SET `id_number` = ?, `first_name` = ?, `middle_name` = ?, `last_name` = ?, `date_birth` = ?, `sex` = ?, `is_pwd` = ?, `phone` = ?, `email` = ?, `address` = ?, `designation` = ?, `offices_id` = ?, `divisions_id` = ?, `client_types_id` = ? WHERE `id` = ?";
 
-                $result = $conn->execute_query($query, [$id_number, $first_name, $middle_name, $last_name, $date_birth, $sex, $is_pwd, $phone, $email, $address, $designation, $offices_id, $divisions_id, $client_types_id, $_SESSION['isds_id']]);
+                $result = $conn->execute_query($query, [$id_number, $first_name, $middle_name, $last_name, $date_birth, $sex, $is_pwd, $phone, $email, $address, $designation, $offices_id, $divisions_id, $client_types_id, $_SESSION['id']]);
                 $response['status'] = 'success';
                 $response['message'] = 'User updated successfully.';
             } else {
@@ -283,7 +283,7 @@ if ($g_response == 1) {
         switch ($_SESSION['role']) {
             case 'employee':
             case 'VIP':
-                $requested_by = $_SESSION['isds_id'];
+                $requested_by = $_SESSION['id'];
                 $offices_id = $_SESSION['offices_id'];
                 $date_requested = $_POST['date_requested'];
                 $request_types_id = $_POST['request_types_id'];
@@ -366,7 +366,7 @@ if ($g_response == 1) {
                 ];
                 break;
             case 'admin':
-                $requested_by = !empty($_POST['requested_by']) ? $_POST['requested_by'] : $_SESSION['isds_id'];
+                $requested_by = !empty($_POST['requested_by']) ? $_POST['requested_by'] : $_SESSION['id'];
                 $offices_id = $_SESSION['offices_id'];
                 $date_requested = $_POST['date_requested'];
                 $request_types_id = $_POST['request_types_id'];
@@ -506,7 +506,7 @@ if ($g_response == 1) {
                 break;
             case 'admin':
                 $helpdesks_id = $_POST['upd_helpdesk_id'];
-                $requested_by = !empty($_POST['requested_by']) ? $_POST['requested_by'] : $_SESSION['isds_id'];
+                $requested_by = !empty($_POST['requested_by']) ? $_POST['requested_by'] : $_SESSION['id'];
                 $date_requested = $_POST['date_requested'];
                 $request_types_id = $_POST['request_types_id'];
                 $categories_id = $_POST['categories_id'];
@@ -622,7 +622,7 @@ if ($g_response == 1) {
     if (isset($_POST['del_helpdesk'])) {
         $helpdesks_id = $_POST['helpdesks_id'];
 
-        $conn->query("SET @audit_user_id = " . (int) $_SESSION['isds_id']);
+        $conn->query("SET @audit_user_id = " . (int) $_SESSION['id']);
 
         $query = "DELETE FROM helpdesks WHERE id = ?";
         $result = $conn->execute_query($query, [$helpdesks_id]);
@@ -639,7 +639,7 @@ if ($g_response == 1) {
         switch ($_SESSION['role']) {
             case 'employee':
             case 'VIP':
-                $requested_by = $_SESSION['isds_id'];
+                $requested_by = $_SESSION['id'];
                 $date_requested = $_POST['date_requested'];
                 $topic = htmlspecialchars($_POST['topic'], ENT_QUOTES, 'UTF-8');
                 $date_scheduled = $_POST['date_scheduled'];
@@ -732,7 +732,7 @@ if ($g_response == 1) {
                 break;
 
             case 'admin':
-                $requested_by = !empty($_POST['requested_by']) ? $_POST['requested_by'] : $_SESSION['isds_id'];
+                $requested_by = !empty($_POST['requested_by']) ? $_POST['requested_by'] : $_SESSION['id'];
                 $date_requested = $_POST['date_requested'];
                 $topic = htmlspecialchars($_POST['topic'], ENT_QUOTES, 'UTF-8');
                 $date_scheduled = $_POST['date_scheduled'];
@@ -741,7 +741,7 @@ if ($g_response == 1) {
                 $hosts_id = !empty($_POST['hosts_id']) ? $_POST['hosts_id'] : NULL;
                 $m_statuses_id = !empty($_POST['m_statuses_id']) ? $_POST['m_statuses_id'] : 1;
                 $meeting_details = htmlspecialchars($_POST['meeting_details'], ENT_QUOTES, 'UTF-8');
-                $generated_by = !empty($_POST['meeting_details']) ? $_SESSION['isds_id'] : null;
+                $generated_by = !empty($_POST['meeting_details']) ? $_SESSION['id'] : null;
 
                 $query = "SELECT * FROM `meetings` 
                          WHERE `date_scheduled` = ? 
@@ -872,7 +872,7 @@ if ($g_response == 1) {
         switch ($_SESSION['role']) {
             case 'employee':
             case 'VIP':
-                $requested_by = $_SESSION['isds_id'];
+                $requested_by = $_SESSION['id'];
                 $date_requested = $_POST['date_requested'];
                 $topic = htmlspecialchars($_POST['topic'], ENT_QUOTES, 'UTF-8');
                 $date_scheduled = $_POST['date_scheduled'];
@@ -971,7 +971,7 @@ if ($g_response == 1) {
                 break;
 
             case 'admin':
-                $requested_by = !empty($_POST['requested_by']) ? $_POST['requested_by'] : $_SESSION['isds_id'];
+                $requested_by = !empty($_POST['requested_by']) ? $_POST['requested_by'] : $_SESSION['id'];
                 $date_requested = $_POST['date_requested'];
                 $topic = htmlspecialchars($_POST['topic'], ENT_QUOTES, 'UTF-8');
                 $date_scheduled = $_POST['date_scheduled'];
@@ -980,7 +980,7 @@ if ($g_response == 1) {
                 $hosts_id = !empty($_POST['hosts_id']) ? $_POST['hosts_id'] : NULL;
                 $m_statuses_id = !empty($_POST['m_statuses_id']) ? $_POST['m_statuses_id'] : 1;
                 $meeting_details = htmlspecialchars($_POST['meeting_details'], ENT_QUOTES, 'UTF-8');
-                $generated_by = !empty($_POST['meeting_details']) ? $_SESSION['isds_id'] : null;
+                $generated_by = !empty($_POST['meeting_details']) ? $_SESSION['id'] : null;
 
                 $query = "SELECT * FROM `meetings` 
                          WHERE `date_scheduled` = ? 
@@ -1108,7 +1108,7 @@ if ($g_response == 1) {
     if (isset($_POST['del_meeting'])) {
         $meetings_id = $_POST['meetings_id'];
 
-        $conn->query("SET @audit_user_id = " . (int) $_SESSION['isds_id']);
+        $conn->query("SET @audit_user_id = " . (int) $_SESSION['id']);
 
         $query = "DELETE FROM meetings WHERE id = ?";
         $result = $conn->execute_query($query, [$meetings_id]);

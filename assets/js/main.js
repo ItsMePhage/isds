@@ -280,7 +280,7 @@ $(function () {
 
       $.ajax({
         type: "POST",
-        url: "/isds/includes/process.php",
+        url: "/isds/includes/controller.php",
         data: formData,
         dataType: "json",
         success: function (response) {
@@ -327,7 +327,7 @@ $(function () {
         grecaptcha.execute(window.sitekey).then(function (token) {
           $.ajax({
             type: "POST",
-            url: "/isds/includes/process.php",
+            url: "/isds/includes/controller.php",
             data: {
               del_user: true,
               users_id: id,
@@ -380,7 +380,7 @@ $(function () {
         grecaptcha.execute(window.sitekey).then(function (token) {
           $.ajax({
             type: "POST",
-            url: "/isds/includes/process.php",
+            url: "/isds/includes/controller.php",
             data: {
               reset_password: true,
               users_id: id,
@@ -433,7 +433,7 @@ $(function () {
         grecaptcha.execute(window.sitekey).then(function (token) {
           $.ajax({
             type: "POST",
-            url: "/isds/includes/process.php",
+            url: "/isds/includes/controller.php",
             data: {
               del_helpdesk: true,
               helpdesks_id: id,
@@ -486,7 +486,7 @@ $(function () {
         grecaptcha.execute(window.sitekey).then(function (token) {
           $.ajax({
             type: "POST",
-            url: "/isds/includes/process.php",
+            url: "/isds/includes/controller.php",
             data: {
               del_meeting: true,
               meetings_id: id,

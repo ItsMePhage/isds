@@ -5,7 +5,7 @@ require_once 'assets/components/includes/conn.php';
 session_start();
 
 if ($protected == true) {
-    if (isset($_SESSION['isds_id'])) {
+    if (isset($_SESSION['id'])) {
         if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity'] > 1800)) {
             session_unset();
             session_destroy();
@@ -18,7 +18,7 @@ if ($protected == true) {
         $query = "SELECT * FROM users_info";
         $query .= " WHERE id = ? AND is_active = 1";
 
-        $result = $conn->execute_query($query, [$_SESSION['isds_id']]);
+        $result = $conn->execute_query($query, [$_SESSION['id']]);
 
         if ($result && $result->num_rows > 0) {
             $acc = $result->fetch_object();
@@ -36,7 +36,7 @@ if ($protected == true) {
 }
 
 if ($protected == false) {
-    if (isset($_SESSION['isds_id'])) {
+    if (isset($_SESSION['id'])) {
         header('Location: dashboard.php');
         exit();
     }

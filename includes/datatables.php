@@ -50,7 +50,7 @@ if (isset($_GET['users_table'])) {
 if (isset($_GET['csf_report_table'])) {
     $table = ($_SESSION['offices_id'] == 1)
         ? "csf_report"
-        : "(SELECT * FROM csf_report WHERE requested_by = " . $_SESSION['isds_id'] . " AND offices_id = " . $_SESSION['offices_id'] . ") AS csf_report";
+        : "(SELECT * FROM csf_report WHERE requested_by = " . $_SESSION['id'] . " AND offices_id = " . $_SESSION['offices_id'] . ") AS csf_report";
 
     $columns = array(
         array('db' => 'id', 'dt' => 0),
@@ -131,7 +131,7 @@ if (isset($_GET['helpdesks_report_table'])) {
 }
 
 if (isset($_GET['accomplishment_report_table'])) {
-    $table = "(SELECT * FROM helpdesks_info WHERE serviced_by = " . $_SESSION['isds_id'] . ") AS helpdesks_info";
+    $table = "(SELECT * FROM helpdesks_info WHERE serviced_by = " . $_SESSION['id'] . ") AS helpdesks_info";
 
     $columns = array(
         array('db' => 'date_requested', 'dt' => 0),
@@ -261,7 +261,7 @@ if (isset($_GET['helpdesks_table'])) {
             break;
         case 'employee':
         case 'VIP':
-            $table = "(SELECT * FROM helpdesks_info WHERE requested_by = " . $_SESSION['isds_id'] . ") AS helpdesks_info";
+            $table = "(SELECT * FROM helpdesks_info WHERE requested_by = " . $_SESSION['id'] . ") AS helpdesks_info";
 
             $columns = array(
                 array(
@@ -412,7 +412,7 @@ if (isset($_GET['meetings_table'])) {
 
         case 'employee':
         case 'VIP':
-            $table = "(SELECT * FROM meetings_info WHERE requested_by = " . $_SESSION['isds_id'] . ") AS meetings_info";
+            $table = "(SELECT * FROM meetings_info WHERE requested_by = " . $_SESSION['id'] . ") AS meetings_info";
 
             $columns = array(
                 array(
@@ -478,7 +478,7 @@ if (isset($_GET['meetings_table'])) {
 
 /*
 if (isset($_GET['meeting_table'])) {
-    $table = "(SELECT * FROM view_meetings WHERE requested_by = " . $_SESSION['isds_id'] . ") AS tbl_meetings";
+    $table = "(SELECT * FROM view_meetings WHERE requested_by = " . $_SESSION['id'] . ") AS tbl_meetings";
 
     $columns = array(
         array(
