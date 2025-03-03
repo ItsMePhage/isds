@@ -16,16 +16,18 @@
 <script src="\<?= root ?>\node_modules\@fullcalendar\daygrid\index.global.js"></script>
 <script src="\<?= root ?>\node_modules\@fullcalendar\interaction\index.global.js"></script>
 
-<!-- Template Main JS File -->
-<script src="\<?= root ?>\assets\js\main.js"></script>
+<!-- Custom JS Files -->
+<script src="\<?= root ?>\assets\js\utils.js"></script>
+<script src="\<?= root ?>\assets\js\ui.js"></script>
+<script src="\<?= root ?>\assets\js\dataTables.js"></script>
+<script src="\<?= root ?>\assets\js\forms.js"></script>
+<script src="\<?= root ?>\assets\js\actions.js"></script>
+<script src="\<?= root ?>\assets\js\dropdowns.js"></script>
+<script src="\<?= root ?>\assets\js\charts.js"></script>
+<script src="\<?= root ?>\assets\js\print.js"></script>
+<script src="\<?= root ?>\assets\js\calendar.js"></script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        })
-    })
-</script>
+<!-- Template Main JS File (Loads last to initialize everything) -->
+<script src="\<?= root ?>\assets\js\main.js"></script>
 
 </html>
