@@ -16,16 +16,8 @@
 <script src="\<?= root ?>\node_modules\@fullcalendar\daygrid\index.global.js"></script>
 <script src="\<?= root ?>\node_modules\@fullcalendar\interaction\index.global.js"></script>
 
-<!-- Template Main JS File -->
-<script src="\<?= root ?>\assets\js\main.js"></script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        })
-    })
-</script>
+<!-- Template Main JS File (Loads last to initialize everything) -->
+<script src="\<?= root ?>\assets\js\main-full.js"></script>
 
 </html>

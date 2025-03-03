@@ -151,7 +151,7 @@ if ($g_response == 1) {
                 $Message .= "<div>Password: " . $password . "</div>";
                 $Message .= "<br><br>";
                 $Message .= "<div>For security reasons, we recommend that you change your password after your first login.</div>";
-                $Message .= "<div><a href='" . base_url . "isds/index.php'>Click here</a> to login. Thank you.</div>";
+                $Message .= "<div><a href='" . base_url . "/isds/index.php'>Click here</a> to login. Thank you.</div>";
                 $Message .= "<br><br>";
                 $Message .= "<div>Best Regards,</div>";
                 $Message .= "<br>";
@@ -328,7 +328,7 @@ if ($g_response == 1) {
                         break;
                     case 'Completed':
                         $Message .= "<p>Your request ({$row->request_number}) has been completed. Please take a moment to fill out our feedback form:</p>";
-                        $Message .= "<p><a href='" . base_url . "isds/csf.php?reqno=" . $row->id . "' style='font-size: 18pt;'>Online CSF Form</a></p>";
+                        $Message .= "<p><a href='" . base_url . "/isds/csf.php?reqno=" . $row->id . "' style='font-size: 18pt;'>Online CSF Form</a></p>";
                         break;
                     case 'Unserviceable':
                         $Message .= "<p>We regret to inform you that your request ({$row->request_number}) has been marked as unserviceable. Please contact support for alternative solutions.</p>";
@@ -348,7 +348,7 @@ if ($g_response == 1) {
                 $Message .= "</ul>";
                 $Message .= "<p>We will process your request and get back to you as soon as possible.</p>";
                 $Message .= "<p>To access your account, please click the button below:</p>";
-                $Message .= "<a href='" . base_url . "isds/login.php'><u>Click Here to Login</u></a>";
+                $Message .= "<a href='" . base_url . "/isds/login.php'><u>Click Here to Login</u></a>";
                 $Message .= "<br><br>";
                 $Message .= "<p>Best Regards,</p>";
                 $Message .= "<div>DTI6 MIS Administrator</div>";
@@ -429,7 +429,7 @@ if ($g_response == 1) {
                             break;
                         case 'Completed':
                             $Message .= "<p>Your request ({$row->request_number}) has been completed. Please take a moment to fill out our feedback form:</p>";
-                            $Message .= "<p><a href='" . base_url . "isds/csf.php?reqno=" . $row->id . "' style='font-size: 18pt;'>Online CSF Form</a></p>";
+                            $Message .= "<p><a href='" . base_url . "/isds/csf.php?reqno=" . $row->id . "' style='font-size: 18pt;'>Online CSF Form</a></p>";
                             break;
                         case 'Unserviceable':
                             $Message .= "<p>We regret to inform you that your request ({$row->request_number}) has been marked as unserviceable. Please contact support for alternative solutions.</p>";
@@ -461,7 +461,7 @@ if ($g_response == 1) {
                     $Message .= "<li><strong>Serviced by:</strong> " . $row->serviced_by_name . "</li>";
                     $Message .= "</ul>";
                     $Message .= "<p>To access your account, please click the button below:</p>";
-                    $Message .= "<a href='" . base_url . "isds/'><u>Click Here to Login</u></a>";
+                    $Message .= "<a href='" . base_url . "/isds/'><u>Click Here to Login</u></a>";
                     $Message .= "<br><br>";
                     $Message .= "<p>Best Regards,</p>";
                     $Message .= "<div>DTI6 MIS Administrator</div>";
@@ -567,7 +567,7 @@ if ($g_response == 1) {
                             break;
                         case 'Completed':
                             $Message .= "<p>Your request {$row->request_number} has been completed. Please take a moment to fill out our feedback form:</p>";
-                            $Message .= "<p><a href='" . base_url . "isds/csf.php?reqno=" . $row->id . "' style='font-size: 18pt;'>Online CSF Form</a></p>";
+                            $Message .= "<p><a href='" . base_url . "/isds/csf.php?reqno=" . $row->id . "' style='font-size: 18pt;'>Online CSF Form</a></p>";
                             break;
                         case 'Unserviceable':
                             $Message .= "<p>We regret to inform you that your request {$row->request_number} has been marked as unserviceable. Please contact support for alternative solutions.</p>";
@@ -598,7 +598,7 @@ if ($g_response == 1) {
                     $Message .= "<li><strong>Serviced by:</strong> " . $row->serviced_by_name . "</li>";
                     $Message .= "</ul>";
                     $Message .= "<p>To access your account, please click the button below:</p>";
-                    $Message .= "<a href='" . base_url . "isds/'><u>Click Here to Login</u></a>";
+                    $Message .= "<a href='" . base_url . "/isds/'><u>Click Here to Login</u></a>";
                     $Message .= "<br><br>";
                     $Message .= "<p>Best Regards,</p>";
                     $Message .= "<div>DTI6 MIS Administrator</div>";
@@ -708,7 +708,7 @@ if ($g_response == 1) {
                     $Message .= "</ul>";
                     $Message .= "<br>";
                     $Message .= "<p>To access your account, please click the button below:</p>";
-                    $Message .= "<a href='" . base_url . "isds/login.php'><u>Click Here to Login</u></a>";
+                    $Message .= "<a href='" . base_url . "/isds/login.php'><u>Click Here to Login</u></a>";
                     $Message .= "<br><br>";
                     $Message .= "<p>Best Regards,</p>";
                     $Message .= "<div>DTI6 MIS Administrator</div>";
@@ -829,7 +829,7 @@ if ($g_response == 1) {
                         $Message .= "</ul>";
                         $Message .= "<br>";
                         $Message .= "<p>To access your account, please click the button below:</p>";
-                        $Message .= "<a href='" . base_url . "isds/login.php'><u>Click Here to Login</u></a>";
+                        $Message .= "<a href='" . base_url . "/isds/login.php'><u>Click Here to Login</u></a>";
                         $Message .= "<br><br>";
                         $Message .= "<p>Best Regards,</p>";
                         $Message .= "<div>DTI6 MIS Administrator</div>";
@@ -947,7 +947,7 @@ if ($g_response == 1) {
                     $Message .= "</ul>";
                     $Message .= "<br>";
                     $Message .= "<p>To access your account, please click the button below:</p>";
-                    $Message .= "<a href='" . base_url . "isds/login.php'><u>Click Here to Login</u></a>";
+                    $Message .= "<a href='" . base_url . "/isds/login.php'><u>Click Here to Login</u></a>";
                     $Message .= "<br><br>";
                     $Message .= "<p>Best Regards,</p>";
                     $Message .= "<div>DTI6 MIS Administrator</div>";
@@ -1079,7 +1079,7 @@ if ($g_response == 1) {
                         $Message .= "</ul>";
                         $Message .= "<br>";
                         $Message .= "<p>To access your account, please click the button below:</p>";
-                        $Message .= "<a href='" . base_url . "isds/login.php'><u>Click Here to Login</u></a>";
+                        $Message .= "<a href='" . base_url . "/isds/login.php'><u>Click Here to Login</u></a>";
                         $Message .= "<br><br>";
                         $Message .= "<p>Best Regards,</p>";
                         $Message .= "<div>DTI6 MIS Administrator</div>";
@@ -1251,7 +1251,7 @@ if ($g_response == 1) {
                 $Message .= "<div>Password: " . $password . "</div>";
                 $Message .= "<br><br>";
                 $Message .= "<div>For security reasons, we recommend that you change your password after your first login.</div>";
-                $Message .= "<div><a href='" . base_url . "isds/index.php'>Click here</a> to login. Thank you.</div>";
+                $Message .= "<div><a href='" . base_url . "/isds/index.php'>Click here</a> to login. Thank you.</div>";
                 $Message .= "<br><br>";
                 $Message .= "<div>Best Regards,</div>";
                 $Message .= "<br>";
