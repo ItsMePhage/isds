@@ -134,6 +134,7 @@ $(function () {
     processing: true,
     serverSide: true,
     scrollX: true,
+  	order: [[0, 'desc']],
   });
 
   bindFilterButton("#h_open", helpdesks_table, 4, "Open");
