@@ -1,16 +1,34 @@
-const Print = {
-  printForm(formType, jsonData) {
-    const encodedData = encodeURIComponent(JSON.stringify(jsonData));
-    const printWindow = window.open(`../forms/${formType}-form.php?data=${encodedData}`, "_blank");
-    printWindow.onload = () => {
-      printWindow.print();
-      printWindow.onafterprint = () => printWindow.close();
-    };
-  },
+// print.js - Print Functions
 
-  init() {
-    window.printoisbtn = (jsonData) => this.printForm("ois", jsonData);
-    window.printmjrbtn = (jsonData) => this.printForm("mjr", jsonData);
-    window.printpribtn = (jsonData) => this.printForm("pri", jsonData);
-  },
-};
+$(function () {
+  "use strict";
+
+  // Generic print form function
+  function printForm(formType, jsonData) {
+    var encodedData = encodeURIComponent(JSON.stringify(jsonData));
+    var printWindow = window.open(`../forms/${formType}-form.php?data=${encodedData}`, "_blank");
+
+    printWindow.onload = function () {
+      printWindow.print();
+      printWindow.onafterprint = function () {
+        printWindow.close();
+      };
+    };
+  }
+
+  // Print OIS form
+  window.printoisbtn = function (jsonData) {
+    printForm("ois", jsonData);
+  };
+
+  // Print MJR form
+  window.printmjrbtn = function (jsonData) {
+    printForm("mjr", jsonData);
+  };
+
+  // Print PRI form
+  window.printpribtn = function (jsonData) {
+    printForm("pri", jsonData);
+  };
+
+});

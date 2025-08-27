@@ -1,76 +1,147 @@
-const DataTablesManager = {
-  initTable(selector, ajaxUrl, options = {}) {
-    return new DataTable(selector, {
-      ajax: ajaxUrl,
-      processing: true,
-      serverSide: true,
-      scrollX: true,
-      ...options,
-    });
-  },
+// datatables.js - DataTables Configuration and Management
 
-  bindFilterButton(buttonId, table, columnIdx, filterValue) {
-    Utils.on("click", buttonId, () => {
+$(function () {
+  "use strict";
+
+  // Helper function to bind filter buttons
+  function bindFilterButton(buttonId, table, columnIdx, filterValue) {
+    $(buttonId).on("click", function () {
       table.column(columnIdx).search(filterValue).draw();
     });
-  },
+  }
 
-  init() {
-    const usersTable = this.initTable("#users_table", "/isds/includes/datatables.php?users_table");
-    this.bindFilterButton("#u_admin", usersTable, 5, "Admin");
-    this.bindFilterButton("#u_vip", usersTable, 5, "VIP");
-    this.bindFilterButton("#u_employee", usersTable, 5, "Employee");
+  // Users table
+  var users_table = new DataTable("#users_table", {
+    ajax: "/isds/includes/datatables.php?users_table",
+    processing: true,
+    serverSide: true,
+    scrollX: true,
+  });
 
-    const helpdesksTable = this.initTable("#helpdesks_table", "/isds/includes/datatables.php?helpdesks_table");
-    this.bindFilterButton("#h_open", helpdesksTable, 4, "Open");
-    this.bindFilterButton("#h_pending", helpdesksTable, 4, "Pending");
-    this.bindFilterButton("#h_completed", helpdesksTable, 4, "Completed");
-    // Add remaining filters...
+  bindFilterButton("#u_admin", users_table, 5, "Admin");
+  bindFilterButton("#u_vip", users_table, 5, "VIP");
+  bindFilterButton("#u_employee", users_table, 5, "Employee");
 
-    const meetingsTable = this.initTable("#meetings_table", "/isds/includes/datatables.php?meetings_table");
-    this.bindFilterButton("#m_pending", meetingsTable, 4, "Pending");
-    // Add remaining filters...
+  // Helpdesks table
+  var helpdesks_table = new DataTable("#helpdesks_table", {
+    ajax: "/isds/includes/datatables.php?helpdesks_table",
+    processing: true,
+    serverSide: true,
+    scrollX: true,
+    order: [[0, 'desc']],
+  });
 
-    this.initTable("#tbl_request_types", "/isds/includes/datatables.php?tbl_request_types", {
-      pageLength: 5,
-      lengthChange: false,
-    });
+  bindFilterButton("#h_open", helpdesks_table, 4, "Open");
+  bindFilterButton("#h_pending", helpdesks_table, 4, "Pending");
+  bindFilterButton("#h_completed", helpdesks_table, 4, "Completed");
+  bindFilterButton("#h_prerepair", helpdesks_table, 4, "Pre-repair");
+  bindFilterButton("#h_cancelled", helpdesks_table, 4, "Cancelled");
+  bindFilterButton("#h_unserviceable", helpdesks_table, 4, "Unserviceable");
 
-    this.initTable("#csf_report_table", "/isds/includes/datatables.php?csf_report_table", {
-      layout: { topStart: { buttons: ["colvis", "excel"] } },
-    });
+  // Meetings table
+  var meetings_table = new DataTable("#meetings_table", {
+    ajax: "/isds/includes/datatables.php?meetings_table",
+    processing: true,
+    serverSide: true,
+    scrollX: true,
+  });
 
-    this.initTable("#mjr_report_table", "/isds/includes/datatables.php?helpdesks_report_table=mjr", {
-      layout: { topStart: { buttons: ["colvis", "excel"] } },
-      order: [[2, "asc"]],
-    });
+  bindFilterButton("#m_pending", meetings_table, 4, "Pending");
+  bindFilterButton("#m_scheduled", meetings_table, 4, "Scheduled");
+  bindFilterButton("#m_unavailable", meetings_table, 4, "Unavailable");
+  bindFilterButton("#m_cancelled", meetings_table, 4, "Cancelled");
 
-    this.initTable("#accomplishment_report_table", "/isds/includes/datatables.php?accomplishment_report_table", {
-      layout: {
-        topStart: {
-          buttons: [
-            "colvis",
-            "excel",
-            {
-              extend: "pdfHtml5",
-              text: "PDF",
-              orientation: "landscape",
-              pageSize: "A4",
-              title: "ACCOMPLISHMENT REPORT AS OF _____________",
-              exportOptions: { columns: ":visible" },
-              customize: (doc) => {
-                doc.content.push({
-                  text: "Prepared by:\n\n_________________________\n\n\nApproved by:\n\n_________________________",
-                  alignment: "left",
-                  fontSize: 12,
-                  italics: true,
-                  margin: [0, 20, 0, 0],
-                });
-              },
+  // Configuration tables
+  var tbl_request_types = new DataTable("#tbl_request_types", {
+    ajax: "/isds/includes/datatables.php?tbl_request_types",
+    processing: true,
+    serverSide: true,
+    scrollX: true,
+    pageLength: 5,
+    lengthChange: false,
+  });
+
+  var tbl_categories = new DataTable("#tbl_categories", {
+    ajax: "/isds/includes/datatables.php?tbl_categories",
+    processing: true,
+    serverSide: true,
+    scrollX: true,
+    pageLength: 5,
+    lengthChange: false,
+  });
+
+  var tbl_sub_categories = new DataTable("#tbl_sub_categories", {
+    ajax: "/isds/includes/datatables.php?tbl_sub_categories",
+    processing: true,
+    serverSide: true,
+    scrollX: true,
+    pageLength: 5,
+    lengthChange: false,
+  });
+
+  // Report tables with export functionality
+  var csf_report_table = new DataTable("#csf_report_table", {
+    layout: {
+      topStart: {
+        buttons: ['colvis', 'excel']
+      }
+    },
+    ajax: "/isds/includes/datatables.php?csf_report_table",
+    processing: true,
+    serverSide: true,
+    scrollX: true,
+  });
+
+  var mjr_report_table = new DataTable("#mjr_report_table", {
+    layout: {
+      topStart: {
+        buttons: ['colvis', 'excel']
+      }
+    },
+    ajax: "/isds/includes/datatables.php?helpdesks_report_table=mjr",
+    processing: true,
+    serverSide: true,
+    scrollX: true,
+    order: [[2, 'asc']]
+  });
+
+  var ois_report_table = new DataTable("#ois_report_table", {
+    layout: {
+      topStart: {
+        buttons: ['colvis', 'excel']
+      }
+    },
+    ajax: "/isds/includes/datatables.php?helpdesks_report_table=ois",
+    processing: true,
+    serverSide: true,
+    scrollX: true,
+    order: [[2, 'asc']]
+  });
+
+  var accomplishment_report_table = new DataTable("#accomplishment_report_table", {
+    layout: {
+      topStart: {
+        buttons: [
+          'colvis',
+          'excel',
+          {
+            extend: 'pdfHtml5',
+            text: 'PDF',
+            orientation: 'landscape',
+            pageSize: 'A4',
+            title: 'DTI6 ISDS Generated Accomplishment Report',
+            exportOptions: {
+              columns: ':visible'
             },
-          ],
-        },
-      },
-    });
-  },
-};
+          }
+        ]
+      }
+    },
+    ajax: "/isds/includes/datatables.php?accomplishment_report_table",
+    processing: true,
+    serverSide: true,
+    scrollX: true,
+    order: [[0, 'desc']]
+  });
+
+});

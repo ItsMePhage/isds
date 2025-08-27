@@ -1,15 +1,32 @@
-const Calendar = {
-  initCalendar(selector, eventsUrl) {
-    if ($(selector).length) {
-      const calendar = new FullCalendar.Calendar(document.querySelector(selector), {
-        events: eventsUrl,
-      });
-      calendar.render();
-    }
-  },
+// calendar.js - Calendar Functions using FullCalendar
 
-  init() {
-    this.initCalendar("#calendar", "/isds/includes/fetch.php?meetings");
-    this.initCalendar("#cal_meetings_a", "/isds/includes/fetch.php?allmeetings");
-  },
-};
+$(function () {
+  "use strict";
+
+  // Main calendar for meetings
+  if ($("#calendar").length) {
+    var calendarEl = document.querySelector("#calendar");
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      events: "/isds/includes/fetch.php?meetings",
+    });
+
+    calendar.render();
+
+    var calendarjQ = $(calendarEl);
+  }
+
+  // Calendar for all meetings
+  if ($("#cal_meetings_a").length) {
+    var calendarEl = document.querySelector("#cal_meetings_a");
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      events: "/isds/includes/fetch.php?allmeetings",
+    });
+
+    calendar.render();
+
+    var calendarjQ = $(calendarEl);
+  }
+
+});

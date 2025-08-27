@@ -235,20 +235,10 @@ $(function () {
             text: 'PDF',
             orientation: 'landscape',
             pageSize: 'A4',
-            title: 'ACCOMPLISHMENT REPORT AS OF _____________',
+            title: 'DTI6 ISDS Generated Accomplishment Report',
             exportOptions: {
               columns: ':visible' // Export only visible columns
             },
-            customize: function (doc) {
-              // Add custom quote after the table
-              doc.content.push({
-                text: "Prepared by:\n\n_________________________\n\n\nApproved by:\n\n_________________________",
-                alignment: 'left',
-                fontSize: 12,
-                italics: true,
-                margin: [0, 20, 0, 0] // Adds spacing before text
-              });
-            }
           }
         ]
       }
@@ -257,6 +247,7 @@ $(function () {
     processing: true,
     serverSide: true,
     scrollX: true,
+    order: [[0, 'desc']]
 
   });
 

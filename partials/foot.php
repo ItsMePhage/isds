@@ -1,3 +1,7 @@
+<?php
+// foot.php - Updated with modular JavaScript structure
+?>
+
 </body>
 
 <!-- Vendor JS Files -->
@@ -16,8 +20,20 @@
 <script src="\<?= root ?>\node_modules\@fullcalendar\daygrid\index.global.js"></script>
 <script src="\<?= root ?>\node_modules\@fullcalendar\interaction\index.global.js"></script>
 
+<!-- Application JS Files (Modular Structure) -->
+<!-- Load in specific order - dependencies first -->
+<script src="\<?= root ?>\assets\js\utils.js"></script>
+<script src="\<?= root ?>\assets\js\navigation.js"></script>
+<script src="\<?= root ?>\assets\js\datatables.js"></script>
+<script src="\<?= root ?>\assets\js\forms.js"></script>
+<script src="\<?= root ?>\assets\js\dropdowns.js"></script>
+<script src="\<?= root ?>\assets\js\crud-operations.js"></script>
+<script src="\<?= root ?>\assets\js\modals.js"></script>
+<script src="\<?= root ?>\assets\js\print.js"></script>
+<script src="\<?= root ?>\assets\js\charts.js"></script>
+<script src="\<?= root ?>\assets\js\calendar.js"></script>
 
-<!-- Template Main JS File (Loads last to initialize everything) -->
-<script src="\<?= root ?>\assets\js\main-full.js"></script>
+<!-- Main Application Entry Point (Loads last) -->
+<script src="\<?= root ?>\assets\js\main.js"></script>
 
 </html>

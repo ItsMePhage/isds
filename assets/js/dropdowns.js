@@ -1,51 +1,118 @@
-const Dropdowns = {
-  updateOptions(url, data, categorySelector, subCategorySelector) {
-    Utils.fetchData(url, data, (response) => {
-      const len = response.length;
-      $(categorySelector).empty().append("<option value='' selected disabled>choose...</option>");
-      $(subCategorySelector).empty().append("<option value='' selected disabled>choose...</option>");
-      response.forEach(({ id, name }) => {
-        $(categorySelector).append(`<option value='${id}'>${name}</option>`);
-      });
-    });
-  },
+// dropdowns.js - Dynamic Dropdown Management
 
-  initDropdowns(selector, url, dataKey) {
-    $(selector).each(function () {
-      const selectId = $(this).attr("id");
-      Utils.fetchData(
-        url,
-        { [dataKey]: selectId },
-        (response) => {
-          response.forEach(({ id, name }) => {
-            $(`#${selectId}`).append(`<option value='${id}'>${name}</option>`);
-          });
+$(function () {
+  "use strict";
+
+  // Initialize select dropdowns
+  $(".select-init").each(function (index, element) {
+    let select_data = $(element).attr("id");
+
+    $.ajax({
+      url: "/isds/includes/fetch.php",
+      type: "GET",
+      data: {
+        select_data: select_data,
+      },
+      dataType: "json",
+      success: function (response) {
+        var len = response.length;
+        if (typeof select_data_val !== 'undefined' && select_data_val.length > 0) {
+          for (var i = 0; i < len; i++) {
+            var id = response[i]["id"];
+            var name = response[i]["name"];
+            $("#" + select_data).append(
+              "<option value='" +
+              id +
+              "' " +
+              (id == select_data_val[index] ? "selected" : "") +
+              ">" +
+              name +
+              "</option>"
+            );
+          }
+        } else {
+          for (var i = 0; i < len; i++) {
+            var id = response[i]["id"];
+            var name = response[i]["name"];
+            $("#" + select_data).append(
+              "<option value='" + id + "'>" + name + "</option>"
+            );
+          }
         }
-      );
+      },
     });
-  },
+  });
 
-  init() {
-    this.initDropdowns(".select-init", "/isds/includes/fetch.php", "select_data");
-
-    $("#request_types_id").on("change", () => {
-      this.updateOptions(
-        "/isds/includes/fetch.php",
-        { select_data: "categories_id", request_types_id: $("#request_types_id").val() },
-        "#categories_id",
-        "#sub_categories_id"
-      );
+  // Helper functions for cascading dropdowns
+  function updateOptions(url, data, categorySelector, subCategorySelector) {
+    $.ajax({
+      url: url,
+      type: "GET",
+      data: data,
+      dataType: "json",
+      success: function (response) {
+        populateOptions(response, categorySelector, subCategorySelector);
+      },
+      error: function (xhr, status, error) {
+        console.error(`Error: ${status} - ${error}`);
+        alert("An error occurred while fetching data. Please try again.");
+      },
     });
+  }
 
-    $("#categories_id").on("change", () => {
-      this.updateOptions(
-        "/isds/includes/fetch.php",
-        { select_data: "sub_categories_id", categories_id: $("#categories_id").val() },
-        "#sub_categories_id",
-        "#sub_categories_id"
+  function populateOptions(response, categorySelector, subCategorySelector) {
+    const len = response.length;
+    $(categorySelector)
+      .empty()
+      .append("<option value='' selected disabled>choose...</option>");
+    $(subCategorySelector)
+      .empty()
+      .append("<option value='' selected disabled>choose...</option>");
+
+    for (let i = 0; i < len; i++) {
+      const { id, name } = response[i];
+      $(categorySelector).append(
+        `<option value='${id}'>${name}</option>`
       );
-    });
+    }
+  }
 
-    // Similar handlers for upd_request_types_id and upd_categories_id...
-  },
-};
+  // Cascading dropdowns for request forms
+  $("#request_types_id").on("change", function () {
+    updateOptions(
+      "/isds/includes/fetch.php",
+      { select_data: "categories_id", request_types_id: $(this).val() },
+      "#categories_id",
+      "#sub_categories_id"
+    );
+  });
+
+  $("#categories_id").on("change", function () {
+    updateOptions(
+      "/isds/includes/fetch.php",
+      { select_data: "sub_categories_id", categories_id: $(this).val() },
+      "#sub_categories_id",
+      "#sub_categories_id"
+    );
+  });
+
+  // Cascading dropdowns for update forms
+  $("#upd_request_types_id").on("change", function () {
+    updateOptions(
+      "/isds/includes/fetch.php",
+      { select_data: "categories_id", request_types_id: $(this).val() },
+      "#upd_categories_id",
+      "#upd_sub_categories_id"
+    );
+  });
+
+  $("#upd_categories_id").on("change", function () {
+    updateOptions(
+      "/isds/includes/fetch.php",
+      { select_data: "sub_categories_id", categories_id: $(this).val() },
+      "#upd_sub_categories_id",
+      "#upd_sub_categories_id"
+    );
+  });
+
+});

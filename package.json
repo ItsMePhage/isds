@@ -25,7 +25,7 @@
     "jquery-ui": "^1.14.1",
     "quill": "^2.0.3",
     "remixicon": "^4.6.0",
-    "sweetalert2": "^11.15.10",
+    "sweetalert2": "^11.22.5",
     "tinymce": "^7.6.1"
   }
 }
