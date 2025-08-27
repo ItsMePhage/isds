@@ -164,40 +164,33 @@ require_once "../partials/aside.php";
                 <input type="date" class="form-control" id="date_requested" name="date_requested"
                   value="<?= date('Y-m-d') ?>" required />
               </div>
-               
-<div>
-  <label for="requested_by_input" class="form-label">Requestor</label>
-  
-  <!-- visible input (shows the value/text) -->
-  <input class="form-control" list="requested_by" id="requested_by_input" placeholder="choose...">
 
-  <!-- hidden input (stores the key/id) -->
-  <input type="hidden" name="requested_by" id="requested_by_hidden">
+              <div>
+                <label for="requested_by_input" class="form-label">Requestor</label>
+                <input class="form-control" list="requested_by" id="requested_by_input" placeholder="choose...">
+                <input type="hidden" name="requested_by" id="requested_by_hidden">
+                <datalist class="select-init" id="requested_by">
+                </datalist>
+              </div>
+              <script>
+                document.getElementById('requested_by_input').addEventListener('input', function () {
+                  const input = this.value;
+                  const datalist = document.getElementById('requested_by');
+                  const hidden = document.getElementById('requested_by_hidden');
+                  const inpt = document.getElementById('requested_by_input');
 
-  <!-- datalist (must keep select-init class & id="requested_by") -->
-  <datalist class="select-init" id="requested_by">
-  </datalist>
-</div>
+                  hidden.value = ""; // reset if no match
+                  for (let option of datalist.options) {
+                    if (option.value === input) {
+                      hidden.value = option.value; // store key/id
+                      inpt.value = option.text; // store value
+                      break;
+                    }
+                  }
+                });
+              </script>
 
-<script>
-  document.getElementById('requested_by_input').addEventListener('input', function () {
-    const input = this.value;
-    const datalist = document.getElementById('requested_by');
-    const hidden = document.getElementById('requested_by_hidden');
-    const inpt = document.getElementById('requested_by_input');
 
-    hidden.value = ""; // reset if no match
-    for (let option of datalist.options) {
-      if (option.value === input) {
-        hidden.value = option.id; // store key/id
-        inpt.value = option.text; // store value
-        break;
-      }
-    }
-  });
-</script>
-
-               
               <div>
                 <label for="request_types_id" class="form-label">Type of Request</label>
                 <select class="form-select select-init" id="request_types_id" name="request_types_id" required>
@@ -222,7 +215,8 @@ require_once "../partials/aside.php";
               </div>
               <div>
                 <label for="datetime_preferred" class="form-label">Preferred date and time</label>
-                <input type="datetime-local" class="form-control" id="datetime_preferred" name="datetime_preferred" value="<?= date('Y-m-d H:m') ?>" />
+                <input type="datetime-local" class="form-control" id="datetime_preferred" name="datetime_preferred"
+                  value="<?= date('Y-m-d H:m') ?>" />
               </div>
             </div>
 
@@ -282,15 +276,15 @@ require_once "../partials/aside.php";
               </div>
               <div>
                 <label for="serviced_by" class="form-label">Assigned to</label>
-				<select class="form-select select-init" id="serviced_by" name="serviced_by">
-  					<option value="">choose...</option>
-				</select>
+                <select class="form-select select-init" id="serviced_by" name="serviced_by">
+                  <option value="">choose...</option>
+                </select>
 
-				<script>
-  					setTimeout(function() {
-    					document.querySelector('#serviced_by option[value="<?= $_SESSION['id'] ?>"]').selected = true;
-  					}, 2000);
-				</script>
+                <script>
+                  setTimeout(function () {
+                    document.querySelector('#serviced_by option[value="<?= $_SESSION['id'] ?>"]').selected = true;
+                  }, 2000);
+                </script>
               </div>
               <hr>
               <div class="mb-3 form-check">
